@@ -1,6 +1,6 @@
 type Point      = (Float, Float)
 type Colour     = (Int,Int,Int)
-type Polygon    = [Point]
+type Polygon    = [Point] --ORDER MATTERS!!
 
 
 writePoint :: Point -> String 
@@ -16,14 +16,10 @@ blank :: Colour
 blank = (200,200,200)
 
 writePolygonColourless :: Polygon -> String
-writePolygonColourless p = writePolygon ((200,200,255), p)
-
-addColour :: Colour -> [Polygon] -> [(Colour, Polygon)]
-addColour c []      = []
-addColour c (x:xs)    = (c, x):(addColour c xs)
+writePolygonColourless p = writePolygon (blank, p)
 
 writePolygonsColourless :: [Polygon] -> String
-writePolygonsColourless p = writePolygons $ addColour (255,255,255) p
+writePolygonsColourless p = writePolygons $ colorize blank p
 
 colorize :: Colour -> [Polygon] -> [(Colour,Polygon)] 
 colorize = zip.repeat
@@ -34,9 +30,15 @@ rotatePointR theata (x, y) =
 rotatePointD :: Float -> Point -> Point
 rotatePointD theata (x, y) = rotatePointR (theata * (180 / pi)) (x, y)
 
-square :: Polygon
-square = [(100,100),(200,100),(100,200),(200,200)]
+rotatePolygonD :: Float -> Polygon -> Polygon
+rotatePolygonD theata p = map f p where
+    f = rotatePointD theata
 
+square :: Polygon
+square = [(100,100),(200,100),(200,200),(100,200)]
+
+outputColourlessShape :: Polygon -> IO ()
+outputColourlessShape shape = writeFile "Output.svg" $ writePolygonsColourless [shape]
 
 
 
