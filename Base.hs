@@ -1,28 +1,34 @@
 type Point          = (Float, Float)
 type Colour         = (Int,Int,Int)
 type Polygon        = [Point] --ORDER MATTERS!!
+type Figure         = [Polygon]
+type FigureC        = [(Colour, Polygon)]
 type Transformation = (Float, Float, Float, Float, Float, Float)
 
-
+--useage: writePoint Point => svg String
 writePoint :: Point -> String 
 writePoint (x,y) = (show x)++","++(show y)++" "
 
+--useage: writePolygon (Colour,Polygon) => svg String
 writePolygon :: (Colour,Polygon) -> String 
 writePolygon ((r,g,b),p) = "<polygon points=\""++(concatMap writePoint p)++"\" style=\"fill:#cccccc;stroke:rgb("++(show r)++","++(show g)++","++(show b)++");stroke-width:2\"/>"
 
-writePolygons :: [(Colour,Polygon)] -> String 
-writePolygons p = "<svg xmlns=\"http://www.w3.org/2000/svg\">"++(concatMap writePolygon p)++"</svg>"
+--useage: writeFigure [(Colour,Polygon)] => svg String
+writeFigure :: FigureC -> String 
+writeFigure p = "<svg xmlns=\"http://www.w3.org/2000/svg\">"++(concatMap writePolygon p)++"</svg>"
 
 blank :: Colour
 blank = (200,200,200)
 
+--useage: writePolygonColourless Polygon => svg String
 writePolygonColourless :: Polygon -> String
 writePolygonColourless p = writePolygon (blank, p)
 
-writePolygonsColourless :: [Polygon] -> String
-writePolygonsColourless p = writePolygons $ colorize blank p
+--useage: writeFigureColourless Figure => svg String
+writeFigureColourless :: Figure -> String
+writeFigureColourless p = writeFigure $ colorize blank p
 
-colorize :: Colour -> [Polygon] -> [(Colour,Polygon)] 
+colorize :: Colour -> Figure -> FigureC
 colorize = zip.repeat
 
 (%%) :: Point -> Transformation -> Point
@@ -51,16 +57,22 @@ folding acc f (x:xs) = folding (f acc x) f xs
 transformPolygon :: [Transformation] -> Polygon -> Polygon
 transformPolygon trList poly = map f poly where
     f = (\x -> folding (x) (%%) trList)
+    
+findMax :: Polygon -> Polygon
+findMax p = findMax_help $ unzip p
 
+findMax_help :: ([Float],[Float]) -> Polygon
+findMax_help (x,y) = [(minimum x, minimum y),(minimum x, maximum y), (maximum x, maximum y),(maximum x, minimum y)]
     
-    
+
 square :: Polygon
-square = [(0,0),(0,100),(100,100),(100,0),(0,0)]
+square = [(0,0),(0,100),(100,100),(100,0)]
 
 outputColourlessShape :: Polygon -> IO ()
-outputColourlessShape shape = writeFile "svg/Output.svg" $ writePolygonsColourless [shape]
+outputColourlessShape shape = writeFile "svg/Output.svg" $ writeFigureColourless [shape]
 
-
+outputFigure :: FigureC -> IO ()
+outputFigure x = writeFile "svg/Output.svg" $ writeFigure x
 
 {-
 rainbow@[red,green,blue,yellow,purple,teal] = map colorize [(255,0,0),(0,255,0),(0,0,255),(255,255,0),(255,0,255),(0,255,255)]
