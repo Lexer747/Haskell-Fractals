@@ -1,6 +1,9 @@
+import Numeric (showHex)
+import Data.Char (toUpper)
+
 type Point          = (Float, Float)
 type Colour         = (Int,Int,Int)
-type Fill           = (Hex)
+type Fill           = (Int,Int,Int,Int,Int,Int)
 type Polygon        = [Point] --ORDER MATTERS!!
 type Figure         = [Polygon]
 type FigureC        = [(Colour, Polygon)]
@@ -14,12 +17,19 @@ writePoint (x,y) = (show x)++","++(show y)++" "
 writePolygon :: (Colour,Polygon) -> String 
 writePolygon ((r,g,b),p) = "<polygon points=\""++(concatMap writePoint p)++"\" style=\"fill:#cccccc;stroke:rgb("++(show r)++","++(show g)++","++(show b)++");stroke-width:2\"/>"
 
+writeFillPolygon :: (Fill, Colour, Polygon) -> String
+writeFillPolygon ((x1,x2,x3,x4,x5,x6),(r,g,b),p) = "<polygon points=\""++(concatMap writePoint p)++"\" style=\"fill:#"++(show x1)++(show x2)++(show x3)++(show x4)++(show x5)++(show x6)++";stroke:rgb("++(show r)++","++(show g)++","++(show b)++");stroke-width:2\"/>"
+
 --useage: writeFigure [(Colour,Polygon)] => svg String
 writeFigure :: FigureC -> String 
 writeFigure p = "<svg xmlns=\"http://www.w3.org/2000/svg\">"++(concatMap writePolygon p)++"</svg>"
 
 blank :: Colour
 blank = (200,200,200)
+
+
+writeHex :: Int -> String
+writeHex x = map toUpper (showHex x "")
 
 --useage: writePolygonColourless Polygon => svg String
 writePolygonColourless :: Polygon -> String
