@@ -8,7 +8,7 @@ and inspired me in its simplicty.
 ## Sample images:
 
 Simple bounding box demonstration:
-![BoundingBox](https://rawgit.com/Lexer747/Haskell-Fractals/master/svg/BoundingBox_Demo.svg)
+![BoundingBox](https://cdn.rawgit.com/Lexer747/Haskell-Fractals/012a15bc/svg/BoundingBox_Demo.svg)
 ---
 
 ## Author
