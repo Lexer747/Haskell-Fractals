@@ -7,7 +7,7 @@ and inspired me in its simplicty.
 
 ## Sample images:
 
-![BoundingBox](https://cdn.rawgit.com/Lexer747/Haskell-Fractals/01e6e5b9/svg/Output.svg)
+![BoundingBox](https://cdn.rawgit.com/Lexer747/Haskell-Fractals/01e6e5b9/svg/BoundingBox_Demo.svg)
 
 ## Author
 
