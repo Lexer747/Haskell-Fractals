@@ -1,5 +1,6 @@
 type Point          = (Float, Float)
 type Colour         = (Int,Int,Int)
+type Fill           = (Hex)
 type Polygon        = [Point] --ORDER MATTERS!!
 type Figure         = [Polygon]
 type FigureC        = [(Colour, Polygon)]
