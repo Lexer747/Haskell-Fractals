@@ -29,6 +29,13 @@ writeFullPolygon ((x1,x2,x3,x4,x5,x6),(r,g,b),p) =
 writeFullFigure :: FullFigure -> String 
 writeFullFigure p = "<svg xmlns=\"http://www.w3.org/2000/svg\">"++(concatMap writeFullPolygon p)++"</svg>"
 
+writeFullFigurePublish :: FullFigure -> String
+writeFullFigurePublish p = "<svg height=\""++height++"\" width=\""++width++"\" xmlns=\"http://www.w3.org/2000/svg\">"++(concatMap writeFullPolygon p)++"</svg>" where
+    (x,y) = (findCanvasFull p)
+    height = (show x)
+    width = (show y)
+
+
 writeHex :: Int -> String
 writeHex x = map toUpper (showHex x "")
 
@@ -81,6 +88,16 @@ findMax p = findMax_help $ unzip p
 
 findMax_help :: ([Float],[Float]) -> Polygon
 findMax_help (x,y) = [(minimum x, minimum y),(minimum x, maximum y), (maximum x, maximum y),(maximum x, minimum y)]
+
+findCanvasFull :: FullFigure -> Point
+findCanvasFull xs = findCanvas (map (\(_,_,poly) -> findCanvas poly) xs)
+
+findCanvas :: Polygon -> Point
+findCanvas p = findCanvas_help $ unzip p
+
+findCanvas_help :: ([Float],[Float]) -> Point
+findCanvas_help (x,y) = (maximum x, maximum y)
+
     
 --generic line colour
 blueL :: Colour
@@ -100,3 +117,6 @@ blueSquare = (blueF, blueL, square)
 
 outputFullFigure :: FullFigure -> IO ()
 outputFullFigure fig = writeFile "svg/Output.svg" $ writeFullFigure fig
+
+publishFullFigure :: FullFigure -> IO ()
+publishFullFigure fig = writeFile "svg/Output.svg" $ writeFullFigurePublish fig
