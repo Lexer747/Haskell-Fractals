@@ -1,4 +1,4 @@
-# Haskell Fractals
+# Haskell Shape & Fractals
 Currently a simple program which creates pretty shapes in svg format which can be rendered by 
 most browsers.
 

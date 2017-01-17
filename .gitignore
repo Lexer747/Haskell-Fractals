@@ -1,4 +1,4 @@
 #Output Files
-svg/Output.svg
+Core/svg/Output.svg
 *.o
 
