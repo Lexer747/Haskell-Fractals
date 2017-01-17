@@ -2,7 +2,7 @@
 Currently a simple program which creats pretty shapes in svg format which can be rendered by 
 most browsers.
 
-Core code for generating the svg was found [here]http://stackoverflow.com/questions/2711002/image-drawing-library-for-haskell
+Core code for generating the svg was found [here](http://stackoverflow.com/questions/2711002/image-drawing-library-for-haskell)
 and inspired me in its simplicty.
 
 ## Sample images:
