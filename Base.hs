@@ -25,8 +25,6 @@ writePolygonsColourless p = writePolygons $ colorize blank p
 colorize :: Colour -> [Polygon] -> [(Colour,Polygon)] 
 colorize = zip.repeat
 
-
---apply
 (%%) :: Point -> Transformation -> Point
 (%%) (x, y) (a, b, c, p, q, r) = 
     ((x * a + y * b + c),(x * p + y * q + r))

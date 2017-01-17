@@ -7,6 +7,8 @@ and inspired me in its simplicty.
 
 ## Sample images:
 
+![Simple](Output.svg)
+
 ## Author
 
 Code edited and Maintained by Alex Lewis
