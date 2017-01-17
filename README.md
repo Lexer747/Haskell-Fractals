@@ -7,7 +7,7 @@ and inspired me in its simplicty.
 
 ## Sample images:
 
-![Simple](Output.svg)
+![Simple](svg/Output.svg)
 
 ## Author
 

@@ -58,7 +58,7 @@ square :: Polygon
 square = [(0,0),(0,100),(100,100),(100,0),(0,0)]
 
 outputColourlessShape :: Polygon -> IO ()
-outputColourlessShape shape = writeFile "Output.svg" $ writePolygonsColourless [shape]
+outputColourlessShape shape = writeFile "svg/Output.svg" $ writePolygonsColourless [shape]
 
 
 
