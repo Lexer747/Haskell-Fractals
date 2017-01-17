@@ -8,8 +8,11 @@ and inspired me in its simplicty.
 ## Sample images:
 
 Simple bounding box demonstration:
-![BoundingBox](https://cdn.rawgit.com/Lexer747/Haskell-Fractals/012a15bc/svg/BoundingBox_Demo.svg)
+
+![BoundingBox](https://cdn.rawgit.com/Lexer747/Haskell-Fractals/cd100a2f/svg/BoundingBox_Demo.svg)
+
 The blue square is created using affine transformations then the red square is produce by finding the bouding box of the shape.
+
 ---
 
 ## Author
