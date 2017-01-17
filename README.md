@@ -7,7 +7,7 @@ and inspired me in its simplicty.
 
 ## Sample images:
 
-![Simple](svg/Output.svg)
+![Simple](https://Lexer747.github.io/Haskell-Fractals/svg/Output.svg)
 
 ## Author
 
