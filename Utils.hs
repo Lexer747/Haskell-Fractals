@@ -1,3 +1,20 @@
+module Utils 
+((%%)
+,translate
+,scale
+,rot
+,shear
+,transformPolygon
+,transformFullPoly
+,changeColour
+,findMaxFull
+,findMax
+,outputFullFigure
+,publishFullFigure
+,blueF
+,blueL
+,blueSquare
+)where
 import DataTypes
 import CoreSVG
 
