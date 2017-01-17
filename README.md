@@ -9,7 +9,7 @@ and inspired me in its simplicty.
 
 Simple bounding box demonstration:
 
-![BoundingBox](https://cdn.rawgit.com/Lexer747/Haskell-Fractals/cd100a2f/svg/BoundingBox_Demo.svg)
+![BoundingBox](https://cdn.rawgit.com/Lexer747/Haskell-Fractals/ae0c3551/svg/BoundingBox_Demo.svg)
 
 The blue rectangle is created using affine transformations then the grey rectangle is produce by finding the bouding box of the shape.
 
