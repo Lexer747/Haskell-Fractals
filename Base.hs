@@ -1,6 +1,7 @@
-type Point      = (Float, Float)
-type Colour     = (Int,Int,Int)
-type Polygon    = [Point] --ORDER MATTERS!!
+type Point          = (Float, Float)
+type Colour         = (Int,Int,Int)
+type Polygon        = [Point] --ORDER MATTERS!!
+type Transformation = (Float, Float, Float, Float, Float, Float)
 
 
 writePoint :: Point -> String 
@@ -24,18 +25,39 @@ writePolygonsColourless p = writePolygons $ colorize blank p
 colorize :: Colour -> [Polygon] -> [(Colour,Polygon)] 
 colorize = zip.repeat
 
-rotatePointR :: Float -> Point -> Point
-rotatePointR theata (x, y) = 
-    ((x * cos theata) - (y * sin theata), (x * sin theata) + (y * cos theata))
-rotatePointD :: Float -> Point -> Point
-rotatePointD theata (x, y) = rotatePointR (theata * (180 / pi)) (x, y)
 
-rotatePolygonD :: Float -> Polygon -> Polygon
-rotatePolygonD theata p = map f p where
-    f = rotatePointD theata
+--apply
+(%%) :: Point -> Transformation -> Point
+(%%) (x, y) (a, b, c, p, q, r) = 
+    ((x * a + y * b + c),(x * p + y * q + r))
 
+translate :: Float -> Float -> Transformation
+translate x y = (1,0,x,0,1,y)
+
+scale :: Float -> Float -> Transformation
+scale w h = (w,0,0,0,h,0)
+
+rot :: Float -> Transformation
+rot theata = (cos x, sin x, 0, -sin x, cos x, 0) where
+    x = theata * (180 / pi)
+
+shear :: Float -> Float -> Transformation
+shear phi psi = (1,tan x,0,tan y,1,0) where
+    x = phi * (180 / pi)
+    y = psi * (180 / pi)
+    
+folding acc f [] = acc
+folding acc f (x:xs) = folding (f acc x) f xs
+    
+    
+transformPolygon :: [Transformation] -> Polygon -> Polygon
+transformPolygon trList poly = map f poly where
+    f = (\x -> folding (x) (%%) trList)
+
+    
+    
 square :: Polygon
-square = [(100,100),(200,100),(200,200),(100,200)]
+square = [(0,0),(0,100),(100,100),(100,0),(0,0)]
 
 outputColourlessShape :: Polygon -> IO ()
 outputColourlessShape shape = writeFile "Output.svg" $ writePolygonsColourless [shape]
