@@ -2,4 +2,4 @@ import DataTypes
 import CoreSVG
 import Utils
 
-main = publishFullFigure [blueSquare]
+main = putStrLn $ writeFullFigure [blueSquare]

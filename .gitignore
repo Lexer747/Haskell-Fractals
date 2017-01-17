@@ -1,4 +1,5 @@
 #Output Files
 Core/svg/Output.svg
 *.o
-
+*.hi
+*.exe
