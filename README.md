@@ -22,20 +22,18 @@ First Fractal:
 This fractal is created by scaling and rotating a square 1000 times. Its a simple but elegant pattern. To generate this image the following code was excuted:
 
 ``` haskell
---first make a big square as the base polygon
-let newSquare = transformPolygon [(scale 4 4), (translate 10 10)] square
-
---make the fractal by applying a transformation 1000 times
-let recursiveSquare = recursiveFigure newSquare [(scale 0.9 0.9), (translate 10 10), (rot 0.01)] 1000
-
---colour the shape 
---(14,14,14,14,14,14) is the grey fill
---(0,0,255) is the blue border
-let colouredFractal = colourizeFig (14,14,14,14,14,14) (0,0,255) recursiveSquare
-
---save the shape to an svg
---automatically saved to svg/Output.svg
-publishFullFigure colouredFractal
+--best read from bottom up
+infiniSquare = publishFullFigure colouredFractal where --this line saves the shape to svg
+    --colour the fractal
+    --(14,14,14,14,14,14) is the grey fill
+    --(0,0,255) is the blue outline
+    colouredFractal = colourizeFig (14,14,14,14,14,14) (0,0,255) recursiveSquare
+    
+    --recursiveSquare is the actual list of points for the fractal, it is achieved by making the square smaller each time and rotating it
+    recursiveSquare = recursiveFigure newSquare [(scale 0.9 0.9),(translate 10 10),(rot 0.01)] 1000
+    
+    --newSquare is simply a larger base square to start the fractal
+    newSquare = transformPolygon [(scale 4 4), (translate 10 10)] square
 ```
 
 ---
