@@ -4,7 +4,7 @@ module CoreSVG
 ,writeFullPolygon
 ,writeFullFigure
 ,writeFullFigurePublish
-,colorizeFig
+,colourizeFig
 ,findBBFigure
 ,findBBPolygon
 ) where
@@ -46,8 +46,8 @@ fullFigtoFig ((_,_,poly):xs) = poly:(fullFigtoFig xs)
 writeHex :: Int -> String
 writeHex x = map toUpper (showHex x "")
 
-colorizeFig :: Fill -> Colour -> Figure -> FullFigure
-colorizeFig fill line fig = zip3 (repeat fill) (repeat line) fig
+colourizeFig :: Fill -> Colour -> Figure -> FullFigure
+colourizeFig fill line fig = zip3 (repeat fill) (repeat line) fig
 
 --gets the bounding box of figure
 --useage: findBBFigure figure => boundingbox
