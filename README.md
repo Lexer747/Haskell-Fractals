@@ -17,7 +17,7 @@ The blue rectangle is created using affine transformations then the grey rectang
 
 First Fractal:
 
-![Squares](https://cdn.rawgit.com/Lexer747/Haskell-Fractals/5b12b8bb/Core/svg/Infinite_Squares.svg)
+![Squares]()
 
 This fractal is created by scaling and rotating a square 1000 times. Its a simple but elegant pattern.
 
