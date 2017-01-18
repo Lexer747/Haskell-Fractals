@@ -21,7 +21,7 @@ First Fractal:
 
 This fractal is created by scaling and rotating a square 1000 times. Its a simple but elegant pattern. To generate this image the following code was excuted:
 
-''' haskell
+``` haskell
 --first make a big square as the base polygon
 let newSquare = transformPolygon [(scale 4 4), (translate 10 10)] square
 
@@ -36,7 +36,7 @@ let colouredFractal = colourizeFig (14,14,14,14,14,14) (0,0,255) recursiveSquare
 --save the shape to an svg
 --automatically saved to svg/Output.svg
 publishFullFigure colouredFractal
-'''
+```
 
 ---
 
