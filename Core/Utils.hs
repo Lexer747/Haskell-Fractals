@@ -7,8 +7,8 @@ module Utils
 ,transformPolygon
 ,transformFullPoly
 ,changeColour
-,findMaxFull
-,findMax
+,findBBFigure
+,findBBPolygon
 ,outputFullFigure
 ,publishFullFigure
 ,blueF
@@ -53,16 +53,37 @@ transformFullPoly trList (f,c,poly) = (f,c,(transformPolygon trList poly))
 changeColour :: (Fill, Colour) -> FullPolygon -> FullPolygon
 changeColour (newF,newC) (oldF,oldC,poly) = (newF, newC, poly)
 
+--gets the bounding box of figure
+--useage: findBBFigure figure => boundingbox
+findBBFigure :: Figure -> Polygon
+findBBFigure fig = foldr (findBBFigure_help) [] (map findBBPolygon fig)
+
+findBBFigure_help :: Polygon -> Polygon -> Polygon
+findBBFigure_help (a:b:c:d:[]) (e:f:g:h:[])  = 
+    (minMaxPoint a e):(minMaxPoint b f):(minMaxPoint c g):(minMaxPoint d h):[]
+
+comp :: Float -> Float -> Float
+comp x y = if x > y then x else y
+minMaxPoint :: Point -> Point -> Point
+minMaxPoint (x,y) (z,w) = (comp x z, comp y w)
+
+--gets the boundingbox of a Polygon
+--useage: findBBPolygon Polygon => boundingbox
+findBBPolygon :: Polygon -> Polygon
+findBBPolygon p = findBB_help $ unzip p
+findBB_help :: ([Float],[Float]) -> Polygon
+findBB_help (x,y) = [(minimum x, minimum y),(minimum x, maximum y), (maximum x, maximum y),(maximum x, minimum y)]
 
 
-findMaxFull :: FullPolygon -> FullPolygon
-findMaxFull (f,c,poly) = (f,c,(findMax poly))
 
-findMax :: Polygon -> Polygon
-findMax p = findMax_help $ unzip p
+--finds the area of the boundingbox of a shape
+--useage: findSize Polygon => area
+findSize :: Polygon -> Float
+findSize p = x * y where
+    (x,y) = (findBBPolygon p) !! 2
 
-findMax_help :: ([Float],[Float]) -> Polygon
-findMax_help (x,y) = [(minimum x, minimum y),(minimum x, maximum y), (maximum x, maximum y),(maximum x, minimum y)]
+findSizeFull :: FullPolygon -> Float
+findSizeFull (f,c,poly) = findSize poly
 
     
 --generic line colour
