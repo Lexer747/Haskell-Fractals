@@ -15,6 +15,11 @@ The blue rectangle is created using affine transformations then the grey rectang
 
 ---
 
+First Fractal:
+
+![Squares]()
+
+This fractal is created by scaling and rotating a square 1000 times. Its a simple but elegant pattern.
 
 
 

@@ -9,11 +9,14 @@ module Utils
 ,changeColour
 ,findBBFigure
 ,findBBPolygon
+,findSizeFigure
+,findSizePolygon
 ,outputFullFigure
 ,publishFullFigure
 ,blueF
 ,blueL
 ,blueSquare
+,square
 )where
 import DataTypes
 import CoreSVG
@@ -53,16 +56,14 @@ transformFullPoly trList (f,c,poly) = (f,c,(transformPolygon trList poly))
 changeColour :: (Fill, Colour) -> FullPolygon -> FullPolygon
 changeColour (newF,newC) (oldF,oldC,poly) = (newF, newC, poly)
 
-
-
 --finds the area of the boundingbox of a shape
---useage: findSize Polygon => area
+--useage: findSizePolygon Polygon => area
 findSizePolygon :: Polygon -> Float
 findSizePolygon p = x * y where
     (x,y) = (findBBPolygon p) !! 2
 
 --finds the area of the boundingbox of a figure
---useage: findSize Figure => area
+--useage: findSizeFigure Figure => area
 findSizeFigure :: Figure -> Float
 findSizeFigure p = x * y where
     (x,y) = (findBBFigure p) !! 2
