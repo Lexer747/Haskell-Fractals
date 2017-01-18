@@ -7,7 +7,7 @@ and inspired me in its simplicty.
 
 ## Sample images:
 
-Simple bounding box demonstration:
+#Bounding Box:
 
 ![BoundingBox](https://cdn.rawgit.com/Lexer747/Haskell-Fractals/ae0c3551/svg/BoundingBox_Demo.svg)
 
@@ -15,7 +15,7 @@ The blue rectangle is created using affine transformations then the grey rectang
 
 ---
 
-First Fractal:
+#First Fractal:
 
 ![Squares](https://cdn.rawgit.com/Lexer747/Haskell-Fractals/8650b7e6/Core/svg/InfiniteSquares_Demo.svg)
 
@@ -30,14 +30,19 @@ infiniSquare = publishFullFigure colouredFractal where --this line saves the sha
     colouredFractal = colourizeFig (14,14,14,14,14,14) (0,0,255) recursiveSquare
     
     --recursiveSquare is the actual list of points for the fractal, it is achieved by making the square smaller each time and rotating it
-    recursiveSquare = recursiveFigure newSquare [(scale 0.9 0.9),(translate 10 10),(rot 0.01)] 1000
+    recursiveSquare = recursivePolygon newSquare [(scale 0.9 0.9),(translate 10 10),(rot 0.01)] 1000
     
     --newSquare is simply a larger base square to start the fractal
-    newSquare = transformPolygon [(scale 4 4), (translate 10 10)] square
+    newSquare = [(scale 4 4), (translate 10 10)] |=> square
 ```
 
 ---
 
+#Tree Fractal:
+
+![todo]
+
+---
 
 
 ## Author

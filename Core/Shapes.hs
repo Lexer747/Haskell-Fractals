@@ -1,15 +1,22 @@
 module Shapes 
-(recursiveFigure
+(recursivePolygon
+,recursiveFigure
 )
 where
 
 import DataTypes
 import CoreSVG
 import Utils
+import Constants
 
-recursiveFigure :: Polygon -> [Transformation] -> Float -> Figure
-recursiveFigure basePolygon transList iter = 
-    if steps 
-        then (basePolygon):(recursiveFigure (transformPolygon transList basePolygon) transList (iter - 1))
-        else [] where
-            steps = iter > 0
+recursivePolygon :: Polygon -> [Transformation] -> Int -> Figure
+recursivePolygon basePolygon transList iter = 
+    if iter > 0 
+        then basePolygon:(recursivePolygon (transList |=> basePolygon) transList (iter - 1))
+        else [] 
+
+recursiveFigure :: Figure -> [[Transformation]] -> Int -> Figure
+recursiveFigure baseFigure transList iter =
+    if iter > 0
+        then baseFigure++(recursiveFigure (transformFigure transList baseFigure) transList (iter - 1))
+        else []

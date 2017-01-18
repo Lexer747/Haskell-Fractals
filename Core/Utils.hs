@@ -5,6 +5,8 @@ module Utils
 ,rot
 ,shear
 ,transformPolygon
+,(|=>)
+,transformFigure
 ,transformFullPoly
 ,changeColour
 ,findBBFigure
@@ -13,13 +15,12 @@ module Utils
 ,findSizePolygon
 ,outputFullFigure
 ,publishFullFigure
-,blueF
-,blueL
-,blueSquare
-,square
+,publishFigure
+,centreFigure
 )where
 import DataTypes
 import CoreSVG
+import Constants
 
 --infix transformation for transfroming points
 (%%) :: Point -> Transformation -> Point
@@ -34,12 +35,12 @@ scale w h = (w,0,0,0,h,0)
 
 rot :: Float -> Transformation
 rot theata = (cos x, sin x, 0, -sin x, cos x, 0) where
-    x = theata -- * (180 / pi)
+    x = theata * (pi / 180)
 
 shear :: Float -> Float -> Transformation
 shear phi psi = (1,tan x,0,tan y,1,0) where
-    x = phi * (180 / pi)
-    y = psi * (180 / pi)
+    x = phi * (pi / 180)
+    y = psi * (pi / 180)
     
 folding acc f [] = acc
 folding acc f (x:xs) = folding (f acc x) f xs
@@ -49,9 +50,20 @@ transformPolygon :: [Transformation] -> Polygon -> Polygon
 transformPolygon trList poly = map f poly where
     f = (\x -> folding (x) (%%) trList)
     
+(|=>) :: [Transformation] -> Polygon -> Polygon
+(|=>) = transformPolygon
+
 --useage: same as above except it uses a fully coloured shape
 transformFullPoly :: [Transformation] -> FullPolygon -> FullPolygon
-transformFullPoly trList (f,c,poly) = (f,c,(transformPolygon trList poly))
+transformFullPoly trList (f,c,poly) = (f,c,(trList |=> poly))
+
+--applies a list of transformation list to a Figure
+transformFigure :: [[Transformation]] -> Figure -> Figure
+transformFigure []      []      = []
+transformFigure (t:ts)  []      = []
+transformFigure []      (f:fs)  = []
+transformFigure (t:ts)  (f:fs)  = (t |=> f):(transformFigure ts fs)
+
 
 changeColour :: (Fill, Colour) -> FullPolygon -> FullPolygon
 changeColour (newF,newC) (oldF,oldC,poly) = (newF, newC, poly)
@@ -68,25 +80,16 @@ findSizeFigure :: Figure -> Float
 findSizeFigure p = x * y where
     (x,y) = (findBBFigure p) !! 2
 
-    
---generic line colour
-blueL :: Colour
-blueL = (0,0,255)
-
---generic fill colour
-blueF :: Fill
-blueF = (0,0,0,0,15,15)
-
---generic square
-square :: Polygon
-square = [(0,0),(0,100),(100,100),(100,0)]
-
---blue square
-blueSquare :: FullPolygon
-blueSquare = (blueF, blueL, square)
-
 outputFullFigure :: FullFigure -> IO ()
 outputFullFigure fig = writeFile "svg/Output.svg" $ writeFullFigure fig
+
+publishFigure :: Figure -> IO ()
+publishFigure fig = publishFullFigure $ colourizeFig greyF blueL fig
+
+centreFigure :: Figure -> Figure
+centreFigure fig = map (trans |=>) fig where
+    trans = [(translate (-x) (-y))]
+    (x,y) =  head $ findBBFigure fig
 
 publishFullFigure :: FullFigure -> IO ()
 publishFullFigure fig = writeFile "svg/Output.svg" $ writeFullFigurePublish fig

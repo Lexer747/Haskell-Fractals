@@ -33,8 +33,8 @@ writeFullFigure p = "<svg xmlns=\"http://www.w3.org/2000/svg\">"++(concatMap wri
 writeFullFigurePublish :: FullFigure -> String
 writeFullFigurePublish p = "<svg height=\""++height++"\" width=\""++width++"\" xmlns=\"http://www.w3.org/2000/svg\">"++(concatMap writeFullPolygon p)++"</svg>" where
     (x,y) = (findCanvasFull p)
-    height = (show x)
-    width = (show y)
+    height = (show y)
+    width = (show x)
     
 findCanvasFull :: FullFigure -> Point
 findCanvasFull fig = (findBBFigure $ fullFigtoFig fig) !! 2
@@ -52,7 +52,7 @@ colourizeFig fill line fig = zip3 (repeat fill) (repeat line) fig
 --gets the bounding box of figure
 --useage: findBBFigure figure => boundingbox
 findBBFigure :: Figure -> Polygon
-findBBFigure fig = findBBPolygon $ concat $ (map findBBPolygon fig)
+findBBFigure fig = findBBPolygon $ concat $ fig
 
 
 --gets the boundingbox of a Polygon
