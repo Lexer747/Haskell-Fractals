@@ -7,7 +7,7 @@ and inspired me in its simplicty.
 
 ## Sample images:
 
-#Bounding Box:
+###Bounding Box:
 
 ![BoundingBox](https://cdn.rawgit.com/Lexer747/Haskell-Fractals/ae0c3551/svg/BoundingBox_Demo.svg)
 
@@ -15,7 +15,7 @@ The blue rectangle is created using affine transformations then the grey rectang
 
 ---
 
-#First Fractal:
+###First Fractal:
 
 ![Squares](https://cdn.rawgit.com/Lexer747/Haskell-Fractals/8650b7e6/Core/svg/InfiniteSquares_Demo.svg)
 
@@ -33,14 +33,29 @@ infiniSquare = publishFullFigure colouredFractal where --this line saves the sha
     recursiveSquare = recursivePolygon newSquare [(scale 0.9 0.9),(translate 10 10),(rot 0.01)] 1000
     
     --newSquare is simply a larger base square to start the fractal
+    --the |=> simply applies a list of transformations to a poly
     newSquare = [(scale 4 4), (translate 10 10)] |=> square
 ```
 
 ---
 
-#Tree Fractal:
+###Fibonacci Spiral:
 
-![todo]
+My favourite kind of spiral, I liked the look of it flairing out as it gets bigger.
+
+![FibonacciSpiral](https://cdn.rawgit.com/Lexer747/Haskell-Fractals/da0fc6c2/Core/svg/Fibonacci_Demo.svg)
+
+This spiral is also simple to make and is just a square which rotates as it moves away from its start point.
+Because its an SVG zooming in on it shows the detail of the spiral nicely. Its made using the following code below:
+
+```haskell
+fibonacci = publishFigure $ centreFigure $ recursivePolygon ([(scale 0.01 0.01)] |=> square) [(rot 1),(scale 1.01 1.01), (translate 0 (-0.05))] 400
+--as you can see its a one liner, but it can be broken up into steps:
+--publishFigure will simply convert the shape to SVG so we can see it
+--centreFigure finds the bounding box of the shape then translates the whole shape so its bouding box is relative to origin
+--recursivePolygon takes the base square and recursively applies the list of transformations to it forming the spiral
+```
+
 
 ---
 
