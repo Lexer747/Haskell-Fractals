@@ -10,6 +10,14 @@ infiniSquare = publishFullFigure colouredFractal where
     newSquare = [(scale 4 4), (translate 10 10)] |=> square
 
 fibonacci = publishFigure $ centreFigure $ recursivePolygon ([(scale 0.01 0.01)] |=> square) [(rot 1),(scale 1.01 1.01), (translate 0 (-0.05))] 400
---TODO: cmd line arguments to allow shape drawing
-main = putStrLn $ writeFullFigure [blueSquare]
+
+firstTree = publishFigure finalTree where
+    finalTree = centreFigure $ concat $ concat tree
+    tree = recursiveFigure_adv base treeFunc 11
+    base = [[[(scale 0.4 1.4)] |=> square]]
+    treeFunc = (\fig -> (leaf1 fig)++(leaf2 fig))
+    leaf1 fig = (map (\x -> [(translate 10 (-160)),(scale 0.75 0.75),(rot (-25))] |=> x) fig)
+    leaf2 fig = (map (\x -> [(translate 0 (-140)),(scale 0.75 0.75),(rot 25)] |=> x) fig)
+    
+main = infiniSquare
 

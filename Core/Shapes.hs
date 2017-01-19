@@ -1,6 +1,8 @@
 module Shapes 
 (recursivePolygon
+,recursivePolygon_adv
 ,recursiveFigure
+,recursiveFigure_adv
 )
 where
 
@@ -28,7 +30,7 @@ recursivePolygon_adv basePolygon transFunc iter =
         then basePolygon:(recursivePolygon_adv (transFunc basePolygon) transFunc (iter - 1))
         else []
         
---recursiveFigure_adv :: Figure -> (Polygon -> Polygon) -> Int -> Figure
+recursiveFigure_adv :: [a] -> (a -> a) -> Int -> [[a]]
 recursiveFigure_adv baseFigure transFunc iter =
     map f baseFigure where
     f = (\poly -> recursivePolygon_adv poly transFunc  iter)

@@ -77,6 +77,42 @@ This should make reading the function easier (hopefully).
 
 ---
 
+###Fractal Tree
+
+A cliche fractal but very pretty non-the-less, once again the advantage of SVG makes zooming very satisfying:
+
+![firstTree](https://cdn.rawgit.com/Lexer747/Haskell-Fractals/aa6a167e/Core/svg/Basic_Tree.svg)
+
+This is less simple to make but haskell makes it relatively easy for us. I decided to not do this all on one line but it is definatly possible if you so
+desire.
+
+``` haskell
+firstTree = publishFigure finalTree where
+    finalTree = centreFigure $ concat $ concat tree
+    tree = recursiveFigure_adv base treeFunc 11
+    base = [[[(scale 0.4 1.4)] |=> square]]
+    treeFunc = (\fig -> (leaf1 fig)++(leaf2 fig))
+    leaf1 fig = (map (\x -> [(translate 10 (-160)),(scale 0.75 0.75),(rot (-25))] |=> x) fig)
+    leaf2 fig = (map (\x -> [(translate 0 (-140)),(scale 0.75 0.75),(rot 25)] |=> x) fig)
+```
+
+So its a little overwheleming at first, but once again i believe that seeing the type signature for recursiveFigure_adv helps a lot.
+
+```haskell
+recursiveFigure_adv :: [a] -> (a -> a) -> Int -> [[a]]
+```
+
+This function essentially has 3 parameters and returns a `[[a]]`, which is a list 
+of list of a. The first parameter is the base shape of the recursive
+shape. The second parameter is where the complexitity is. And the 3rd
+parameter is the number of iterations to perform.
+
+lets focus on the second parameter `(a -> a)` which seems redundant. Take any type and return any type.
+But what this is actually doing is allowing me to pass a function to recursiveFigure_adv 
+which can perform the transformations and rebuild the figure all in one parameter.
+Hence explaining what `treeFunc` is doing.
+
+
 
 ## Author
 
