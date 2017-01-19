@@ -57,12 +57,10 @@ transformPolygon trList poly = map f poly where
 transformFullPoly :: [Transformation] -> FullPolygon -> FullPolygon
 transformFullPoly trList (f,c,poly) = (f,c,(trList |=> poly))
 
---applies a list of transformation list to a Figure
-transformFigure :: [[Transformation]] -> Figure -> Figure
-transformFigure []      []      = []
-transformFigure (t:ts)  []      = []
-transformFigure []      (f:fs)  = []
-transformFigure (t:ts)  (f:fs)  = (t |=> f):(transformFigure ts fs)
+--applies a list of transformation to a Figure
+transformFigure :: [Transformation] -> Figure -> Figure
+transformFigure trList = map f where
+    f = (\x -> trList |=> x)
 
 
 changeColour :: (Fill, Colour) -> FullPolygon -> FullPolygon

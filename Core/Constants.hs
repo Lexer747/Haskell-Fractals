@@ -3,6 +3,7 @@ module Constants
 ,blueF
 ,greyF
 ,square
+,triangle
 ,blueSquare
 )where
 
@@ -23,6 +24,9 @@ greyF = (14,14,14,14,14,14)
 square :: Polygon
 square = [(0,0),(0,100),(100,100),(100,0)]
 
+--generic triangle
+triangle :: Polygon
+triangle = [(100,0),(0,100),(100,100)]
 --blue square
 blueSquare :: FullPolygon
 blueSquare = (blueF, blueL, square)

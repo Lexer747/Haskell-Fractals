@@ -15,8 +15,20 @@ recursivePolygon basePolygon transList iter =
         then basePolygon:(recursivePolygon (transList |=> basePolygon) transList (iter - 1))
         else [] 
 
-recursiveFigure :: Figure -> [[Transformation]] -> Int -> Figure
+--takes a figure and recursively applies the transformation 
+recursiveFigure :: Figure -> [Transformation] -> Int -> [Figure]
 recursiveFigure baseFigure transList iter =
+    map f baseFigure where
+    f = (\poly -> recursivePolygon poly transList iter)
+    
+--same as recursivePolygon except it takes a transformation in the form of a function
+--recursivePolygon_adv :: Polygon -> (Polygon -> Polygon) -> Int -> Figure
+recursivePolygon_adv basePolygon transFunc iter =
     if iter > 0
-        then baseFigure++(recursiveFigure (transformFigure transList baseFigure) transList (iter - 1))
+        then basePolygon:(recursivePolygon_adv (transFunc basePolygon) transFunc (iter - 1))
         else []
+        
+--recursiveFigure_adv :: Figure -> (Polygon -> Polygon) -> Int -> Figure
+recursiveFigure_adv baseFigure transFunc iter =
+    map f baseFigure where
+    f = (\poly -> recursivePolygon_adv poly transFunc  iter)
