@@ -1,6 +1,6 @@
 module DataTypes where
 
-type Colour         = (Int,Int,Int) --line colour of a shape
+type Outline         = (Int,Int,Int) --line colour of a shape
 type Fill           = (Int,Int,Int,Int,Int,Int)
 type Point          = (Float, Float) --generic point of polygon
 type Polygon        = [Point] --generic shape

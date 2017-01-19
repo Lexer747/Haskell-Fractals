@@ -11,7 +11,7 @@ import DataTypes
 
 
 --generic line colour
-blueL :: Colour
+blueL :: Outline
 blueL = (0,0,255)
 
 --generic fill colour

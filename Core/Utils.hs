@@ -63,7 +63,7 @@ transformFigure trList = map f where
     f = (\x -> trList |=> x)
 
 
-changeColour :: (Fill, Colour) -> FullPolygon -> FullPolygon
+changeColour :: (Fill, Outline) -> FullPolygon -> FullPolygon
 changeColour (newF,newC) (oldF,oldC,poly) = (newF, newC, poly)
 
 --finds the area of the boundingbox of a shape

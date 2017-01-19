@@ -18,7 +18,7 @@ writePoint :: Point -> String
 writePoint (x,y) = (show x)++","++(show y)++" "
 
 --useage: writePolygon (Colour,Polygon) => svg String
-writePolygon :: (Colour,Polygon) -> String 
+writePolygon :: (Outline,Polygon) -> String 
 writePolygon ((r,g,b),p) = "<polygon points=\""++(concatMap writePoint p)++"\" style=\"fill:#cccccc;stroke:rgb("++(show r)++","++(show g)++","++(show b)++");stroke-width:1\"/>"
 
 writeFullPolygon :: FullPolygon -> String
@@ -46,7 +46,7 @@ fullFigtoFig ((_,_,poly):xs) = poly:(fullFigtoFig xs)
 writeHex :: Int -> String
 writeHex x = map toUpper (showHex x "")
 
-colourizeFig :: Fill -> Colour -> Figure -> FullFigure
+colourizeFig :: Fill -> Outline -> Figure -> FullFigure
 colourizeFig fill line fig = zip3 (repeat fill) (repeat line) fig
 
 --gets the bounding box of figure
