@@ -50,11 +50,11 @@ Because its an SVG zooming in on it shows the detail of the spiral nicely. Its m
 
 ```haskell
 fibonacci = publishFigure $ centreFigure $ recursivePolygon ([(scale 0.01 0.01)] |=> square) [(rot 1),(scale 1.01 1.01), (translate 0 (-0.05))] 400
-    --as you can see its a one liner, but it can be broken up into steps:
-    --publishFigure will simply convert the shape to SVG so we can see it
-    --centreFigure finds the bounding box of the shape then translates the whole shape so its bouding box is relative to origin
-    --recursivePolygon takes the base square and recursively applies the list of transformations to it forming the spiral
 ```
+As you can see its a one liner, but it can be broken up into steps:
+* `publishFigure` will simply convert the shape to SVG so we can see it.
+* `centreFigure` finds the bounding box of the shape then translates the whole shape so its bouding box is relative to origin.
+* `recursivePolygon` takes the base square and recursively applies the list of transformations to it forming the spiral.
 
 Explaining the `recursivePolygon` function and why it looks so crazy. Seeing the type of `recursivePolygon` makes understanding it easier:
 
