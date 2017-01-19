@@ -24,7 +24,7 @@ recursiveFigure baseFigure transList iter =
     f = (\poly -> recursivePolygon poly transList iter)
     
 --same as recursivePolygon except it takes a transformation in the form of a function
---recursivePolygon_adv :: Polygon -> (Polygon -> Polygon) -> Int -> Figure
+recursivePolygon_adv :: Polygon -> (Polygon -> Polygon) -> Int -> Figure
 recursivePolygon_adv basePolygon transFunc iter =
     if iter > 0
         then basePolygon:(recursivePolygon_adv (transFunc basePolygon) transFunc (iter - 1))
