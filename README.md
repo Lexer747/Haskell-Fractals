@@ -83,7 +83,7 @@ A cliche fractal but very pretty non-the-less, once again the advantage of SVG m
 
 ![firstTree](https://cdn.rawgit.com/Lexer747/Haskell-Fractals/aa6a167e/Core/svg/Basic_Tree.svg)
 
-This is less simple to make but haskell makes it relatively easy for us. I decided to not do this all on one line but it is definatly possible if you so
+This is less simple to make but haskell makes it relatively easy for us. I decided to not do this all on one line but it is definitely possible if you so
 desire.
 
 ``` haskell
@@ -104,13 +104,15 @@ recursiveFigure_adv :: [a] -> (a -> a) -> Int -> [[a]]
 
 This function essentially has 3 parameters and returns a `[[a]]`, which is a list 
 of list of a. The first parameter is the base shape of the recursive
-shape. The second parameter is where the complexitity is. And the 3rd
-parameter is the number of iterations to perform.
+shape `[a]` or as we know it as `Figure`. 
+The second parameter is where the complexitity is `(a -> a)`. And the 3rd
+parameter is the number of iterations to perform `Int`.
 
 lets focus on the second parameter `(a -> a)` which seems redundant. Take any type and return any type.
-But what this is actually doing is allowing me to pass a function to recursiveFigure_adv 
+But what this is actually doing; Is allowing me to pass a function to recursiveFigure_adv 
 which can perform the transformations and rebuild the figure all in one parameter.
-Hence explaining what `treeFunc` is doing.
+Hence explaining what `treeFunc` is doing. It performs a transformation on every polygon in base,
+then appends this to another set of transformations. Which is also on every polygon in base.
 
 
 
