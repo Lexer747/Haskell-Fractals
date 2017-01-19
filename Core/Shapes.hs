@@ -32,3 +32,6 @@ recursivePolygon_adv basePolygon transFunc iter =
 recursiveFigure_adv baseFigure transFunc iter =
     map f baseFigure where
     f = (\poly -> recursivePolygon_adv poly transFunc  iter)
+
+--first tree:
+--publishFigure $ centreFigure $ concat $ concat $ recursiveFigure_adv [[[(scale 0.4 1.4)] |=> square]] (\fig -> (map (\x -> [(translate 10 (-160)),(scale 0.75 0.75),(rot (-25))] |=> x) fig)++(map (\x -> [(translate 0 (-140)),(scale 0.75 0.75),(rot 25)] |=> x) fig)) 10
