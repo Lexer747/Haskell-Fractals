@@ -67,7 +67,7 @@ fullFigtoFig ((_,_,poly):xs) = poly:(fullFigtoFig xs)
 
 --Also a helper function for writing the Fill in svg
 writeHex :: Int -> String
-writeHex x = map toUpper (showHex x "")
+writeHex x = map toUpper (showHex x [])
 
 {- useage: colourizeFig Fill Outline Figure => FullFigure
 this function takes a specified Fill and Outline and creates
