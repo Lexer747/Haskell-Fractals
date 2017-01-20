@@ -7,7 +7,7 @@ import CoreSVG
 
 
 rng :: (Int,Int) -> Int -> Int
-rng (min,max) seed = (mod (mod (seed ^ 20) 2339) max) + min
+rng (min,max) seed = ((seed ^ 20) `mod` 2339 `mod` max) + min
 
 fullRNG :: Int -> Figure -> FullFigure
 fullRNG seed [] = []

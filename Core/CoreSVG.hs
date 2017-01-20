@@ -96,12 +96,14 @@ a-----d
 b-----c
 -}
 findBBFigure :: Figure -> Polygon
-findBBFigure fig = findBBPolygon $ concat $ fig
+findBBFigure = findBBPolygon . concat 
 
 {- useage: findBBPolygon Polygon => boundingbox
-Same properties as findBBFigure, execpt its only for one list of Points. -}
+Same properties as findBBFigure, execpt its only for one list of Points. 
+Since a list of points is a list of Point which is a tuple we can unzip it
+into a pair of lists. -}
 findBBPolygon :: Polygon -> Polygon
-findBBPolygon p = findBB_help $ unzip p
+findBBPolygon = findBB_help . unzip 
 
 {- The actual fromula for finding the boundingbox 
 It works by receiving a pair of (all x's,all y's) and simply orders
