@@ -1,6 +1,7 @@
 # Haskell Shape & Fractals
 Currently a simple program which creates pretty shapes in svg format which can be rendered by 
-most browsers.
+most browsers. It is mostly a learning program, so i am using the process of writing this program to
+learn Haskell.
 
 Core code for generating the svg was found [here](http://stackoverflow.com/questions/2711002/image-drawing-library-for-haskell)
 and inspired me in its simplicty.
