@@ -14,11 +14,11 @@ fibonacci = publishFigure $ centreFigure $ recursivePolygon ([(scale 0.01 0.01)]
 
 firstTree = publishFigure finalTree where
     finalTree = centreFigure $ concat $ concat tree
-    tree = recursiveFigure_adv base treeFunc 11
+    tree = recursiveFigure_adv base treeFunc 15
     base = [[[(scale 0.4 1.4)] |=> square]]
     treeFunc = (\fig -> (leaf1 fig)++(leaf2 fig))
-    leaf1 fig = (map (\x -> [(translate 10 (-160)),(scale 0.75 0.75),(rot (-25))] |=> x) fig)
-    leaf2 fig = (map (\x -> [(translate 0 (-140)),(scale 0.75 0.75),(rot 25)] |=> x) fig)
+    leaf1 fig = (map (\x -> [(translate 10 (-150)),(scale 0.75 0.75),(rot (-20))] |=> x) fig)
+    leaf2 fig = (map (\x -> [(translate 0 (-132)),(scale 0.75 0.75),(rot 20)] |=> x) fig)
     
 {- temp func
 uncolouredTree = centreFigure $ concat $ concat tree where
@@ -29,5 +29,5 @@ uncolouredTree = centreFigure $ concat $ concat tree where
     leaf2 fig = (map (\x -> [(translate (-10) 150),(scale 0.9 0.9),(rot 40)] |=> x) fig)
     leaf3 fig = (map (\x -> [(translate 0 0),(scale 0.9 0.9),(rot 170)] |=> x) fig)
 -}
-main = infiniSquare
+main = firstTree
 

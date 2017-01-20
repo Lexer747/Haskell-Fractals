@@ -13,17 +13,20 @@ import DataTypes
 import Data.Char (toUpper)
 import Numeric (showHex)
 
+--constant for the stroke-width of the svg
+strokewidth = 0.1
+
 --useage: writePoint Point => svg String
 writePoint :: Point -> String 
 writePoint (x,y) = (show x)++","++(show y)++" "
 
 --useage: writePolygon (Colour,Polygon) => svg String
 writePolygon :: (Outline,Polygon) -> String 
-writePolygon ((r,g,b),p) = "<polygon points=\""++(concatMap writePoint p)++"\" style=\"fill:#cccccc;stroke:rgb("++(show r)++","++(show g)++","++(show b)++");stroke-width:1\"/>"
+writePolygon ((r,g,b),p) = "<polygon points=\""++(concatMap writePoint p)++"\" style=\"fill:#cccccc;stroke:rgb("++(show r)++","++(show g)++","++(show b)++");stroke-width:"++(show strokewidth)++"\"/>"
 
 writeFullPolygon :: FullPolygon -> String
 writeFullPolygon ((x1,x2,x3,x4,x5,x6),(r,g,b),p) = 
-    "<polygon points=\""++(concatMap writePoint p)++"\" style=\"fill:#"++(f)++";stroke:rgb("++(show r)++","++(show g)++","++(show b)++");stroke-width:1\"/>" where
+    "<polygon points=\""++(concatMap writePoint p)++"\" style=\"fill:#"++(f)++";stroke:rgb("++(show r)++","++(show g)++","++(show b)++");stroke-width:"++(show strokewidth)++"\"/>" where
     f = (writeHex x1)++(writeHex x2)++(writeHex x3)++(writeHex x4)++(writeHex x5)++(writeHex x6)
 
 --useage: writeFullFigure FullFigure => svg String
