@@ -24,7 +24,7 @@ For our purposes we can consider svg to be made of 2 main components:
   * A list of 'polygons' which can also contain attributes
   
 ``` svg
-shape stuff here = <polygon points="0,0 0,100 100,100 100,0 " style="fill:#000000;stroke:rgb(221,221,221);stroke-width:5"/>
+shape stuff here = <polygon points="0,0 0,100 100,100 100,0 " style="fill:#00FF00;stroke:rgb(255,0,0);stroke-width:5"/>
 ```
 
 This polygon we just defined is a list of x,y points. It goes from one point to the next
@@ -38,7 +38,7 @@ Finally the full SVG for this square would be as such:
 
 ``` svg
 <svg height="100" width="100" xmlns="http://www.w3.org/2000/svg">
-    <polygon points="0,0 0,100 100,100 100,0 " style="fill:#000000;stroke:rgb(221,221,221);stroke-width:5"/>
+    <polygon points="0,0 0,100 100,100 100,0 " style="fill:#00FF00;stroke:rgb(255,0,0);stroke-width:5"/>
 </svg>
 ```
 
@@ -48,10 +48,30 @@ Which when rendered looks like such:
 
 ### Using Haskell to Produce SVG
 
-Thinking about the SVG in a different way, if we think about what a polygon actually is
+Thinking about the SVG in a different way: if we think about what a polygon actually is,
 it can really be broken down into a list of points. Where each point is an x,y value.
 
 By looking at a snippet from DataTypes.hs I have made some new types in Haskell which 
+are essentially this concept. This will allow us to manipulate and take advantage of 
+using a functional language to create intresting shapes.
+
+``` Haskell
+type Point          = (Float, Float) --generic point of polygon
+type Polygon        = [Point] --generic shape
+type Figure         = [Polygon] --a figure contains a list of shapes
+```
+
+The code above now gives more meaningful names to the types we are going to use, but it doesn't
+actually do anything yet. For that we need functions!
+
+The first function we are going to look at is called `writePoint` and it is defined as such:
+
+``` Haskell
+{- This function takes a Point and returns a string which is formatted as
+an svg point. -}
+writePoint :: Point -> String 
+writePoint (x,y) = (show x)++","++(show y)++" "
+```
 
 ### Building the initial square
 

@@ -24,7 +24,7 @@ The blue rectangle is created using affine transformations then the grey rectang
 
 This fractal is created by scaling and rotating a square 1000 times. Its a simple but elegant pattern. To generate this image the following code was excuted:
 
-``` haskell
+``` Haskell
 --best read from bottom up
 infiniSquare = publishFullFigure colouredFractal where --this line saves the shape to svg
     --colour the fractal
@@ -51,7 +51,7 @@ My favourite kind of spiral, I liked the look of it flairing out as it gets bigg
 This spiral is also simple to make as it is just a square which rotates as it moves away from its start point.
 Because its an SVG zooming in on it shows the detail of the spiral nicely. Its made using the following code below:
 
-```haskell
+``` Haskell
 fibonacci = publishFigure $ centreFigure $ recursivePolygon ([(scale 0.01 0.01)] |=> square) [(rot 1),(scale 1.01 1.01), (translate 0 (-0.05))] 400
 ```
 As you can see its a one liner, but it can be broken up into steps:
@@ -61,14 +61,14 @@ As you can see its a one liner, but it can be broken up into steps:
 
 Explaining the `recursivePolygon` function and why it looks so crazy. Seeing the type of `recursivePolygon` makes understanding it easier:
 
-``` haskell
+``` Haskell
 recursivePolygon :: Polygon -> [Transformation] -> Int -> Figure
 ```
 
 So it takes a `Polygon` , a list of `Transformation` and an `Int`. Then it spits out a `Figure` , 
 hence in the code for this spiral we can analyze the parameters to be as such:
 
-``` haskell
+``` Haskell
     Polygon             = ([scale 0.01 0.01] |=> square)
     [Transformation]    = [(rot 1),(scale 1.01 1.01), (translate 0 (-0.05))]
     Int                 = 400
@@ -87,7 +87,7 @@ A cliche fractal but very pretty non-the-less, once again the advantage of SVG m
 This is less simple to make but haskell makes it relatively easy for us. I decided to not do this all on one line but it is definitely possible if you so
 desire.
 
-``` haskell
+``` Haskell
 firstTree = publishFigure finalTree where
     finalTree = centreFigure $ concat $ concat tree
     tree = recursiveFigure_adv base treeFunc 11
@@ -99,7 +99,7 @@ firstTree = publishFigure finalTree where
 
 So its a little overwheleming at first, but once again i believe that seeing the type signature for recursiveFigure_adv helps a lot.
 
-```haskell
+``` Haskell
 recursiveFigure_adv :: [a] -> (a -> a) -> Int -> [[a]]
 ```
 
