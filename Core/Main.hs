@@ -31,15 +31,6 @@ customTree fill outline branches scl rt = finalTree where
     leaf1 = map (\x -> [(translate 14 (-140)),(scale (scl) (scl)),(rot (-rt))] |=> x)
     leaf2 = map (\x -> [(translate 14 (-140)),(scale (scl) (scl)),(rot (rt))] |=> x)
     
-{- temp func
-uncolouredTree = centreFigure $ concat $ concat tree where
-    tree = recursiveFigure_adv base treeFunc 8
-    base = [[([(scale 0.4 1.4)] |=> square),([(scale 0.7 0.5),(rot 45),(translate (-30) 50)] |=> triangle)]]
-    treeFunc = (\fig -> (leaf1 fig)++(leaf2 fig)++(leaf3 fig))
-    leaf1 fig = (map (\x -> [(translate (-100) (-150)),(scale 0.9 0.8),(rot (-25)),(shear 5 10)] |=> x) fig)
-    leaf2 fig = (map (\x -> [(translate (-10) 150),(scale 0.9 0.9),(rot 40)] |=> x) fig)
-    leaf3 fig = (map (\x -> [(translate 0 0),(scale 0.9 0.9),(rot 170)] |=> x) fig)
--}
 main = do
     putStrLn "Fill Colour? "
     fillList <- getInts 6

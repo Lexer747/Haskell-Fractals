@@ -1,1 +1,4 @@
-<svg height="200.4346" width="219.8233" xmlns="http://www.w3.org/2000/svg"><polygon points="0.0,0.0 0.0,200.4346 219.8233,200.4346 219.8233,0.0 " style="fill:#EEEEEE;stroke:rgb(221,221,221);stroke-width:1"/><polygon points="0.0,120.69727 60.348637,200.4346 219.8233,79.737335 159.47467,0.0 " style="fill:#0000FF;stroke:rgb(0,0,255);stroke-width:1"/></svg>
+<svg height="200.4346" width="219.8233" xmlns="http://www.w3.org/2000/svg">
+    <polygon points="0.0,0.0 0.0,200.4346 219.8233,200.4346 219.8233,0.0 " style="fill:#EEEEEE;stroke:rgb(221,221,221);stroke-width:1"/>
+    <polygon points="0.0,120.69727 60.348637,200.4346 219.8233,79.737335 159.47467,0.0 " style="fill:#0000FF;stroke:rgb(0,0,255);stroke-width:1"/>
+</svg>

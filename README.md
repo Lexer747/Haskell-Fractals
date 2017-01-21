@@ -1,4 +1,4 @@
-# Haskell Shape & Fractals
+# Haskell Shapes & Fractals
 Currently a simple program which creates pretty shapes in svg format which can be rendered by 
 most browsers. It is mostly a learning program, so i am using the process of writing this program to
 learn Haskell.
@@ -10,7 +10,7 @@ and inspired me in its simplicty.
 
 ###Bounding Box:
 
-Just starting, so my first idea was see if I find a way to produce the bouding box of a shape. Below is the result.
+Just starting, so my first idea was see if I could find a way to produce the bouding box of a shape. Below is the result.
 
 ![BoundingBox](https://cdn.rawgit.com/Lexer747/Haskell-Fractals/ccc9f170/Core/svg/BoundingBox_Demo.svg)
 
@@ -105,7 +105,7 @@ recursiveFigure_adv :: [a] -> (a -> a) -> Int -> [[a]]
 
 This function essentially has 3 parameters and returns a `[[a]]`, which is a list 
 of list of a. The first parameter is the base shape of the recursive
-shape `[a]` or as we know it as `Figure`. 
+shape `[a]` or as we know it as `[Figure]`. 
 The second parameter is where the complexitity is `(a -> a)`. And the 3rd
 parameter is the number of iterations to perform `Int`.
 
