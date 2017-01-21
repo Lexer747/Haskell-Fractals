@@ -1,5 +1,6 @@
 import DataTypes
 import CoreSVG
+import CoreIO
 import Utils
 import Shapes
 import Constants
@@ -12,9 +13,9 @@ infiniSquare = publishFullFigure colouredFractal where
 
 fibonacci = publishFigure $ centreFigure $ recursivePolygon ([(scale 0.01 0.01)] |=> square) [(rot 1),(scale 1.01 1.01), (translate 0 (-0.05))] 400
 
-firstTree = publishFigure finalTree where
+firstTree x = publishFigure finalTree where
     finalTree = centreFigure $ concat $ concat tree
-    tree = recursiveFigure_adv base treeFunc 15
+    tree = recursiveFigure_adv base treeFunc x
     base = [[[(scale 0.4 1.4)] |=> square]]
     treeFunc = (\fig -> (leaf1 fig)++(leaf2 fig))
     leaf1 fig = (map (\x -> [(translate 10 (-150)),(scale 0.75 0.75),(rot (-20))] |=> x) fig)
@@ -29,5 +30,8 @@ uncolouredTree = centreFigure $ concat $ concat tree where
     leaf2 fig = (map (\x -> [(translate (-10) 150),(scale 0.9 0.9),(rot 40)] |=> x) fig)
     leaf3 fig = (map (\x -> [(translate 0 0),(scale 0.9 0.9),(rot 170)] |=> x) fig)
 -}
-main = firstTree
+main = do
+    putStrLn "Number of branches?"
+    branches <- getInt
+    firstTree branches
 
