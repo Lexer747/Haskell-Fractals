@@ -34,7 +34,7 @@ implicitly it goes back to the starting point as its a polygon.
 It also has fill specified by the Hex code and the outline is 5 pixel thick and is coloured
 by the rgb value.
 
-Finally the full svg for this square would be as such:
+Finally the full SVG for this square would be as such:
 
 ``` svg
 <svg height="100" width="100" xmlns="http://www.w3.org/2000/svg">
@@ -48,7 +48,10 @@ Which when rendered looks like such:
 
 ### Using Haskell to Produce SVG
 
+Thinking about the SVG in a different way, if we think about what a polygon actually is
+it can really be broken down into a list of points. Where each point is an x,y value.
 
+By looking at a snippet from DataTypes.hs I have made some new types in Haskell which 
 
 ### Building the initial square
 
