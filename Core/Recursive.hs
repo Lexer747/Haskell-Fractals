@@ -1,4 +1,4 @@
-module Shapes 
+module Recursive 
 (recursivePolygon
 ,recursivePolygon_adv
 ,recursiveFigure
@@ -7,9 +7,7 @@ module Shapes
 where
 
 import DataTypes
-import CoreSVG
-import Utils
-import Constants
+import Utils ((|=>))
 
 recursivePolygon :: Polygon -> [Transformation] -> Int -> Figure
 recursivePolygon basePolygon transList iter = 

@@ -13,13 +13,11 @@ module Utils
 ,findBBPolygon
 ,findSizeFigure
 ,findSizePolygon
-,outputFullFigure
-,publishFullFigure
-,publishFigure
 ,centreFigure
 )where
+
 import DataTypes
-import CoreSVG
+import CoreSVG (findBBFigure, findBBPolygon)
 import Constants
 
 --infix transformation for transfroming points
@@ -78,16 +76,7 @@ findSizeFigure :: Figure -> Float
 findSizeFigure p = x * y where
     (x,y) = (findBBFigure p) !! 2
 
-outputFullFigure :: FullFigure -> IO ()
-outputFullFigure fig = writeFile "svg/Output.svg" $ writeFullFigure fig
-
-publishFigure :: Figure -> IO ()
-publishFigure fig = publishFullFigure $ colourizeFig greyF blueL fig
-
 centreFigure :: Figure -> Figure
 centreFigure fig = map (trans |=>) fig where
     trans = [(translate (-x) (-y))]
     (x,y) =  head $ findBBFigure fig
-
-publishFullFigure :: FullFigure -> IO ()
-publishFullFigure fig = writeFile "svg/Output.svg" $ writeFullFigurePublish fig

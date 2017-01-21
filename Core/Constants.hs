@@ -9,7 +9,6 @@ module Constants
 
 import DataTypes
 
-
 --generic line colour
 blueL :: Outline
 blueL = (0,0,255)

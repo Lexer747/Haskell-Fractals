@@ -3,8 +3,6 @@ module Colouring
 )where
 
 import DataTypes
-import CoreSVG
-
 
 rng :: (Int,Int) -> Int -> Int
 rng (min,max) seed = ((seed ^ 20) `mod` 2339 `mod` max) + min
