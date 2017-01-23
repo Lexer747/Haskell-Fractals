@@ -117,7 +117,7 @@ Now the function which actually produces the String:
 ``` Haskell
 writeFullPolygon :: FullPolygon -> String
 writeFullPolygon ((r1,r2,g1,g2,b1,b2),(r,g,b),p) = 
-    "<polygon points=\""++(concatMap writePoint p)++"\" style=\"fill:#"++(f)++";stroke:rgb("++(show r)++","++(show g)++","++(show b)++");stroke-width:"++(show strokewidth)++"\"/>" where
+    "<polygon points=\""++(concatMap writePoint p)++"\" style=\"fill:#"++(f)++";stroke:rgb("++(show r)++","++(show g)++","++(show b)++");stroke-width:"++(show strokewidth)++"\"/>\n" where
     f = (writeHex r1)++(writeHex r2)++(writeHex g1)++(writeHex g2)++(writeHex b1)++(writeHex b2)
 ```
 
@@ -155,7 +155,7 @@ concatMap. Also we know p is a Polygon, so what this might look like to the untr
 is that writePoint takes a Polygon as an argument, and the result of that is then
 passed to concatMap. But Haskell works from left to right, so concatMap
 takes writePoint as an argument, then that takes the argument p.
-
+ 
 This might sound very strange at first, but it is totally ok and even encouraged to pass
 whole functions as arguments to other functions. It is also helpful to know what type
 concatMap is, and we can see this by asking Haskell:  
@@ -163,7 +163,37 @@ concatMap is, and we can see this by asking Haskell:
 So this a new argument we haven't see before, its the first one in brackets. `(a -> [b])` All this means is that
 concatMap takes as its first argument a function which goes from any type `a` to a list
 of different but still any type `[b]`.  
-In our function we pass `concatMap` the function `writePoint`
+In our function we pass `concatMap` the function `writePoint` then finally we pass it a Polygon
+which completes our function.  
+Now what it actually does is `concatMap` will apply the function it is passed to every
+item in the list `a` and then concatenate the resulting list of lists into a single list.
+
+So in our case we pass it a function which takes points and makes them a list of Char
+and then we pass it a list of Points, so by concatenating all the results of writePoint,
+we get a full list of all the points of the Polygon.
+
+Now we understand the hard part of the function we just have the easy stuff:  
+``` Haskell
+++"\" style=\"fill:#"++(f)++";stroke:rgb("++(show r)++","++(show g)++","++(show b)++");stroke-width:"++(show strokewidth)++"\"/>\n" where
+    f = (writeHex r1)++(writeHex r2)++(writeHex g1)++(writeHex g2)++(writeHex b1)++(writeHex b2)
+```
+
+So this part basically just appends all the metadata to the tag, writeHex is just a utility method:  
+``` Haskell
+writeHex :: Int -> String
+writeHex x = map toUpper (showHex x [])
+```
+
+---
+
+Finally we can look at the final SVG generation function, but first more types! Once again, these types are from DataTypes.hs:  
+``` Haskell
+type FullFigure     = [FullPolygon]
+``` 
+
+This type is just giving a list of FullPolygon's a better type name so its 
+easier to determine what a functions use is. Now the big function which is what we will use the 
+generate a bounding box demo.
 
 ### Building the initial square
 

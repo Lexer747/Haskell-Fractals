@@ -7,14 +7,14 @@ module CoreIO
 )where
 
 import DataTypes
-import CoreSVG (writeFullFigure,writeFullFigurePublish)
+import CoreSVG (writeFullFigure_dep,writeFullFigure)
 import Control.Monad (replicateM)
 
 outputFullFigure :: FullFigure -> IO ()
-outputFullFigure fig = writeFile "svg/Output.svg" $ writeFullFigure fig
+outputFullFigure fig = writeFile "svg/Output.svg" $ writeFullFigure_dep fig
 
 publishFullFigure :: FullFigure -> IO ()
-publishFullFigure fig = writeFile "svg/Output.svg" $ writeFullFigurePublish fig
+publishFullFigure fig = writeFile "svg/Output.svg" $ writeFullFigure fig
 
 getInts :: Int -> IO [Int]
 getInts n = fmap (fmap read) $ mapM (const getLine) [1.. n]

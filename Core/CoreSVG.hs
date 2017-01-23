@@ -1,11 +1,11 @@
 module CoreSVG
 (writeFullPolygon
+,writeFullFigure_dep
 ,writeFullFigure
-,writeFullFigurePublish
 ,colourizeFig
 ,findBBFigure
 ,findBBPolygon
-) where
+) where 
 
 import DataTypes
 import Data.Char (toUpper)
@@ -41,16 +41,16 @@ concatenate each element in the list to get the big String we actually need.
 Hence why we use concatMap to do so.
 
 It also crucially adds the svg tags and the basic meta data to the string -}
-writeFullFigure :: FullFigure -> String 
-writeFullFigure p = "<svg xmlns=\"http://www.w3.org/2000/svg\">\n"++(concatMap writeFullPolygon p)++"</svg>"
+writeFullFigure_dep :: FullFigure -> String 
+writeFullFigure_dep p = "<svg xmlns=\"http://www.w3.org/2000/svg\">\n"++(concatMap writeFullPolygon p)++"</svg>"
 
 {- useage: writeFullFigurePublish FullFigure => svg String ready for viewing
 Since GitHub's markdown can't display svg unless the height and width
 is explicitly stated. This function is essentially writeFullFigure but
 also finds the height and width of the figure and writes that to the
 svg attributes tag. -}
-writeFullFigurePublish :: FullFigure -> String
-writeFullFigurePublish p = "<svg height=\""++height++"\" width=\""++width++"\" xmlns=\"http://www.w3.org/2000/svg\">"++(concatMap writeFullPolygon p)++"</svg>" where
+writeFullFigure :: FullFigure -> String
+writeFullFigure p = "<svg height=\""++height++"\" width=\""++width++"\" xmlns=\"http://www.w3.org/2000/svg\">"++(concatMap writeFullPolygon p)++"</svg>" where
     (x,y) = (findCanvasFull p)
     height = (show y)
     width = (show x)
