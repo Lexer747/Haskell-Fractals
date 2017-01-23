@@ -30,9 +30,9 @@ concat $ map writePoint p
 But haskell combines the two into concatMap. Then it adds the Fill 
 and Outline to the svg definition of the Polygon. -}
 writeFullPolygon :: FullPolygon -> String
-writeFullPolygon ((x1,x2,x3,x4,x5,x6),(r,g,b),p) = 
+writeFullPolygon ((r1,r2,g1,g2,b1,b2),(r,g,b),p) = 
     "<polygon points=\""++(concatMap writePoint p)++"\" style=\"fill:#"++(f)++";stroke:rgb("++(show r)++","++(show g)++","++(show b)++");stroke-width:"++(show strokewidth)++"\"/>" where
-    f = (writeHex x1)++(writeHex x2)++(writeHex x3)++(writeHex x4)++(writeHex x5)++(writeHex x6)
+    f = (writeHex r1)++(writeHex r2)++(writeHex g1)++(writeHex g2)++(writeHex b1)++(writeHex b2)
 
 {- useage: writeFullFigure FullFigure => svg String
 This function takes a list of Full Polygons and maps writeFullPolygon

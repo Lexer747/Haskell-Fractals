@@ -81,7 +81,48 @@ writePoint (show a1, show a) => (a, a1) -> [Char]
 ```
 
 Although this type is now much harder to read and it less expressive compared to what we started with even though its still
-the same function.
+the same function. Now for the actual code part of the function:  
+``` Haskell
+writePoint (x,y) = (show x)++","++(show y)++" "
+```
+
+Firstly this function takes a point as it's argument and since we are 
+garenteed to know its type we can safely pattern match out each side
+of the tuple. Hence the parameter is (x,y). Then the rest of the function
+is pretty simple if we know what show does (++ is concatenate). And show's type is as follows:  
+``` Haskell
+show :: Show a => a -> String
+```
+
+Which is basically anything to String, which is pretty helpful since we need the point to become a
+string. So writePoint will convert the x to a string, concatenate it with "," then
+concatenate that with y which is also converted to a string, then finally concatenate
+an extra " ". Giving us a function which is essentially a .toString for points.
+
+---
+
+Now we need a function which produces the full SVG polygon tag with all the attributes included.
+And for that we need some more types from DataTypes.hs:  
+``` Haskell
+type FullPolygon    = (Fill, Outline, Polygon)
+
+type Outline        = (Int,Int,Int)
+type Fill           = (Int,Int,Int,Int,Int,Int)
+```
+
+Think of Outline line as the stroke r,g,b values, and Fill is the hex values
+for the fill of the polygon. And we have already seen a polygon type, so this FullPolygon
+type is just a tuple of the key peices of infomation we need for the SVG tag.  
+Now the function which actually produces the String:  
+``` Haskell
+writeFullPolygon :: FullPolygon -> String
+writeFullPolygon ((r1,r2,g1,g2,b1,b2),(r,g,b),p) = 
+    "<polygon points=\""++(concatMap writePoint p)++"\" style=\"fill:#"++(f)++";stroke:rgb("++(show r)++","++(show g)++","++(show b)++");stroke-width:"++(show strokewidth)++"\"/>" where
+    f = (showHex r1)++(showHex r2)++(showHex g1)++(showHex g2)++(showHex b1)++(showHex b2)
+```
+
+First the type of this function is pretty self-explanatory, it takes a FullPolygon
+and outputs a String which is exactly what we are looking for.
 
 ### Building the initial square
 
