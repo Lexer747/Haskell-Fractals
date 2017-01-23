@@ -193,7 +193,22 @@ type FullFigure     = [FullPolygon]
 
 This type is just giving a list of FullPolygon's a better type name so its 
 easier to determine what a functions use is. Now the big function which is what we will use the 
-generate a bounding box demo.
+generate a bounding box demo.  
+``` Haskell
+writeFullFigure :: FullFigure -> String
+writeFullFigure p = "<svg height=\""++height++"\" width=\""++width++"\" xmlns=\"http://www.w3.org/2000/svg\">"++(concatMap writeFullPolygon p)++"</svg>" where
+    (x,y) = (findCanvasFull p)
+    height = (show y)
+    width = (show x)
+```
+
+The type of `writeFullFigure` is self-explanatory again as we want to go from a list of FullPolygon's to an SVG String. And you 
+will notice that the actual contents of the function are very similar to `writeFullPolygon`. As it is a very similar
+syntax due to the nature of mark-up languages. So let's mix it up and start by looking at the second part
+of the fucntion as this contains the more important part:  
+``` Haskell
+(concatMap writeFullPolygon p)++"</svg>"
+```
 
 ### Building the initial square
 
