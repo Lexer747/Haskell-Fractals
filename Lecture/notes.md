@@ -196,8 +196,8 @@ easier to determine what a functions use is. Now the big function which is what 
 generate a bounding box demo.  
 ``` Haskell
 writeFullFigure :: FullFigure -> String
-writeFullFigure p = "<svg height=\""++height++"\" width=\""++width++"\" xmlns=\"http://www.w3.org/2000/svg\">"++(concatMap writeFullPolygon p)++"</svg>" where
-    (x,y) = (findCanvasFull p)
+writeFullFigure f = "<svg height=\""++height++"\" width=\""++width++"\" xmlns=\"http://www.w3.org/2000/svg\">"++(concatMap writeFullPolygon f)++"</svg>" where
+    (x,y) = (findCanvasFull f)
     height = (show y)
     width = (show x)
 ```
@@ -210,5 +210,39 @@ of the fucntion as this contains the more important part:
 (concatMap writeFullPolygon p)++"</svg>"
 ```
 
-### Building the initial square
+Its our friend `concatMap` and the function application is the same as `writeFullPolygon`. 
+We pass `concatMap` the function `writeFullPolygon` and it will apply it to every item in the
+list then concatenate the result.  
+``` Haskell
+"<svg height=\""++height++"\" width=\""++width++"\" xmlns=\"http://www.w3.org/2000/svg\">" where
+    (x,y) = (findCanvasFull f)
+    height = (show y)
+    width = (show x)
+```
 
+The thing about this function is that it uses another function called `findCanvasFull` which 
+gets the height and width, we will come back to this later. 
+
+So now we have a function which can take a list of coloured polygons and make the file. All we 
+need is to save this string to a file and will can make images out of lists.  
+I will skip details of this function becuase its beyond the scope of the lecture. But heres the function
+name so we know what its doing when we see it: 
+``` Haskell
+publishFullFigure :: FullFigure -> IO ()
+publishFullFigure fig = writeFile "svg/Output.svg" $ writeFullFigure fig
+```
+
+This `writeFile` function will output the String from `writeFullFigure` and put it in the file
+"svg/Output.svg" so that we can view it.
+
+### Building the initial rectangle
+
+We could just hard code the points into a list then output that using out functions. But that
+isn't reuseable and makes it brittle. So instead we use a base shape and just apply Affine 
+Transformations to the shapes. I'm not goin to cover how Affine Transformations work, 
+because thats too much maths. 
+
+But a TL:DR is this:  
+![eg4](eg4.jpg)  
+We convert these transformations into matrices as in Utils.hs and we get functions which do all this maths
+for us.

@@ -2,7 +2,7 @@ module CoreIO
 (getInt
 ,getInts
 ,getFloat
-,outputFullFigure
+,publishFullFigureDefualtColour
 ,publishFullFigure
 )where
 
@@ -10,8 +10,8 @@ import DataTypes
 import CoreSVG (writeFullFigure_dep,writeFullFigure)
 import Control.Monad (replicateM)
 
-outputFullFigure :: FullFigure -> IO ()
-outputFullFigure fig = writeFile "svg/Output.svg" $ writeFullFigure_dep fig
+publishFullFigureDefualtColour :: FullFigure -> IO ()
+publishFullFigureDefualtColour fig = writeFile "svg/Output.svg" $ writeFullFigure_dep fig
 
 publishFullFigure :: FullFigure -> IO ()
 publishFullFigure fig = writeFile "svg/Output.svg" $ writeFullFigure fig
