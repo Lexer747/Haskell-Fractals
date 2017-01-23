@@ -118,11 +118,52 @@ Now the function which actually produces the String:
 writeFullPolygon :: FullPolygon -> String
 writeFullPolygon ((r1,r2,g1,g2,b1,b2),(r,g,b),p) = 
     "<polygon points=\""++(concatMap writePoint p)++"\" style=\"fill:#"++(f)++";stroke:rgb("++(show r)++","++(show g)++","++(show b)++");stroke-width:"++(show strokewidth)++"\"/>" where
-    f = (showHex r1)++(showHex r2)++(showHex g1)++(showHex g2)++(showHex b1)++(showHex b2)
+    f = (writeHex r1)++(writeHex r2)++(writeHex g1)++(writeHex g2)++(writeHex b1)++(writeHex b2)
 ```
 
 First the type of this function is pretty self-explanatory, it takes a FullPolygon
-and outputs a String which is exactly what we are looking for.
+and outputs a String which is exactly what we are looking for. Now lets look at each section of the 
+code, first the parameters:
+``` Haskell
+writeFullPolygon ((r1,r2,g1,g2,b1,b2),(r,g,b),p)
+``` 
+
+Looking closely this is a heaviliy Pattern matched tuple of tuples. We extract all
+the colour infomation right here, and also seperate the polygon from its metadata.  
+``` Haskell
+(Fill, Outline, Polygon)
+
+Fill <= (r1,r2,g1,g2,b1,b2)
+Outline <= (r,g,b)
+Polygon <= p
+```
+Next we should look at the actual function definition which tells Haskell how to convert
+these parameters into the String we want:  
+``` Haskell
+"<polygon points=\""++(concatMap writePoint p)
+```
+
+The first part of this definition is the part which will never change no matter which 
+Polygon is passed as the parameter. Then we use the concatenate function ++ to join
+two Strings together. Our second String is an interesting beast:  
+``` Haskell
+concatMap writePoint p
+```
+
+This is a combination of two functions, one we have seen before writePoint, and a new one
+concatMap. Also we know p is a Polygon, so what this might look like to the untrained eye
+is that writePoint takes a Polygon as an argument, and the result of that is then
+passed to concatMap. But Haskell works from left to right, so concatMap
+takes writePoint as an argument, then that takes the argument p.
+
+This might sound very strange at first, but it is totally ok and even encouraged to pass
+whole functions as arguments to other functions. It is also helpful to know what type
+concatMap is, and we can see this by asking Haskell:  
+![eg3](eg3.jpg)  
+So this a new argument we haven't see before, its the first one in brackets. `(a -> [b])` All this means is that
+concatMap takes as its first argument a function which goes from any type `a` to a list
+of different but still any type `[b]`.  
+In our function we pass `concatMap` the function `writePoint`
 
 ### Building the initial square
 

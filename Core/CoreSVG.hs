@@ -31,7 +31,7 @@ But haskell combines the two into concatMap. Then it adds the Fill
 and Outline to the svg definition of the Polygon. -}
 writeFullPolygon :: FullPolygon -> String
 writeFullPolygon ((r1,r2,g1,g2,b1,b2),(r,g,b),p) = 
-    "<polygon points=\""++(concatMap writePoint p)++"\" style=\"fill:#"++(f)++";stroke:rgb("++(show r)++","++(show g)++","++(show b)++");stroke-width:"++(show strokewidth)++"\"/>" where
+    "    <polygon points=\""++(concatMap writePoint p)++"\" style=\"fill:#"++(f)++";stroke:rgb("++(show r)++","++(show g)++","++(show b)++");stroke-width:"++(show strokewidth)++"\"/>\n" where
     f = (writeHex r1)++(writeHex r2)++(writeHex g1)++(writeHex g2)++(writeHex b1)++(writeHex b2)
 
 {- useage: writeFullFigure FullFigure => svg String
@@ -42,7 +42,7 @@ Hence why we use concatMap to do so.
 
 It also crucially adds the svg tags and the basic meta data to the string -}
 writeFullFigure :: FullFigure -> String 
-writeFullFigure p = "<svg xmlns=\"http://www.w3.org/2000/svg\">"++(concatMap writeFullPolygon p)++"</svg>"
+writeFullFigure p = "<svg xmlns=\"http://www.w3.org/2000/svg\">\n"++(concatMap writeFullPolygon p)++"</svg>"
 
 {- useage: writeFullFigurePublish FullFigure => svg String ready for viewing
 Since GitHub's markdown can't display svg unless the height and width
