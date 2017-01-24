@@ -245,4 +245,24 @@ because thats too much maths.
 But a TL:DR is this:  
 ![eg4](eg4.jpg)  
 We convert these transformations into matrices as in Utils.hs and we get functions which do all this maths
-for us.
+for us.  
+``` Haskell
+type Transformation = (Float, Float, Float, Float, Float, Float)
+
+translate :: Float -> Float -> Transformation
+translate x y = (1,0,x,0,1,y)
+
+scale :: Float -> Float -> Transformation
+scale w h = (w,0,0,0,h,0)
+
+rot :: Float -> Transformation
+rot theata = (cos x, sin x, 0, -sin x, cos x, 0) where
+    x = theata * (pi / 180)
+
+shear :: Float -> Float -> Transformation
+shear phi psi = (1,tan x,0,tan y,1,0) where
+    x = phi * (pi / 180)
+    y = psi * (pi / 180)
+```
+
+Now we just need a function to apply a matrix mutliplication:

@@ -1,10 +1,8 @@
 module Utils 
-((%%)
-,translate
+(translate
 ,scale
 ,rot
 ,shear
-,transformPolygon
 ,(|=>)
 ,transformFigure
 ,transformFullPoly
@@ -21,8 +19,8 @@ import CoreSVG (findBBFigure, findBBPolygon)
 import Constants
 
 --infix transformation for transfroming points
-(%%) :: Point -> Transformation -> Point
-(%%) (x, y) (a, b, c, p, q, r) = 
+matrixMult :: Point -> Transformation -> Point
+matrixMult (x, y) (a, b, c, p, q, r) = 
     ((x * a + y * b + c),(x * p + y * q + r))
 
 translate :: Float -> Float -> Transformation
@@ -44,12 +42,9 @@ folding acc f [] = acc
 folding acc f (x:xs) = folding (f acc x) f xs
     
 --useage: transformPolygon [list of transformations to do] Polygon => Polygon
-transformPolygon :: [Transformation] -> Polygon -> Polygon
-transformPolygon trList poly = map f poly where
-    f = (\x -> folding (x) (%%) trList)
-    
 (|=>) :: [Transformation] -> Polygon -> Polygon
-(|=>) = transformPolygon
+(|=>) trList poly = map f poly where
+    f = (\x -> folding (x) matrixMult trList)
 
 --useage: same as above except it uses a fully coloured shape
 transformFullPoly :: [Transformation] -> FullPolygon -> FullPolygon
