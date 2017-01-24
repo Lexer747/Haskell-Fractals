@@ -9,23 +9,24 @@ module Constants
 
 import DataTypes
 
---generic line colour
+-- |generic line colour
 blueL :: Outline
 blueL = (0,0,255)
 
---generic fill colour
+-- |generic fill colour
 blueF :: Fill
 blueF = (0,0,0,0,15,15)
 greyF :: Fill
 greyF = (14,14,14,14,14,14)
 
---generic square
+-- |generic square
 square :: Polygon
 square = [(0,0),(0,100),(100,100),(100,0)]
 
---generic triangle
+-- |generic triangle
 triangle :: Polygon
 triangle = [(100,0),(0,100),(100,100)]
---blue square
+
+-- |blue square
 blueSquare :: FullPolygon
 blueSquare = (blueF, blueL, square)

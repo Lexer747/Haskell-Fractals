@@ -265,4 +265,12 @@ shear phi psi = (1,tan x,0,tan y,1,0) where
     y = psi * (pi / 180)
 ```
 
-Now we just need a function to apply a matrix mutliplication:
+Now we just need a function to apply a matrix mutliplication:  
+``` Haskell
+matrixMult :: Point -> Transformation -> Point
+matrixMult (x, y) (a, b, c, p, q, r) = 
+    ((x * a + y * b + c),(x * p + y * q + r))
+```
+
+Since we will be dealing with figure's more than we will 
+    

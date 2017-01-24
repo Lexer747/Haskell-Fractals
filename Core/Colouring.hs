@@ -4,9 +4,13 @@ module Colouring
 
 import DataTypes
 
+-- | function to produce seemingly random ints
+-- useage: rng(min int, max int) seed => pseudo-random int
 rng :: (Int,Int) -> Int -> Int
 rng (min,max) seed = ((seed ^ 20) `mod` 2339 `mod` max) + min
 
+-- | A function which makes a Figure a FullFigure using a seed to produce the colour randomly
+-- useage: fullRNG seed figureToChange => randomColourFigure
 fullRNG :: Int -> Figure -> FullFigure
 fullRNG seed [] = []
 fullRNG seed (x:xs) = ((genFill seed),(genOutline (seed + 10)),x):(fullRNG (seed + 11) xs)
