@@ -4,6 +4,7 @@ module CoreSVG
 ,writeFullFigure
 ,colourizeFig
 ,findBBFigure
+,findBBFullFigure
 ,findBBPolygon
 ) where 
 
@@ -96,6 +97,9 @@ b-----c
 -}
 findBBFigure :: Figure -> Polygon
 findBBFigure = findBBPolygon . concat 
+
+findBBFullFigure :: FullFigure -> Polygon
+findBBFullFigure = findBBFigure . fullFigtoFig
 
 {- useage: findBBPolygon Polygon => boundingbox
 Same properties as findBBFigure, execpt its only for one list of Points. 

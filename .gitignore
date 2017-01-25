@@ -4,3 +4,4 @@ Core/svg/Output.svg
 #Compile Files
 *.o
 *.hi
+*.exe
