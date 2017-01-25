@@ -7,7 +7,7 @@ import Constants
 import Colouring
 
 depth :: Int
-depth = 20
+depth = 18
 
 brownF = (8,3,6,9,5,3)
 brownO = (131,105,83)
