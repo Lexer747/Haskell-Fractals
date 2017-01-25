@@ -6,12 +6,14 @@ module Utils
 ,(|=>)
 ,transformFigure
 ,transformFullPoly
+,transformFullFigure
 ,changeColour
 ,findBBFigure
 ,findBBPolygon
 ,findSizeFigure
 ,findSizePolygon
 ,centreFigure
+,centreFullFigure
 )where
 
 import DataTypes
@@ -51,9 +53,18 @@ transformFigure :: [Transformation] -> Figure -> Figure
 transformFigure trList = map f where
     f = (\x -> trList |=> x)
 
+transformFullFigure :: [Transformation] -> FullFigure -> FullFigure
+transformFullFigure trList = map f where
+    f = (\x -> transformFullPoly trList x)
 
 changeColour :: (Fill, Outline) -> FullPolygon -> FullPolygon
 changeColour (newF,newC) (oldF,oldC,poly) = (newF, newC, poly)
+
+applyColour :: [(Fill,Outline)] -> Figure -> FullFigure
+applyColour [] [] = []
+applyColour [] xs = []
+applyColour ys [] = []
+applyColour ((f,o):ys) (p:xs) = (f,o,p):(applyColour ys xs)
 
 -- |finds the area of the boundingbox of a shape
 -- useage: findSizePolygon Polygon => area
@@ -74,3 +85,11 @@ centreFigure :: Figure -> Figure
 centreFigure fig = map (trans |=>) fig where
     trans = [(translate (-x) (-y))]
     (x,y) =  head $ findBBFigure fig
+
+centreFullFigure :: FullFigure -> FullFigure
+centreFullFigure = (centreFullFigure_help [] [])
+
+centreFullFigure_help :: Figure -> [(Fill,Outline)] -> FullFigure -> FullFigure
+centreFullFigure_help accFig accColour [] = applyColour accColour $ centreFigure accFig
+centreFullFigure_help accFig accColour ((f,o,p):xs) = 
+    centreFullFigure_help (p:accFig) ((f,o):accColour) xs

@@ -50,7 +50,7 @@ is explicitly stated. This function is essentially writeFullFigure but
 also finds the height and width of the figure and writes that to the
 svg attributes tag. -}
 writeFullFigure :: FullFigure -> String
-writeFullFigure f = "<svg height=\""++height++"\" width=\""++width++"\" xmlns=\"http://www.w3.org/2000/svg\">"++(concatMap writeFullPolygon f)++"</svg>" where
+writeFullFigure f = "<svg height=\""++height++"\" width=\""++width++"\" xmlns=\"http://www.w3.org/2000/svg\">\n"++(concatMap writeFullPolygon f)++"</svg>" where
     (x,y) = (findCanvasFull f)
     height = (show y)
     width = (show x)
