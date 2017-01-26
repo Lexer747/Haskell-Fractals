@@ -7,13 +7,16 @@ import Constants
 import Colouring
 
 depth :: Int
-depth = 12
+depth = 15
 
 brownF = (8,3,6,9,5,3)
 brownO = (131,105,83)
 
 greenF = (7,7,14,14,7,7)
 greenO = (119,221,119)
+
+skyBlueF = (8,7,12,14,14,11)
+skyBlueO = (135,206,235)
 
 (//) = div
 
@@ -47,6 +50,35 @@ leafyTree = colourizeFig greenF greenO $ concat $ concat tree where
     leaf2 = map (\x -> [(translate (-33) (-90)),(scale 0.75 0.75),(rot 20)] |=> x)
 
 finalTree :: FullFigure
-finalTree = remove (greenF,greenO) ((leafyTree)++(trunk)) (((2 ^ depth) * 3) // 20)
+finalTree = reverse $
+    transformFullFigure [(scale 1.5 2), (translate 300 820)] $
+    remove (greenF,greenO) ((leafyTree)++(trunk)) (((2 ^ depth) * 3) // 7)
 
-main = publishFullFigure $ centreFullFigure finalTree
+canvas :: Polygon
+canvas = [(0,0),(1080,0),(1080, 1920),(0,1920)]
+
+blueSky :: FullFigure
+blueSky = colourizeFig skyBlueF skyBlueO [canvas]
+
+grass :: FullFigure
+grass = colourizeFig (4,14,13,3,4,14) (78,211,78) $ [ [(translate 0 1767),(scale 1 0.08) ] |=> canvas]
+
+cloud1 :: Figure
+cloud1 = transformFigure [(rot 180)] [
+    (semiCircle 100 5),
+    ([(scale 1 1.3),(translate 230 0)] |=> (semiCircle 200 5)),
+    ([(translate 550 0)] |=> (semiCircle 200 5))]
+
+cloud2 :: Figure
+cloud2 = transformFigure [(rot 180),(translate 500 450)] [
+    (semiCircle 150 5),
+    ([(scale 1 1.3),(translate 220 0)] |=> (semiCircle 130 5)),
+    ([(translate 540 0)] |=> (semiCircle 310 5)),
+    ([(scale 1 1.4),(translate 810 0)] |=> (semiCircle 180 5))]
+    
+    
+cloudCluster :: FullFigure
+cloudCluster = colourizeFig (15,15,15,15,15,15) (255,255,255) $ 
+    transformFigure [(translate 1000 650),(scale 0.8 0.8)] $ cloud1++cloud2
+
+main = publishFullFigure $ blueSky++grass++cloudCluster++finalTree
