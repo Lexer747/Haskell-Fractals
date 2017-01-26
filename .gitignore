@@ -1,5 +1,6 @@
 #Output Files
 Core/svg/Output.svg
+Core/svg/WallPaper.svg
 
 #Compile Files
 *.o
