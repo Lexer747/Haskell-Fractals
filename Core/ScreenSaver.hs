@@ -5,15 +5,16 @@ import Utils
 import Recursive
 import Constants
 import Colouring
+import AdvConstants
 
 depth :: Int
-depth = 15
+depth = 12
 
-brownF = (8,3,6,9,5,3)
-brownO = (131,105,83)
+brownF = (11,8,7,3,3,3)
+brownO = (184,115,51)
 
-greenF = (7,7,14,14,7,7)
-greenO = (119,221,119)
+greenF = (10,14,15,15,2,15)
+greenO = (173,255,47)
 
 skyBlueF = (8,7,12,14,14,11)
 skyBlueO = (135,206,235)
@@ -61,7 +62,7 @@ blueSky :: FullFigure
 blueSky = colourizeFig skyBlueF skyBlueO [canvas]
 
 grass :: FullFigure
-grass = colourizeFig (4,14,13,3,4,14) (78,211,78) $ [ [(translate 0 1767),(scale 1 0.08) ] |=> canvas]
+grass = colourizeFig greenF greenO $ [ [(translate 0 1767),(scale 1 0.08) ] |=> canvas]
 
 cloud1 :: Figure
 cloud1 = transformFigure [(rot 180)] [
@@ -76,9 +77,11 @@ cloud2 = transformFigure [(rot 180),(translate 500 450)] [
     ([(translate 540 0)] |=> (semiCircle 310 5)),
     ([(scale 1 1.4),(translate 810 0)] |=> (semiCircle 180 5))]
     
-    
 cloudCluster :: FullFigure
 cloudCluster = colourizeFig (15,15,15,15,15,15) (255,255,255) $ 
     transformFigure [(translate 1000 650),(scale 0.8 0.8)] $ cloud1++cloud2
+    
+hex :: Polygon
+hex = regularPolygon 100 6
 
-main = publishFullFigure $ blueSky++grass++cloudCluster++finalTree
+main = publishFullFigure $  colourizeFig brownF greenO [hex]

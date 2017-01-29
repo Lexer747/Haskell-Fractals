@@ -33,9 +33,13 @@ triangle = [(100,0),(0,100),(100,100)]
 -- useage: ellipse (radius-x, radius-y) acurracy => ellipse
 ellipse :: (Float, Float) -> Float -> Polygon
 ellipse (xradius,yradius) accuracy = (zip xs $ map y xs)++(zip (reverse xs) $ reverse $ map (\x -> (-1) * (y x)) xs) where
-    xs = [(xradius),((xradius) - accuracy)..(-(xradius))]
+    xs = [(xradius),((xradius) - accuracy)..(-(xradius))] 
+    -- ^ create a list of all the x points of the ellipse, the number of points is determined by accuracy
     y x = sqrt((yradius ^ 2) - (((yradius ^ 2) * (x ^ 2)) / (xradius ^ 2)))
+    -- find the y value from the x
 
+-- |generic SemiCircle
+-- useage: semiCircle radius accuracy => semiCircle
 semiCircle :: Float -> Float -> Polygon
 semiCircle radius accuracy = zip xs $ map y xs where
     xs = [(radius),(radius - accuracy)..(-radius)]

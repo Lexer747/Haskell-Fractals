@@ -4,6 +4,7 @@ module Utils
 ,rot
 ,shear
 ,(|=>)
+,transformPoint
 ,transformFigure
 ,transformFullPoly
 ,transformFullFigure
@@ -21,8 +22,8 @@ import CoreSVG (findBBFigure, findBBPolygon)
 import Constants
 
 -- |infix transformation for transfroming points
-matrixMult :: Transformation -> Point -> Point
-matrixMult (a, b, c, p, q, r) (x, y) = ((x * a + y * b + c),(x * p + y * q + r))
+transformPoint :: Transformation -> Point -> Point
+transformPoint (a, b, c, p, q, r) (x, y) = ((x * a + y * b + c),(x * p + y * q + r))
 
 translate :: Float -> Float -> Transformation
 translate x y = (1,0,x,0,1,y)
@@ -42,7 +43,7 @@ shear phi psi = (1,tan x,0,tan y,1,0) where
 -- |useage: transformPolygon [list of transformations to do] Polygon -> Polygon
 (|=>) :: [Transformation] -> Polygon -> Polygon
 (|=>) trList poly = map f poly where
-    f = (\point -> foldr matrixMult point trList)
+    f = (\point -> foldr transformPoint point trList)
 
 -- |useage: same as transformPolygon except it uses a fully coloured shape
 transformFullPoly :: [Transformation] -> FullPolygon -> FullPolygon
