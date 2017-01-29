@@ -5,7 +5,6 @@ import Utils
 import Recursive
 import Constants
 import Colouring
-import Control.Monad
 
 infiniSquare = publishFullFigure colouredFractal where
     colouredFractal = colourizeFig (14,14,14,14,14,14) (0,0,255) recursiveSquare

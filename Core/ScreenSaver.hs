@@ -4,8 +4,6 @@ import CoreIO
 import Utils
 import Recursive
 import Constants
-import Colouring
-import AdvConstants
 
 depth :: Int
 depth = 12
