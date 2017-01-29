@@ -80,8 +80,5 @@ cloud2 = transformFigure [(rot 180),(translate 500 450)] [
 cloudCluster :: FullFigure
 cloudCluster = colourizeFig (15,15,15,15,15,15) (255,255,255) $ 
     transformFigure [(translate 1000 650),(scale 0.8 0.8)] $ cloud1++cloud2
-    
-hex :: Polygon
-hex = regularPolygon 100 6
 
-main = publishFullFigure $  colourizeFig brownF greenO [hex]
+main = publishFullFigure $ blueSky++cloudCluster++grass++finalTree
