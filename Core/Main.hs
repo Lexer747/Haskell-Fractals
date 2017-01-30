@@ -30,20 +30,27 @@ customTree fill outline branches scl rt = finalTree where
     leaf1 = map (\x -> [(translate 14 (-140)),(scale (scl) (scl)),(rot (-rt))] |=> x)
     leaf2 = map (\x -> [(translate 14 (-140)),(scale (scl) (scl)),(rot (rt))] |=> x)
     
-main = do
-    putStrLn "Fill Colour? "
-    fillList <- getInts 6
-    putStrLn "Outline Colour? "
-    outlineList <- getInts 3
-    putStr "Number of branches? "
-    branches <- getInt
-    putStr "scaling Factor? "
-    scl <- getFloat
-    putStr "angle? "
-    rt <- getFloat
-    let tree = customTree (r1,r2,g1,g2,b1,b2) (r,g,b) branches scl rt 
-        r1:r2:g1:g2:b1:b2:_ = fillList
-        r:g:b:_ = outlineList
-    publishFullFigure tree
-    putStrLn "Success!"
+tiling =  recursiveFigure_adv base tile_func 10 where
+    base = regularPolygon 100 6
+    tile_func = (\fig -> )
+   
+main = 
+    
+    
+-- main = do
+    -- putStrLn "Fill Colour? "
+    -- fillList <- getInts 6
+    -- putStrLn "Outline Colour? "
+    -- outlineList <- getInts 3
+    -- putStr "Number of branches? "
+    -- branches <- getInt
+    -- putStr "scaling Factor? "
+    -- scl <- getFloat
+    -- putStr "angle? "
+    -- rt <- getFloat
+    -- let tree = customTree (r1,r2,g1,g2,b1,b2) (r,g,b) branches scl rt 
+        -- r1:r2:g1:g2:b1:b2:_ = fillList
+        -- r:g:b:_ = outlineList
+    -- publishFullFigure tree
+    -- putStrLn "Success!"
 
