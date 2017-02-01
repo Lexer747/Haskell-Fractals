@@ -6,6 +6,10 @@ import Recursive
 import Constants
 import Colouring
 
+boundingBox = publishFullFigure $ centreFullFigure $ blueSq++greySq where
+    greySq = colourizeFig greyF greyL $ [findBBFullFigure blueSq]
+    blueSq = colourizeFig blueF blueL $ [[(rot 35),(scale 2 1)] |=> square]
+
 infiniSquare = publishFullFigure colouredFractal where
     colouredFractal = colourizeFig (14,14,14,14,14,14) (0,0,255) recursiveSquare
     recursiveSquare = recursivePolygon newSquare [(scale 0.9 0.9),(translate 10 10),(rot 0.01)] 1000
@@ -30,12 +34,9 @@ customTree fill outline branches scl rt = finalTree where
     leaf1 = map (\x -> [(translate 14 (-140)),(scale (scl) (scl)),(rot (-rt))] |=> x)
     leaf2 = map (\x -> [(translate 14 (-140)),(scale (scl) (scl)),(rot (rt))] |=> x)
     
-tiling =  recursiveFigure_adv base tile_func 10 where
-    base = regularPolygon 100 6
-    tile_func = (\fig -> )
-   
-main = 
-    
+-- tiling =  recursiveFigure_adv base tile_func 10 where
+    -- base = regularPolygon 100 6
+    -- tile_func = (\fig -> )
     
 -- main = do
     -- putStrLn "Fill Colour? "

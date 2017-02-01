@@ -272,5 +272,24 @@ matrixMult (x, y) (a, b, c, p, q, r) =
     ((x * a + y * b + c),(x * p + y * q + r))
 ```
 
-Since we will be dealing with figure's more than we will 
-    
+Now we can use function composition to allow us to transform any shape, 
+even if it is an incredibly long list of points.  
+``` Haskell
+(|=>) :: [Transformation] -> Polygon -> Polygon
+(|=>) trList poly = map f poly where
+    f = (\point -> foldr transformPoint point trList)
+```  
+This function is called `(|=>)` which is an strange name, but what it actually means
+is the function is called `|=>` and the surrounding brackets actually change it
+to be an infix-function. So it is called like such:  
+``` Haskell 
+[(translate 10 10),(rot 10)] |=> SomePoly
+```  
+If we compose one more composite function we can make this mathmatical even more useful:  
+``` Haskell
+transformFigure :: [Transformation] -> Figure -> Figure
+transformFigure trList = map f where
+    f = (\x -> trList |=> x)
+```  
+And with this function we can now transform any of our shape datatypes. This will be helpful
+later on.

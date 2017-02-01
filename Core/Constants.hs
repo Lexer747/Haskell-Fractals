@@ -1,5 +1,6 @@
 module Constants 
 (blueL
+,greyL
 ,blueF
 ,greyF
 ,square
@@ -14,6 +15,8 @@ import DataTypes
 -- |generic line colour
 blueL :: Outline
 blueL = (0,0,255)
+greyL :: Outline
+greyL = (238,238,238)
 
 -- |generic fill colour
 blueF :: Fill
