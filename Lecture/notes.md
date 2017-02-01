@@ -9,7 +9,7 @@
     * DataTypes.hs and Haskell's module structure
   * How we can use Haskell's type system to make the bounding box
 
-### What is SVG?
+## What is SVG?
 
 So an in-depth understanding of svg isn't crucial to understanding the rest of this program.
 Hence why i am going to cover only the basics. Firstly svg stands for Scalable Vector Graphics.
@@ -41,7 +41,7 @@ Finally the full SVG for two polygons would be as such:
 Which when rendered looks like such:  
 ![eg1](eg1.svg)
 
-### Using Haskell to Produce SVG
+## Using Haskell to Produce SVG
 
 Thinking about the SVG in a different way: if we think about what a polygon actually is,
 it can really be broken down into a list of points. Where each point is an x,y value.  
@@ -220,26 +220,30 @@ list then concatenate the result.
     width = (show x)
 ```
 
-The thing about this function is that it uses another function called `findCanvasFull` which 
-gets the height and width, we will come back to this later. 
+The thing about this function is that it uses another function called 
+`findCanvasFull` which gets the height and width, we will come back to
+this later. 
 
-So now we have a function which can take a list of coloured polygons and make the file. All we 
-need is to save this string to a file and will can make images out of lists.  
-I will skip details of this function becuase its beyond the scope of the lecture. But heres the function
+So now we have a function which can take a list of coloured polygons 
+and make the file. All we need is to save this string to a file and 
+will can make images out of lists. I will skip details of this function 
+becuase its beyond the scope of the lecture. But heres the function 
 name so we know what its doing when we see it: 
 ``` Haskell
 publishFullFigure :: FullFigure -> IO ()
 publishFullFigure fig = writeFile "svg/Output.svg" $ writeFullFigure fig
-```
+```  
+This `writeFile` function will output the String from `writeFullFigure`
+and put it in the file "svg/Output.svg" so that we can view it.
 
-This `writeFile` function will output the String from `writeFullFigure` and put it in the file
-"svg/Output.svg" so that we can view it.
+## Building the initial rectangle
 
-### Building the initial rectangle
+### Useful Maths
 
-We could just hard code the points into a list then output that using out functions. But that
-isn't reuseable and makes it brittle. So instead we use a base shape and just apply Affine 
-Transformations to the shapes. I'm not goin to cover how Affine Transformations work, 
+We could just hard code the points into a list then output that using
+out functions. But that isn't reuseable and makes it brittle. So
+instead we use a base shape and just apply Affine Transformations to
+the shapes. I'm not goin to cover how Affine Transformations work, 
 because thats too much maths. 
 
 But a TL:DR is this:  
@@ -263,15 +267,13 @@ shear :: Float -> Float -> Transformation
 shear phi psi = (1,tan x,0,tan y,1,0) where
     x = phi * (pi / 180)
     y = psi * (pi / 180)
-```
-
+```  
 Now we just need a function to apply a matrix mutliplication:  
 ``` Haskell
 matrixMult :: Point -> Transformation -> Point
 matrixMult (x, y) (a, b, c, p, q, r) = 
     ((x * a + y * b + c),(x * p + y * q + r))
-```
-
+```  
 Now we can use function composition to allow us to transform any shape, 
 even if it is an incredibly long list of points.  
 ``` Haskell
@@ -279,17 +281,128 @@ even if it is an incredibly long list of points.
 (|=>) trList poly = map f poly where
     f = (\point -> foldr transformPoint point trList)
 ```  
-This function is called `(|=>)` which is an strange name, but what it actually means
-is the function is called `|=>` and the surrounding brackets actually change it
-to be an infix-function. So it is called like such:  
+This function is called `(|=>)` which is an strange name, but what it
+actually means is the function is called `|=>` and the surrounding
+brackets actually change it to be an infix-function. So it is called
+like such:  
 ``` Haskell 
 [(translate 10 10),(rot 10)] |=> SomePoly
 ```  
-If we compose one more composite function we can make this mathmatical even more useful:  
+If we compose one more composite function we can make this mathmatical
+even more useful:  
 ``` Haskell
 transformFigure :: [Transformation] -> Figure -> Figure
 transformFigure trList = map f where
     f = (\x -> trList |=> x)
 ```  
-And with this function we can now transform any of our shape datatypes. This will be helpful
-later on.
+And with this function we can now transform any of our shape datatypes. 
+This will be helpful later on.
+
+### Actual code
+
+Finally the code for the blue square:  
+``` Haskell
+blueSq :: FullFigure
+blueSq = [(blueF,blueL,[(rot 35),(scale 2 1)] |=> square)]
+```  
+There are a lot of brackets to get your head around, but it is only
+a list of a single 3 valued tuple. `[(x,y,z)]` Where x is the fill of
+the shape, y is the outline and z is the polygon. Lets break down z,   
+``` Haskell
+[(rot 35),(scale 2 1)] |=> square
+```  
+We saw this `rot` and `scale` functions earlier, they created a matrix
+has the mutliplications nessecary to perform a rotation of 35°, and scale
+the shape by 2 times its width and 1 times its height. Finally the `|=>`
+function which will apply all those transformations to the `square`. 
+`square` is the only hard-coded part of this, and its only for simplicity
+in this demo. There is a function we could have used to create any
+regular polygon but thats for another time.  
+``` Haskell
+square :: Polygon
+square = [(0,0),(0,100),(100,100),(100,0)]
+```  
+As you can see its simply a list of points, the four lines of the square
+are created by the svg engine drawing a line from point to point, and 
+implicitly one more line back to the start.
+
+So the result of this `blueSq` function if we convert it to svg is:  
+![eg5](eg5.svg)  
+Well thats not a square...
+
+What happened is, the svg engine treats the top left corner as 0,0. And 
+since all our maths for transformations rotates everything about 0,0 we
+actually rotate most of the square into negative pixels.
+Lets check the svg produced by our program:  
+``` svg
+<svg height="81.91521" width="221.18805" xmlns="http://www.w3.org/2000/svg">
+    <polygon points="0.0,0.0 57.357643,81.91521 221.18805,-32.80008 163.83041,-114.71529 " style="fill:#0000FF;stroke:rgb(0,0,255);stroke-width:0.1"/>
+</svg>
+```  
+Theres a few negatives there, so i wrote one more function which will
+move a figure so that the any negatives are accounted for and the
+entire figure is translated to compensate for the negative values. I 
+won't go into how this function works, but it does.
+
+After running it through that function, then converting it to svg we
+get:  
+![eg6](eg6.svg)  
+That looks better!
+
+## Building the Bounding Box
+
+First we need to revist a function we brushed over earlier 
+`findCanvasFull` which we used to get the height and width of a Figure
+so that we could add to the svg metadata tags:  
+``` Haskell
+writeFullFigure :: FullFigure -> String
+writeFullFigure f = "<svg height=\""++height++"\" width=\""++width++"\" xmlns=\"http://www.w3.org/2000/svg\">"++(concatMap writeFullPolygon f)++"</svg>" where
+    (x,y) = (findCanvasFull f)
+    height = (show y)
+    width = (show x)
+```  
+Lets look at the definition for `findCanvasFull` since currently its a 
+black box:
+``` Haskell
+findCanvasFull :: FullFigure -> Point
+findCanvasFull fig = (findBBFigure $ fullFigtoFig fig) !! 2
+```  
+First lets explain the random `!!` which is the haskell infix function
+getting a specified element from a list. So `!! 2` gets the 3rd element
+of the list. Second `fullFigtoFig` which is kind of self-explanatory
+it takes a FullFigure and converts it to a Figure.  
+``` Haskell
+fullFigtoFig :: FullFigure -> Figure
+```  
+Finally `findBBFigure` which is core part of this function. It stands
+for find-bounding-box-of-Figure. Which is sounds awfully convenient...
+
+It turns out that the best way to get the maxium height and width for
+any shape is to find its bounding box. Therefore creating the bouding 
+box for the blue square is already done!
+
+``` Haskell
+findBBFigure :: Figure -> Polygon
+findBBFigure = findBBPolygon . concat 
+
+findBBFullFigure :: FullFigure -> Polygon
+findBBFullFigure = findBBFigure . fullFigtoFig
+
+findBBPolygon :: Polygon -> Polygon
+findBBPolygon = findBB_help . unzip 
+
+findBB_help :: ([Float],[Float]) -> Polygon
+findBB_help (x,y) = [(minx, miny),(minx, maxy), (maxx, maxy),(maxx, miny)] where
+    minx = minimum x
+    maxx = maximum x
+    miny = minimum y
+    maxy = maximum y
+```  
+The full stop means function composition, but in the more mathmatical sense
+so this code below holds:
+``` Haskell
+findBBFigure   = findBBPolygon . concat
+findBBFigure x = findBBPolygon . concat x
+findBBFigure x = findBBPolygon (concat x)
+```  
+All of the above definitions are exactly the same in haskell's eyes.

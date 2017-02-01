@@ -7,8 +7,8 @@ import Constants
 import Colouring
 
 boundingBox = publishFullFigure $ centreFullFigure $ blueSq++greySq where
-    greySq = colourizeFig greyF greyL $ [findBBFullFigure blueSq]
-    blueSq = colourizeFig blueF blueL $ [[(rot 35),(scale 2 1)] |=> square]
+    greySq = [(greyF,greyL,findBBFullFigure blueSq)]
+    blueSq = [(blueF,blueL,[(rot 35),(scale 2 1)] |=> square)]
 
 infiniSquare = publishFullFigure colouredFractal where
     colouredFractal = colourizeFig (14,14,14,14,14,14) (0,0,255) recursiveSquare

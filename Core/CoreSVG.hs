@@ -110,7 +110,7 @@ findBBPolygon = findBB_help . unzip
 
 {- The actual fromula for finding the boundingbox 
 It works by receiving a pair of (all x's,all y's) and simply orders
-then correctly. -}
+them correctly. -}
 findBB_help :: ([Float],[Float]) -> Polygon
 findBB_help (x,y) = [(minx, miny),(minx, maxy), (maxx, maxy),(maxx, miny)] where
     minx = minimum x
