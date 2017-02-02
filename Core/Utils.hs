@@ -59,7 +59,7 @@ transformFullFigure trList = map f where
     f = (\x -> transformFullPoly trList x)
 
 changeColour :: (Fill, Outline) -> FullPolygon -> FullPolygon
-changeColour (newF,newC) (oldF,oldC,poly) = (newF, newC, poly)
+changeColour (newF,newC) (_,_,poly) = (newF, newC, poly)
 
 applyColour :: [(Fill,Outline)] -> Figure -> FullFigure
 applyColour [] [] = []
