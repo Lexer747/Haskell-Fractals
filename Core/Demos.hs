@@ -6,6 +6,7 @@ import Recursive
 import Constants
 import AdvConstants
 import Colouring
+import ExtraTransformations
 
 boundingBox = publishFullFigure $ centreFullFigure $ blueSq++greySq where
     greySq = [(greyF,greyL,findBBFullFigure blueSq)]
@@ -35,11 +36,11 @@ customTree fill outline branches scl rt = finalTree where
     leaf1 = map (\x -> [(translate 14 (-140)),(scale (scl) (scl)),(rot (-rt))] |=> x)
     leaf2 = map (\x -> [(translate 14 (-140)),(scale (scl) (scl)),(rot (rt))] |=> x)
     
-publishTiling =  publishFullFigure $ colourizeFig greyF blueL $ centreFigure $ concat $ concat tiling
-tiling =  recursiveFigure_adv [[base]] tile_func 2 where
-    base = regularPolygon 100 6
-    tile_func = (\fig -> (tile 60 fig)++(tile 120 fig)++(tile 180 fig)++(tile 240 fig)++(tile 300 fig)++(tile 360 fig))
-    tile r = map (\x -> [(translate 0 0),(scale 0.75 0.75),(rot r)] |=> x)
+publishTiling =  publishFullFigure $ colourizeFig greyF blueL $ centreFigure $ reverse $ concat $ concat tiling
+tiling =  recursiveFigure_adv [[base]] tile_func 5 where
+    base = regularPolygon 50 6
+    tile_func = (\fig -> (tile 0 fig)++(tile 60 fig)++(tile 120 fig)++(tile 180 fig)++(tile 240 fig)++(tile 300 fig))
+    tile r = map (\x -> [(scale 0.75 0.75),(moveEuclidean 350 r)] |=> x)
     
 main = publishTiling
     

@@ -8,14 +8,10 @@
     * [Affine transformations](https://en.wikipedia.org/wiki/Affine_transformation)
     * DataTypes.hs and Haskell's module structure
   * How we can use Haskell's type system to make the bounding box
+* Understand how the tree was created (hopefully...)
 
 ## What is SVG?
 
-So an in-depth understanding of svg isn't crucial to understanding the rest of this program.
-Hence why i am going to cover only the basics. Firstly svg stands for Scalable Vector Graphics.
-And it is essentially a mark-up language which can be used to create vector shapes.
-For our purposes we can consider svg to be made of 2 main components:
-  * A start tag, which contains the attributes and metadata about the graphic.  
 ``` svg
 <svg height="200" width="200" xmlns="http://www.w3.org/2000/svg"> shape stuff here </svg>
 ```
@@ -25,11 +21,6 @@ For our purposes we can consider svg to be made of 2 main components:
 <polygon points="0,0 0,100 100,100 100,0 " style="fill:#00FF00;stroke:rgb(255,0,0);stroke-width:5"/>
 ```
 
-This polygon we just defined is a list of x,y points. It goes from one point to the next
-so this will draw a line from 0,0 to 0,100 then to 100,100 then 100,0 and
-implicitly it goes back to the starting point as its a polygon.  
-It also has fill specified by the Hex code and the outline is 5 pixels thick and is coloured
-by the rgb value.  
 Finally the full SVG for two polygons would be as such:  
 ``` svg
 <svg height="200" width="200" xmlns="http://www.w3.org/2000/svg">
@@ -43,20 +34,15 @@ Which when rendered looks like such:
 
 ## Using Haskell to Produce SVG
 
-Thinking about the SVG in a different way: if we think about what a polygon actually is,
-it can really be broken down into a list of points. Where each point is an x,y value.  
-By looking at a snippet from DataTypes.hs I have made some new types in Haskell which 
-are essentially this concept. This will allow us to manipulate and take advantage of 
-using a functional language to create intresting shapes.  
+Thinking about the SVG in a different way.
+ 
 ``` Haskell
 type Point          = (Float, Float) --generic point of polygon
 type Polygon        = [Point] --generic shape
 type Figure         = [Polygon] --a figure contains a list of shapes
 ```
 
-The code above now gives more meaningful names to the types we are going to use, but it doesn't
-actually do anything yet. For that we need functions!  
-The first function we are going to look at is called `writePoint` and it is defined as such:  
+Using these types:
 ``` Haskell
 {- This function takes a Point and returns a string which is formatted as
 an svg point. -}
@@ -64,55 +50,28 @@ writePoint :: Point -> String
 writePoint (x,y) = (show x)++","++(show y)++" "
 ```
 
-Since this is the first function we are looking at; lets go through each step in this function.
-First the type definition. Which is called a type definition becuase it specifies the type of the function
-and since Haskell is all about type checking its considered good practice to tell Haskell what type our function
-is going to be explicitly.  
-``` Haskell 
-writePoint :: Point -> String
-```
-
-All this line does is tell the compilier what the function is, we are saying, "I would like a function called
-writePoint, who's type is Point to String". This line is actually completely optional as we can compile just the function definition and Haskell will infer the types:  
+---
+  
 ![eg2](eg2.jpg)  
 And the type of this function is now:
 ``` Haskell
 writePoint (show a1, show a) => (a, a1) -> [Char]
 ```
-
-Although this type is now much harder to read and it less expressive compared to what we started with even though its still
-the same function. Now for the actual code part of the function:  
-``` Haskell
-writePoint (x,y) = (show x)++","++(show y)++" "
-```
-
-Firstly this function takes a point as it's argument and since we are 
-garenteed to know its type we can safely pattern match out each side
-of the tuple. Hence the parameter is (x,y). Then the rest of the function
-is pretty simple if we know what show does (++ is concatenate). And show's type is as follows:  
+ 
 ``` Haskell
 show :: Show a => a -> String
 ```
 
-Which is basically anything to String, which is pretty helpful since we need the point to become a
-string. So writePoint will convert the x to a string, concatenate it with "," then
-concatenate that with y which is also converted to a string, then finally concatenate
-an extra " ". Giving us a function which is essentially a .toString for points.
-
 ---
 
-Now we need a function which produces the full SVG polygon tag with all the attributes included.
-And for that we need some more types from DataTypes.hs:  
+More types from DataTypes.hs:  
+
 ``` Haskell
 type FullPolygon    = (Fill, Outline, Polygon)
 
 type Outline        = (Int,Int,Int)
 type Fill           = (Int,Int,Int,Int,Int,Int)
 ```
-
-Think of Outline line as the stroke r,g,b values, and Fill is the hex values
-for the fill of the polygon. And we have already seen a polygon type, so this FullPolygon
-type is just a tuple of the key peices of infomation we need for the SVG tag.  
 Now the function which actually produces the String:  
 ``` Haskell
 writeFullPolygon :: FullPolygon -> String
@@ -120,13 +79,6 @@ writeFullPolygon ((r1,r2,g1,g2,b1,b2),(r,g,b),p) =
     "<polygon points=\""++(concatMap writePoint p)++"\" style=\"fill:#"++(f)++";stroke:rgb("++(show r)++","++(show g)++","++(show b)++");stroke-width:"++(show strokewidth)++"\"/>\n" where
     f = (writeHex r1)++(writeHex r2)++(writeHex g1)++(writeHex g2)++(writeHex b1)++(writeHex b2)
 ```
-
-First the type of this function is pretty self-explanatory, it takes a FullPolygon
-and outputs a String which is exactly what we are looking for. Now lets look at each section of the 
-code, first the parameters:
-``` Haskell
-writeFullPolygon ((r1,r2,g1,g2,b1,b2),(r,g,b),p)
-``` 
 
 Looking closely this is a heaviliy Pattern matched tuple of tuples. We extract all
 the colour infomation right here, and also seperate the polygon from its metadata.  
@@ -137,42 +89,15 @@ Fill <= (r1,r2,g1,g2,b1,b2)
 Outline <= (r,g,b)
 Polygon <= p
 ```
-Next we should look at the actual function definition which tells Haskell how to convert
-these parameters into the String we want:  
+
+Meat of the function:
 ``` Haskell
 "<polygon points=\""++(concatMap writePoint p)
 ```
-
-The first part of this definition is the part which will never change no matter which 
-Polygon is passed as the parameter. Then we use the concatenate function ++ to join
-two Strings together. Our second String is an interesting beast:  
-``` Haskell
-concatMap writePoint p
-```
-
-This is a combination of two functions, one we have seen before writePoint, and a new one
-concatMap. Also we know p is a Polygon, so what this might look like to the untrained eye
-is that writePoint takes a Polygon as an argument, and the result of that is then
-passed to concatMap. But Haskell works from left to right, so concatMap
-takes writePoint as an argument, then that takes the argument p.
- 
-This might sound very strange at first, but it is totally ok and even encouraged to pass
-whole functions as arguments to other functions. It is also helpful to know what type
-concatMap is, and we can see this by asking Haskell:  
+Function composition:   
 ![eg3](eg3.jpg)  
-So this a new argument we haven't see before, its the first one in brackets. `(a -> [b])` All this means is that
-concatMap takes as its first argument a function which goes from any type `a` to a list
-of different but still any type `[b]`.  
-In our function we pass `concatMap` the function `writePoint` then finally we pass it a Polygon
-which completes our function.  
-Now what it actually does is `concatMap` will apply the function it is passed to every
-item in the list `a` and then concatenate the resulting list of lists into a single list.
 
-So in our case we pass it a function which takes points and makes them a list of Char
-and then we pass it a list of Points, so by concatenating all the results of writePoint,
-we get a full list of all the points of the Polygon.
-
-Now we understand the hard part of the function we just have the easy stuff:  
+Boring sutff:  
 ``` Haskell
 ++"\" style=\"fill:#"++(f)++";stroke:rgb("++(show r)++","++(show g)++","++(show b)++");stroke-width:"++(show strokewidth)++"\"/>\n" where
     f = (writeHex r1)++(writeHex r2)++(writeHex g1)++(writeHex g2)++(writeHex b1)++(writeHex b2)
@@ -185,15 +110,13 @@ writeHex x = map toUpper (showHex x [])
 ```
 
 ---
-
-Finally we can look at the final SVG generation function, but first more types! Once again, these types are from DataTypes.hs:  
+More types! Once again, these types are from DataTypes.hs:  
 ``` Haskell
 type FullFigure     = [FullPolygon]
 ``` 
 
-This type is just giving a list of FullPolygon's a better type name so its 
-easier to determine what a functions use is. Now the big function which is what we will use the 
-generate a bounding box demo.  
+The big function which is what we will use the  generate a
+bounding box demo.  
 ``` Haskell
 writeFullFigure :: FullFigure -> String
 writeFullFigure f = "<svg height=\""++height++"\" width=\""++width++"\" xmlns=\"http://www.w3.org/2000/svg\">"++(concatMap writeFullPolygon f)++"</svg>" where
@@ -201,18 +124,12 @@ writeFullFigure f = "<svg height=\""++height++"\" width=\""++width++"\" xmlns=\"
     height = (show y)
     width = (show x)
 ```
-
-The type of `writeFullFigure` is self-explanatory again as we want to go from a list of FullPolygon's to an SVG String. And you 
-will notice that the actual contents of the function are very similar to `writeFullPolygon`. As it is a very similar
-syntax due to the nature of mark-up languages. So let's mix it up and start by looking at the second part
-of the fucntion as this contains the more important part:  
+The important part:  
 ``` Haskell
 (concatMap writeFullPolygon p)++"</svg>"
 ```
 
-Its our friend `concatMap` and the function application is the same as `writeFullPolygon`. 
-We pass `concatMap` the function `writeFullPolygon` and it will apply it to every item in the
-list then concatenate the result.  
+The boring attribute part: 
 ``` Haskell
 "<svg height=\""++height++"\" width=\""++width++"\" xmlns=\"http://www.w3.org/2000/svg\">" where
     (x,y) = (findCanvasFull f)
@@ -224,11 +141,9 @@ The thing about this function is that it uses another function called
 `findCanvasFull` which gets the height and width, we will come back to
 this later. 
 
-So now we have a function which can take a list of coloured polygons 
-and make the file. All we need is to save this string to a file and 
-will can make images out of lists. I will skip details of this function 
-becuase its beyond the scope of the lecture. But heres the function 
-name so we know what its doing when we see it: 
+---
+
+Saving the String to a file:
 ``` Haskell
 publishFullFigure :: FullFigure -> IO ()
 publishFullFigure fig = writeFile "svg/Output.svg" $ writeFullFigure fig
@@ -240,16 +155,12 @@ and put it in the file "svg/Output.svg" so that we can view it.
 
 ### Useful Maths
 
-We could just hard code the points into a list then output that using
-out functions. But that isn't reuseable and makes it brittle. So
-instead we use a base shape and just apply Affine Transformations to
-the shapes. I'm not goin to cover how Affine Transformations work, 
-because thats too much maths. 
+Affine transformations! (read the wiki if you actually want to understand more)
 
-But a TL:DR is this:  
+TL:DR  
 ![eg4](eg4.jpg)  
 We convert these transformations into matrices as in Utils.hs and we get functions which do all this maths
-for us.  
+for us. This is when haskell shines!
 ``` Haskell
 type Transformation = (Float, Float, Float, Float, Float, Float)
 
@@ -281,10 +192,8 @@ even if it is an incredibly long list of points.
 (|=>) trList poly = map f poly where
     f = (\point -> foldr transformPoint point trList)
 ```  
-This function is called `(|=>)` which is an strange name, but what it
-actually means is the function is called `|=>` and the surrounding
-brackets actually change it to be an infix-function. So it is called
-like such:  
+
+example: 
 ``` Haskell 
 [(translate 10 10),(rot 10)] |=> SomePoly
 ```  
@@ -306,25 +215,14 @@ blueSq :: FullFigure
 blueSq = [(blueF,blueL,[(rot 35),(scale 2 1)] |=> square)]
 ```  
 There are a lot of brackets to get your head around, but it is only
-a list of a single 3 valued tuple. `[(x,y,z)]` Where x is the fill of
-the shape, y is the outline and z is the polygon. Lets break down z,   
+a list of a single 3 valued tuple. `[(x,y,z)]` Where `x` is the fill of
+the shape, `y` is the outline and `z` is the polygon. `z` extracted is:
 ``` Haskell
 [(rot 35),(scale 2 1)] |=> square
-```  
-We saw this `rot` and `scale` functions earlier, they created a matrix
-has the mutliplications nessecary to perform a rotation of 35°, and scale
-the shape by 2 times its width and 1 times its height. Finally the `|=>`
-function which will apply all those transformations to the `square`. 
-`square` is the only hard-coded part of this, and its only for simplicity
-in this demo. There is a function we could have used to create any
-regular polygon but thats for another time.  
-``` Haskell
+
 square :: Polygon
 square = [(0,0),(0,100),(100,100),(100,0)]
 ```  
-As you can see its simply a list of points, the four lines of the square
-are created by the svg engine drawing a line from point to point, and 
-implicitly one more line back to the start.
 
 So the result of this `blueSq` function if we convert it to svg is:  
 ![eg5](eg5.svg)  
@@ -339,15 +237,20 @@ Lets check the svg produced by our program:
     <polygon points="0.0,0.0 57.357643,81.91521 221.18805,-32.80008 163.83041,-114.71529 " style="fill:#0000FF;stroke:rgb(0,0,255);stroke-width:0.1"/>
 </svg>
 ```  
-Theres a few negatives there, so i wrote one more function which will
-move a figure so that the any negatives are accounted for and the
-entire figure is translated to compensate for the negative values. I 
-won't go into how this function works, but it does.
 
-After running it through that function, then converting it to svg we
+After running it through a function which fixes our problem, then converting it to svg we
 get:  
 ![eg6](eg6.svg)  
 That looks better!
+
+And our new svg looks like such:
+
+``` svg
+<svg height="196.6305" width="221.18805" xmlns="http://www.w3.org/2000/svg">
+    <polygon points="0.0,114.71529 57.357643,196.6305 221.18805,81.91521 163.83041,0.0 " style="fill:#0000FF;stroke:rgb(0,0,255);stroke-width:0.1"/>
+</svg>
+```  
+no negatives!
 
 ## Building the Bounding Box
 
@@ -367,19 +270,12 @@ black box:
 findCanvasFull :: FullFigure -> Point
 findCanvasFull fig = (findBBFigure $ fullFigtoFig fig) !! 2
 ```  
-First lets explain the random `!!` which is the haskell infix function
-getting a specified element from a list. So `!! 2` gets the 3rd element
-of the list. Second `fullFigtoFig` which is kind of self-explanatory
-it takes a FullFigure and converts it to a Figure.  
+First lets explain the random `!!` which is the haskell infix function.
 ``` Haskell
 fullFigtoFig :: FullFigure -> Figure
 ```  
 Finally `findBBFigure` which is core part of this function. It stands
-for find-bounding-box-of-Figure. Which is sounds awfully convenient...
-
-It turns out that the best way to get the maxium height and width for
-any shape is to find its bounding box. Therefore creating the bouding 
-box for the blue square is already done!
+for *find-bounding-box-of-Figure*. Which is sounds awfully convenient...
 
 ``` Haskell
 findBBFigure :: Figure -> Polygon
@@ -399,10 +295,71 @@ findBB_help (x,y) = [(minx, miny),(minx, maxy), (maxx, maxy),(maxx, miny)] where
     maxy = maximum y
 ```  
 The full stop means function composition, but in the more mathmatical sense
-so this code below holds:
+so this code below is equal:
 ``` Haskell
 findBBFigure   = findBBPolygon . concat
 findBBFigure x = findBBPolygon . concat x
 findBBFigure x = findBBPolygon (concat x)
 ```  
-All of the above definitions are exactly the same in haskell's eyes.
+
+That means the function for the grey bounding box is simply:  
+``` Haskell
+greySq = [(greyF,greyL,findBBFullFigure blueSq)]
+```
+
+Then the code for the full image you can see on the README is:
+``` Haskell
+boundingBox = publishFullFigure $ centreFullFigure $ blueSq++greySq where
+    greySq = [(greyF,greyL,findBBFullFigure blueSq)]
+    blueSq = [(blueF,blueL,[(rot 35),(scale 2 1)] |=> square)]
+```
+
+Rendered it looks like this:  
+![finished box](demo.svg)
+
+---
+
+## The tree
+
+Since we have most of the ground work; the only real extra code we need is a way to write
+a recursive shape. This can be done in one function since we can compose lots of functions
+to get the complexity of a tree:
+
+``` Haskell
+recursivePolygon_adv :: a -> (a -> a) -> Int -> [a]
+recursivePolygon_adv basePolygon transFunc iter =
+    if iter > 0
+        then basePolygon:(recursivePolygon_adv (transFunc basePolygon) transFunc (iter - 1))
+        else []
+
+recursiveFigure_adv :: [a] -> (a -> a) -> Int -> [[a]]
+recursiveFigure_adv baseFigure transFunc iter =
+    map f baseFigure where
+    f = (\poly -> recursivePolygon_adv poly transFunc\\ iter)
+```
+
+Then using these functions to create the tree:
+
+``` Haskell
+recTree = publishFullFigure $ colourizeFig greyF blueL finalTree where
+    finalTree = centreFigure $ concat $ concat tree
+    tree = recursiveFigure_adv base treeFunc 10
+    base = [[[(scale 0.4 1.4)] |=> square]]
+    treeFunc = (\fig -> (leaf1 fig)++(leaf2 fig))
+    leaf1 = map (\x -> [(translate 14 (-140)),(scale 0.75 0.75),(rot (-20))] |=> x)
+    leaf2 = map (\x -> [(translate 0 (-140)),(scale 0.75 0.75),(rot 20)] |=> x)
+```
+
+Which when rendered looks like:
+![finished tree](demoTree.svg)
+
+Thanks for listening!
+
+## END
+
+Pretty pictures also made with my code:  
+![pretty1](pretty1.svg)
+
+![pretty2](pretty2.svg)
+
+![pretty3](pretty3.svg)
