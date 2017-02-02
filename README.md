@@ -115,7 +115,24 @@ which can perform the transformations and rebuild the figure all in one paramete
 Hence explaining what `treeFunc` is doing. It performs a transformation on every polygon in base,
 then appends this to another set of transformations. Which is also on every polygon in base.
 
+---
 
+###Tiling Fractal
+
+Not sure if this is a well known fractal but i like the way it looks so i thought it deserved a place on the readme:
+
+![tiling](https://cdn.rawgit.com/Lexer747/Haskell-Fractals/d4be5c5f/Core/svg/Tiling_Demo.svg)
+
+This is also less simple but not too much of a stretch to get your head around. It uses the same recursive
+function as the tree just a slightly different transformation function.
+
+``` Haskell
+publishTiling =  publishFullFigure $ colourizeFig greyF blueL $ centreFigure $ reverse $ concat $ concat tiling
+tiling =  recursiveFigure_adv [[base]] tile_func 5 where
+    base = regularPolygon 50 6
+    tile_func = (\fig -> (tile 0 fig)++(tile 60 fig)++(tile 120 fig)++(tile 180 fig)++(tile 240 fig)++(tile 300 fig))
+    tile r = map (\x -> [(scale 0.75 0.75),(moveEuclidean 350 r)] |=> x)
+```
 
 ## Author
 
