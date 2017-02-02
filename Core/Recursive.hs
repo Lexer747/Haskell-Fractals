@@ -31,4 +31,4 @@ recursivePolygon_adv basePolygon transFunc iter =
 recursiveFigure_adv :: [a] -> (a -> a) -> Int -> [[a]]
 recursiveFigure_adv baseFigure transFunc iter =
     map f baseFigure where
-    f = (\poly -> recursivePolygon_adv poly transFunc  iter)
+    f = (\poly -> recursivePolygon_adv poly transFunc iter)

@@ -6,7 +6,7 @@ import Recursive
 import Constants
 
 depth :: Int
-depth = 12
+depth = 9
 
 brownF = (11,8,7,3,3,3)
 brownO = (184,115,51)
