@@ -127,11 +127,11 @@ This is also less simple but not too much of a stretch to get your head around. 
 function as the tree just a slightly different transformation function.
 
 ``` Haskell
-publishTiling =  publishFullFigure $ colourizeFig greyF blueL $ centreFigure $ reverse $ concat $ concat tiling
-tiling =  recursiveFigure_adv [[base]] tile_func 5 where
-    base = regularPolygon 50 6
+publishTiling =  publishFullFigure $ fullRNG 19 $ centreFigure $ reverse $ concat $ concat tiling
+tiling =  recursiveFigure_adv [[base]] tile_func 6 where
+    base = regularPolygon 200 6
     tile_func = (\fig -> (tile 0 fig)++(tile 60 fig)++(tile 120 fig)++(tile 180 fig)++(tile 240 fig)++(tile 300 fig))
-    tile r = map (\x -> [(scale 0.75 0.75),(moveEuclidean 350 r)] |=> x)
+    tile r = map (\x -> [(scale 0.5 0.5),(moveEuclidean 400 r)] |=> x)
 ```
 
 ## Author
