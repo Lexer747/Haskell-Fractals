@@ -134,6 +134,12 @@ tiling =  recursiveFigure_adv [[base]] tile_func 6 where
     tile r = map (\x -> [(scale 0.5 0.5),(moveEuclidean 400 r)] |=> x)
 ```
 
+###Sierinski Triangle
+
+A classic fractal. Wikipedia article [here](https://en.wikipedia.org/wiki/Sierpinski_triangle)
+
+![Triangle]()
+
 ## Author
 
 Code edited and Maintained by Alex Lewis

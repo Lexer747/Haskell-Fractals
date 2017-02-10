@@ -42,10 +42,13 @@ tiling =  recursiveFigure_adv [[base]] tile_func 6 where
     tile_func = (\fig -> (tile 0 fig)++(tile 60 fig)++(tile 120 fig)++(tile 180 fig)++(tile 240 fig)++(tile 300 fig))
     tile r = map (\x -> [(scale 0.5 0.5),(moveEuclidean 400 r)] |=> x)
     
-sierpinski =  publishFullFigure $ colourizeFig greyF blueL $ centreFigure $ transformFigure [(rot 180)] $ concat $ concat $ recursiveFigure_adv [[base]] tile_func 8 where
+sierpinski =  publishFullFigure $ fullRNG 1 $ centreFigure $ transformFigure [(rot 180)] $ concat $ concat $ recursiveFigure_adv [[base]] tile_func 11 where
     base = regularPolygon 300 3
     tile_func = (\fig -> (tile 0 fig)++(tile 120 fig)++(tile 240 fig))
-    tile r = map (\x -> [(scale 0.33 0.33),(moveEuclidean 300 r)] |=> x)
+    tile r = map (\x -> [(scale 0.5 0.5),(moveEuclidean 300 r)] |=> x)
+
+
+
 main = sierpinski
     
 -- main = do
