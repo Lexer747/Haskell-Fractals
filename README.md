@@ -138,7 +138,20 @@ tiling =  recursiveFigure_adv [[base]] tile_func 6 where
 
 A classic fractal. Wikipedia article [here](https://en.wikipedia.org/wiki/Sierpinski_triangle)
 
-![Triangle]()
+![Triangle](https://cdn.rawgit.com/Lexer747/Haskell-Fractals/a3ffb104/Core/svg/Sierpinski_2.svg)
+
+This one is basically a tiling fractal so the code is really similar to the hexagon one above.
+
+``` Haskell 
+sierpinski =  publishFullFigure $ fullRNG 1 $ centreFigure $ transformFigure [(rot 180)] $ concat $ concat $ recursiveFigure_adv [[base]] tile_func 11 where
+    base = regularPolygon 300 3
+    tile_func = (\fig -> (tile 0 fig)++(tile 120 fig)++(tile 240 fig))
+    tile r = map (\x -> [(scale 0.5 0.5),(moveEuclidean 300 r)] |=> x)
+```
+
+`moveEuclidean` is a function allows for a transformation in a direction specfied in degrees
+that moves the specfied number of pixels. This just uses simple trig to do this, its
+found in `extraTransformations.hs`.
 
 ## Author
 
