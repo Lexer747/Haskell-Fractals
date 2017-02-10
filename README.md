@@ -138,6 +138,8 @@ tiling =  recursiveFigure_adv [[base]] tile_func 6 where
 that moves the specfied number of pixels. This just uses simple trig to do this, its
 found in `extraTransformations.hs`.
 
+---
+
 ###Sierpinski Triangle
 
 A classic fractal. Wikipedia article [here](https://en.wikipedia.org/wiki/Sierpinski_triangle)
@@ -152,6 +154,8 @@ sierpinski =  publishFullFigure $ colourizeFig greyF blueL $ centreFigure $ tran
     tile_func = (\fig -> (tile 0 fig)++(tile 120 fig)++(tile 240 fig))
     tile r = map (\x -> [(scale 0.5 0.5),(moveEuclidean 300 r)] |=> x)
 ```
+
+---
 
 ## Author
 
