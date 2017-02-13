@@ -33,15 +33,6 @@ firstTree = colourizeFig greyF blueL finalTree where
     treeFunc = (\fig -> (leaf1 fig)++(leaf2 fig))
     leaf1 = map (\x -> [(translate 60 (-100)),(scale 0.75 0.75),(rot (-25))] |=> x)
     leaf2 = map (\x -> [(translate (-47) (-87)),(scale 0.75 0.75),(rot 25)] |=> x)
-
-customTree :: Fill -> Outline -> Int -> Float -> Float -> FullFigure
-customTree fill outline branches scl rt = finalTree where
-    finalTree = colourizeFig fill outline $ centreFigure $ concat $ concat tree
-    tree = recursiveFigure_adv base treeFunc branches
-    base = [[[(scale 0.4 1.4)] |=> square]]
-    treeFunc = (\fig -> (leaf1 fig)++(leaf2 fig))
-    leaf1 = map (\x -> [(translate 14 (-140)),(scale (scl) (scl)),(rot (-rt))] |=> x)
-    leaf2 = map (\x -> [(translate 14 (-140)),(scale (scl) (scl)),(rot (rt))] |=> x)
     
 fullTiling :: FullFigure
 fullTiling = fullRNG 19 $ centreFigure $ reverse $ concat $ concat tiling
@@ -74,6 +65,19 @@ main = do
     namedPublish (folder++"sierpinski") sierpinski
     putStrLn "Finished..."
     
+    
+    
+    
+    
+
+-- customTree :: Fill -> Outline -> Int -> Float -> Float -> FullFigure
+-- customTree fill outline branches scl rt = finalTree where
+    -- finalTree = colourizeFig fill outline $ centreFigure $ concat $ concat tree
+    -- tree = recursiveFigure_adv base treeFunc branches
+    -- base = [[[(scale 0.4 1.4)] |=> square]]
+    -- treeFunc = (\fig -> (leaf1 fig)++(leaf2 fig))
+    -- leaf1 = map (\x -> [(translate 14 (-140)),(scale (scl) (scl)),(rot (-rt))] |=> x)
+    -- leaf2 = map (\x -> [(translate 14 (-140)),(scale (scl) (scl)),(rot (rt))] |=> x)
 -- main = do
     -- putStrLn "Fill Colour? "
     -- fillList <- getInts 6
