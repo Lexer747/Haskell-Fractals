@@ -1,16 +1,9 @@
-module Constants 
-(blueL
-,greyL
-,blueF
-,greyF
-,square
-,triangle
-,ellipse
-,semiCircle
-,blueSquare
-)where
+module Constants where
 
 import DataTypes
+
+--constant for the stroke-width of the any svg string made
+strokewidth = 0.1
 
 -- |generic line colour
 blueL :: Outline

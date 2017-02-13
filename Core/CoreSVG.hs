@@ -12,9 +12,6 @@ import DataTypes
 import Data.Char (toUpper)
 import Numeric (showHex)
 
---constant for the stroke-width of the any svg string made
-strokewidth = 0.1
-
 {- This function takes a Point and returns a string which is formatted as
 an svg point. -}
 writePoint :: Point -> String 
