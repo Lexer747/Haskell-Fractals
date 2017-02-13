@@ -1,1 +1,0 @@
-ghc -O2 -threaded -rtsopts -odir .\bin\ -hidir .\bin\ -W <file>
