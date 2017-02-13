@@ -4,6 +4,7 @@ module CoreIO
 ,getFloat
 ,publishFullFigure_dep
 ,publishFullFigure
+,namedPublish
 )where
 
 import DataTypes
@@ -18,6 +19,10 @@ publishFullFigure_dep fig = writeFile "svg/Output.svg" $ writeFullFigure_dep fig
 -- useage: publishFullFigure figureToView => ()
 publishFullFigure :: FullFigure -> IO ()
 publishFullFigure fig = writeFile "svg/Output.svg" $ writeFullFigure fig
+
+namedPublish :: String -> FullFigure -> IO ()
+namedPublish file fig = writeFile (file++".svg") $ writeFullFigure fig
+
 
 -- |A function which takes a number which defines the number of ints to get from the cmdLine
 getInts :: Int -> IO [Int]

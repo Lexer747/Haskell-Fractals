@@ -8,24 +8,31 @@ import AdvConstants
 import Colouring
 import ExtraTransformations
 
-boundingBox = publishFullFigure $ centreFullFigure $ blueSq++greySq where
+--change this to decide where the output svg files go.
+folder :: String
+folder = "svg/Demo/"
+
+boundingBox :: FullFigure
+boundingBox = centreFullFigure $ blueSq++greySq where
     greySq = [(greyF,greyL,findBBFullFigure blueSq)]
     blueSq = [(blueF,blueL,[(rot 35),(scale 2 1)] |=> square)]
 
-infiniSquare = publishFullFigure colouredFractal where
-    colouredFractal = colourizeFig (14,14,14,14,14,14) (0,0,255) recursiveSquare
+infiniSquare :: FullFigure
+infiniSquare = colourizeFig (14,14,14,14,14,14) (0,0,255) recursiveSquare where
     recursiveSquare = recursivePolygon newSquare [(scale 0.9 0.9),(translate 10 10),(rot 0.01)] 1000
     newSquare = [(scale 4 4), (translate 10 10)] |=> square
 
-fibonacci = publishFullFigure $ colourizeFig greyF blueL $ centreFigure $ recursivePolygon ([(scale 0.01 0.01)] |=> square) [(rot 1),(scale 1.01 1.01), (translate 0 (-0.05))] 400
+fibonacci :: FullFigure
+fibonacci = colourizeFig greyF blueL $ centreFigure $ recursivePolygon ([(scale 0.01 0.01)] |=> square) [(rot 1),(scale 1.01 1.01), (translate 0 (-0.05))] 400
 
-firstTree = publishFullFigure $ colourizeFig greyF blueL finalTree where
+firstTree :: FullFigure
+firstTree = colourizeFig greyF blueL finalTree where
     finalTree = centreFigure $ concat $ concat tree
-    tree = recursiveFigure_adv base treeFunc 10
+    tree = recursiveFigure_adv base treeFunc 12
     base = [[[(scale 0.4 1.4)] |=> square]]
     treeFunc = (\fig -> (leaf1 fig)++(leaf2 fig))
-    leaf1 = map (\x -> [(translate 14 (-140)),(scale 0.75 0.75),(rot (-20))] |=> x)
-    leaf2 = map (\x -> [(translate 0 (-140)),(scale 0.75 0.75),(rot 20)] |=> x)
+    leaf1 = map (\x -> [(translate 60 (-100)),(scale 0.75 0.75),(rot (-25))] |=> x)
+    leaf2 = map (\x -> [(translate (-47) (-87)),(scale 0.75 0.75),(rot 25)] |=> x)
 
 customTree :: Fill -> Outline -> Int -> Float -> Float -> FullFigure
 customTree fill outline branches scl rt = finalTree where
@@ -36,20 +43,36 @@ customTree fill outline branches scl rt = finalTree where
     leaf1 = map (\x -> [(translate 14 (-140)),(scale (scl) (scl)),(rot (-rt))] |=> x)
     leaf2 = map (\x -> [(translate 14 (-140)),(scale (scl) (scl)),(rot (rt))] |=> x)
     
-publishTiling =  publishFullFigure $ fullRNG 19 $ centreFigure $ reverse $ concat $ concat tiling
+fullTiling :: FullFigure
+fullTiling = fullRNG 19 $ centreFigure $ reverse $ concat $ concat tiling
 tiling =  recursiveFigure_adv [[base]] tile_func 6 where
     base = regularPolygon 200 6
     tile_func = (\fig -> (tile 0 fig)++(tile 60 fig)++(tile 120 fig)++(tile 180 fig)++(tile 240 fig)++(tile 300 fig))
     tile r = map (\x -> [(scale 0.5 0.5),(moveEuclidean 400 r)] |=> x)
     
-sierpinski =  publishFullFigure $ fullRNG 1 $ centreFigure $ transformFigure [(rot 180)] $ concat $ concat $ recursiveFigure_adv [[base]] tile_func 11 where
+sierpinski :: FullFigure
+sierpinski = colourizeFig greyF blueL $ centreFigure $ transformFigure [(rot 180)] $ concat $ concat $ recursiveFigure_adv [[base]] tile_func 9 where
     base = regularPolygon 300 3
     tile_func = (\fig -> (tile 0 fig)++(tile 120 fig)++(tile 240 fig))
     tile r = map (\x -> [(scale 0.5 0.5),(moveEuclidean 300 r)] |=> x)
+    
 
-
-
-main = sierpinski
+    
+main = do  
+    putStrLn "Starting..."
+    putStrLn "boundingBox: finished"
+    namedPublish (folder++"box") boundingBox
+    putStrLn "infiniSquare: finished"
+    namedPublish (folder++"infini") infiniSquare
+    putStrLn "fibonacci: finished"
+    namedPublish (folder++"fib") fibonacci
+    putStrLn "tree: finished"
+    namedPublish (folder++"tree") firstTree
+    putStrLn "hexagons: finished"
+    namedPublish (folder++"hex") fullTiling
+    putStrLn "sierpinski: finished"
+    namedPublish (folder++"sierpinski") sierpinski
+    putStrLn "Finished..."
     
 -- main = do
     -- putStrLn "Fill Colour? "

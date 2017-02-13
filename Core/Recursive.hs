@@ -1,10 +1,4 @@
-module Recursive 
-(recursivePolygon
-,recursivePolygon_adv
-,recursiveFigure
-,recursiveFigure_adv
-)
-where
+module Recursive where
 
 import DataTypes
 import Utils ((|=>))
@@ -32,3 +26,11 @@ recursiveFigure_adv :: [a] -> (a -> a) -> Int -> [[a]]
 recursiveFigure_adv baseFigure transFunc iter =
     map f baseFigure where
     f = (\poly -> recursivePolygon_adv poly transFunc iter)
+    
+recursiveTransform :: Figure -> (Figure -> Figure) -> Int -> Figure
+recursiveTransform baseFigure transFunc iter = 
+    if iter > 0 then
+        recursiveTransform (transFunc baseFigure) transFunc (iter - 1)
+    else 
+        baseFigure
+    
