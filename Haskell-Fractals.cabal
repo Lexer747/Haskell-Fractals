@@ -1,0 +1,71 @@
+-- The name of the package.
+name:                Haskell-Fractals
+
+-- PVP summary:      +-+------- breaking API changes
+--                   | | +----- non-breaking API additions
+--                   | | | +--- code changes with no API change
+version:             0.1.0.0
+
+
+-- A short (one-line) description of the package.
+synopsis:            A learning Program which creates some pretty shapes in the .svg format.
+
+-- A longer description of the package.
+-- description:         
+
+-- URL for the project homepage or repository.
+homepage:            https://github.com/Lexer747/Haskell-Fractals
+
+-- The license under which the package is released.
+license:             GPL-3
+
+-- The file containing the license text.
+license-file:        LICENSE
+
+-- The package author(s).
+author:              Lexer747
+
+-- An email address to which users can send suggestions, bug reports, and 
+-- patches.
+maintainer:          Lexer747@gmail.com
+
+-- A copyright notice.
+-- copyright:           
+
+category:            learning / useless
+
+build-type:          Simple
+
+-- Extra files to be distributed with the package, such as examples or a 
+-- README.
+extra-source-files:  ChangeLog.md, README.md
+
+-- Constraint on the version of Cabal needed to build this package.
+cabal-version:       >=1.10
+
+source-repository head
+  type: git
+  location: git://github.com/Lexer747/Haskell-Fractals.git
+
+
+executable Haskell-Fractals
+  -- .hs or .lhs file containing the Main module.
+  main-is:             Demos.hs
+  
+  -- Modules included in this executable, other than Main.
+  -- other-modules:       
+  
+  -- LANGUAGE extensions used by modules in this package.
+  -- other-extensions:    
+  
+  -- Other library packages from which modules are imported.
+  build-depends:       base >=4.9 && <4.10
+  
+  ghc-options: -O2 -threaded -rtsopts
+  
+  -- Directories containing source files.
+  hs-source-dirs:      Core
+  
+  -- Base language which the package is written in.
+  default-language:    Haskell2010
+  

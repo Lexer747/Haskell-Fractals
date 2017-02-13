@@ -10,7 +10,7 @@ import ExtraTransformations
 
 --change this to decide where the output svg files go.
 folder :: String
-folder = "svg/Demo/"
+folder = "Samples/"
 
 boundingBox :: FullFigure
 boundingBox = centreFullFigure $ blueSq++greySq where
