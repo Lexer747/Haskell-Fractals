@@ -11,6 +11,7 @@ module CoreSVG
 import DataTypes
 import Data.Char (toUpper)
 import Numeric (showHex)
+import Constants (strokewidth)
 
 {- This function takes a Point and returns a string which is formatted as
 an svg point. -}

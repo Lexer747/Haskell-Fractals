@@ -47,22 +47,33 @@ sierpinski = colourizeFig greyF blueL $ centreFigure $ transformFigure [(rot 180
     tile_func = (\fig -> (tile 0 fig)++(tile 120 fig)++(tile 240 fig))
     tile r = map (\x -> [(scale 0.5 0.5),(moveEuclidean 300 r)] |=> x)
     
-
+flower :: FullFigure
+flower = colourizeFig greyF blueL $ centreFigure $ concat $ recursiveTransform base transFunc trList changeTrs 5000 where
+    base = [regularPolygon 300 3]
+    trList = [(scale 0.999 0.999),(rot 10)]
+    changeTrs = changeTr (rot 10) 
+    transFunc tr = (|=>) tr  
+    
+changeTr :: Transformation -> [Transformation] -> [Transformation]
+changeTr plus (x:xs) = (combineTransformation plus x):xs
+changeTr _ [] = []
     
 main = do  
     putStrLn "Starting..."
-    putStrLn "boundingBox: finished"
+    putStrLn "boundingBox:      started"
     namedPublish (folder++"box") boundingBox
-    putStrLn "infiniSquare: finished"
+    putStrLn "infiniSquare:     started"
     namedPublish (folder++"infini") infiniSquare
-    putStrLn "fibonacci: finished"
+    putStrLn "fibonacci:        started"
     namedPublish (folder++"fib") fibonacci
-    putStrLn "tree: finished"
+    putStrLn "tree:             started"
     namedPublish (folder++"tree") firstTree
-    putStrLn "hexagons: finished"
+    putStrLn "hexagons:         started"
     namedPublish (folder++"hex") fullTiling
-    putStrLn "sierpinski: finished"
+    putStrLn "sierpinski:       started"
     namedPublish (folder++"sierpinski") sierpinski
+    putStrLn "flower:           started"
+    namedPublish (folder++"flower") flower
     putStrLn "Finished..."
     
     

@@ -27,6 +27,7 @@ triangle = [(100,0),(0,100),(100,100)]
 
 -- |generic Ellipse
 -- useage: ellipse (radius-x, radius-y) acurracy => ellipse
+-- accuracy -> larger = less accurate
 ellipse :: (Float, Float) -> Float -> Polygon
 ellipse (xradius,yradius) accuracy = (zip xs $ map y xs)++(zip (reverse xs) $ reverse $ map (\x -> (-1) * (y x)) xs) where
     xs = [(xradius),((xradius) - accuracy)..(-(xradius))] 

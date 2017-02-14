@@ -13,12 +13,12 @@ import Control.Monad (replicateM)
 
 -- |A function which takes a FullFigure and writes it to a file
 publishFullFigure_dep :: FullFigure -> IO ()
-publishFullFigure_dep fig = writeFile "svg/Output.svg" $ writeFullFigure_dep fig
+publishFullFigure_dep fig = writeFile "Output.svg" $ writeFullFigure_dep fig
 
 -- |A function which takes a FullFigure and writes it to a file so it is viewable
 -- useage: publishFullFigure figureToView => ()
 publishFullFigure :: FullFigure -> IO ()
-publishFullFigure fig = writeFile "svg/Output.svg" $ writeFullFigure fig
+publishFullFigure fig = writeFile "Output.svg" $ writeFullFigure fig
 
 namedPublish :: String -> FullFigure -> IO ()
 namedPublish file fig = writeFile (file++".svg") $ writeFullFigure fig
