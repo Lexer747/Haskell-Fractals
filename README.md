@@ -157,6 +157,17 @@ sierpinski =  publishFullFigure $ colourizeFig greyF blueL $ centreFigure $ tran
 
 ---
 
+###Mandelbrot Set
+
+The most famous fractal. This was a completely different procedure to create this since colourizing a coordinate grid
+doesn't lend itself to vector graphics. But that didn't stop me!
+
+Honestly though this approach is horribly inefficient and your better off using openGL, but i did it more for the sake of it
+and to see if it would even work. 
+
+The picture:  
+![mandel](https://https://cdn.rawgit.com/Lexer747/Haskell-Fractals/847c87f9/Samples/mandel.svg)
+
 ## Author
 
 Code edited and Maintained by Alex Lewis
