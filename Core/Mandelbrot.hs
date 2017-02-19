@@ -13,9 +13,6 @@ width = 640
 iterations :: Int
 iterations = 50
 
-infinity :: Float
-infinity = 4
-
 zoom :: Float
 zoom = 0.75
 
@@ -23,7 +20,7 @@ gap :: Float
 gap = 1 / (zoom)
 
 basePoint :: Point
-basePoint = (0,0)
+basePoint = ((-0.5),0)
 
 mandelXmin (x,_) = (x - gap)
 mandelXmax (x,_) = (x + gap)
@@ -45,8 +42,8 @@ mandelbrotFunc pixel = Pixel (location pixel) representative where
 
 mandelColour :: Int -> Outline
 mandelColour iter = if (fromIntegral iter) == iterations then (0,0,0) else (c,c,c) where
-    c = floor (normalize (fromIntegral iter) 0 (fromIntegral iterations) 50 255)
-    
+    c = floor $ normalize (sqrt brightness) 0 1 0 200
+    brightness = normalize (fromIntegral iter) 0 (fromIntegral iterations) 0 1
 applyMandel :: Int -> Point -> Int
 applyMandel n (x,y) = applyMandel_help n (x,y) (x,y) 0
     
@@ -54,7 +51,7 @@ applyMandel n (x,y) = applyMandel_help n (x,y) (x,y) 0
 applyMandel_help :: Int -> Point -> Point -> Int -> Int
 applyMandel_help 0 _ _ acc = acc
 applyMandel_help n (baseX,baseY) (x,y) acc = 
-    if (newX + newY) > infinity 
+    if  (sqrt $ (newX * newX) + (newY + newY)) > 2 
         then acc
         else (applyMandel_help (n-1) (baseX,baseY) (newX,newY) (acc + 1)) where
             newX = baseX +((x * x) - (y * y))
