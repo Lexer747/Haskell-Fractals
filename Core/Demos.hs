@@ -7,6 +7,7 @@ import Constants
 import AdvConstants
 import Colouring
 import ExtraTransformations
+import Mandelbrot
 
 --change this to decide where the output svg files go.
 folder :: String
@@ -74,12 +75,9 @@ main = do
     namedPublish (folder++"sierpinski") sierpinski
     putStrLn "flower:           started"
     namedPublish (folder++"flower") flower
+    putStrLn "Mandelbrot:       started"
+    namedPublish (folder++"mandel") mandelbrotSet
     putStrLn "Finished..."
-    
-    
-    
-    
-    
 
 -- customTree :: Fill -> Outline -> Int -> Float -> Float -> FullFigure
 -- customTree fill outline branches scl rt = finalTree where
