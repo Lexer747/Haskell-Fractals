@@ -232,7 +232,7 @@ iterations = 50
 ```
 
 There are 3 functions here which are not defined and i'll let you look them up if you
-so desire. But the short version of it is that `mandelColour` will take a number of
+so desire [here](Core/Mandelbrot.hs). But the short version of it is that `mandelColour` will take a number of
 iterations and convert into a grey-scale colour proptional to the number of 
 steps in the function that point could do before diverging. 
 
@@ -290,7 +290,7 @@ basePixel = [(0,0),(1,0),(1,1),(0,1)]
 
 Hence each pixel is its own fully rendered Square! This means the SVG engine is working
 serious overtime to convert a 640 x 480 pixel grid which will require 307,200 induvidal
-squares to be drawn!. Not efficient at all. 
+squares to be drawn! Not efficient at all. 
 
 The `convertCompressRow` helps a bit as that joins some of the pixels together into a
 large rectangle but its still not great.
