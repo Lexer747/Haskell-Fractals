@@ -6,9 +6,9 @@ import DataTypes
 
 
 height :: Int
-height = 300
+height = 720
 width :: Int
-width = 300
+width = 1280
 
 iterations :: Int
 iterations = 50
@@ -50,8 +50,8 @@ normalize cur min max newMin newMax = (((newMax - newMin) * (cur - min)) / (max 
 normalizePixel :: Pixel -> (Float, Float)
 normalizePixel pixel = (newX, newY) where
     (x,y) = location pixel
-    newX = (normalize (fromIntegral x) 0 (fromIntegral width) (-1.5) 1.5)
-    newY = (normalize (fromIntegral y) 0 (fromIntegral height) (-1.5)1.5)
+    newX = (normalize (fromIntegral x) 0 (fromIntegral width) (-1.6) 0.9)
+    newY = (normalize (fromIntegral y) 0 (fromIntegral height) (-1.6) 0.9)
 
 -- | to create the set we map the mandelbrotFunc over every pixel in the grid
 mandelbrotSet = convertGrid $ mapGrid mandelbrotFunc $ buildGrid height width whitePixel
