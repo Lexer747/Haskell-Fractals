@@ -166,7 +166,7 @@ Honestly though this approach is horribly inefficient and your better off using 
 and to see if it would even work. 
 
 The picture:  
-![mandel](https://https://cdn.rawgit.com/Lexer747/Haskell-Fractals/847c87f9/Samples/mandel.svg)
+![mandel](https://cdn.rawgit.com/Lexer747/Haskell-Fractals/12358191/Samples/mandel.svg)
 
 ## Author
 
