@@ -5,6 +5,7 @@ module CoreIO
 ,publishFullFigure_dep
 ,publishFullFigure
 ,namedPublish
+,multiNamePublish
 )where
 
 import DataTypes
@@ -23,6 +24,15 @@ publishFullFigure fig = writeFile "Output.svg" $ writeFullFigure fig
 namedPublish :: String -> FullFigure -> IO ()
 namedPublish file fig = writeFile (file++".svg") $ writeFullFigure fig
 
+multiNamePublish_help :: String -> Int -> [FullFigure] -> IO ()
+multiNamePublish_help file num (f:[])        = namedPublish (file++(show num)) f
+multiNamePublish_help file num (f:xs)       = do 
+    namedPublish (file++(show num)) f
+    multiNamePublish_help file (num + 1) xs
+
+-- |A function which will convert a list of related full figures to a series of numbered svg files
+multiNamePublish :: String -> [FullFigure] -> IO ()
+multiNamePublish file figs = multiNamePublish_help file 0 figs
 
 -- |A function which takes a number which defines the number of ints to get from the cmdLine
 getInts :: Int -> IO [Int]

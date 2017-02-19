@@ -6,9 +6,9 @@ import DataTypes
 
 
 height :: Int
-height = 720
+height = 480
 width :: Int
-width = 1280
+width = 640
 
 iterations :: Int
 iterations = 50
@@ -16,9 +16,25 @@ iterations = 50
 infinity :: Float
 infinity = 4
 
--- colourMap Iterations -> Occurances
--- colourMap :: HashMap Int Int 
--- colourMap = empty 
+zoom :: Float
+zoom = 0.75
+
+gap :: Float
+gap = 1 / (zoom)
+
+basePoint :: Point
+basePoint = (0,0)
+
+mandelXmin (x,_) = (x - gap)
+mandelXmax (x,_) = (x + gap)
+mandelYmin (_,y) = (y - gap)
+mandelYmax (_,y) = (y + gap)
+
+customMandelFunc :: Point -> Float -> (Pixel -> Pixel)
+customMandelFunc base zoom pixel = Pixel (location pixel) representative where
+    representative = mandelColour iter
+    iter = applyMandel iterations curPoint 
+    curPoint = customNormalizePixel base zoom pixel
 
 
 mandelbrotFunc :: Pixel -> Pixel
@@ -29,13 +45,13 @@ mandelbrotFunc pixel = Pixel (location pixel) representative where
 
 mandelColour :: Int -> Outline
 mandelColour iter = if (fromIntegral iter) == iterations then (0,0,0) else (c,c,c) where
-    c = floor (normalize (fromIntegral iter) 0 (fromIntegral iterations) 100 255)
+    c = floor (normalize (fromIntegral iter) 0 (fromIntegral iterations) 50 255)
     
-applyMandel :: Int -> (Float, Float) -> Int
+applyMandel :: Int -> Point -> Int
 applyMandel n (x,y) = applyMandel_help n (x,y) (x,y) 0
     
 --applyMandel will take a number of function iterations to do and return how many it managed to perform on a point
-applyMandel_help :: Int -> (Float,Float) -> (Float,Float) -> Int -> Int
+applyMandel_help :: Int -> Point -> Point -> Int -> Int
 applyMandel_help 0 _ _ acc = acc
 applyMandel_help n (baseX,baseY) (x,y) acc = 
     if (newX + newY) > infinity 
@@ -47,12 +63,27 @@ applyMandel_help n (baseX,baseY) (x,y) acc =
 normalize :: Fractional a => a -> a -> a -> a -> a -> a
 normalize cur min max newMin newMax = (((newMax - newMin) * (cur - min)) / (max - min)) + newMin
 
-normalizePixel :: Pixel -> (Float, Float)
+normalizePixel :: Pixel -> Point
 normalizePixel pixel = (newX, newY) where
     (x,y) = location pixel
-    newX = (normalize (fromIntegral x) 0 (fromIntegral width) (-1.6) 0.9)
-    newY = (normalize (fromIntegral y) 0 (fromIntegral height) (-1.6) 0.9)
+    newX = normalize (fromIntegral x) 0 (fromIntegral width) (mandelXmin basePoint) (mandelXmax basePoint)
+    newY = normalize (fromIntegral y) 0 (fromIntegral height) (mandelYmin basePoint) (mandelYmax basePoint)
 
+customNormalizePixel :: Point -> Float -> Pixel -> Point
+customNormalizePixel (a,b) zoom pixel = (newX,newY) where
+    (x,y) = location pixel
+    newX = normalize (fromIntegral x) 0 (fromIntegral width) (a - gap) (a + gap)
+    newY = normalize (fromIntegral y) 0 (fromIntegral height) (b - gap) (b + gap)
+    gap = 1 / zoom
+    
 -- | to create the set we map the mandelbrotFunc over every pixel in the grid
+mandelbrotSet :: FullFigure
 mandelbrotSet = convertGrid $ mapGrid mandelbrotFunc $ buildGrid height width whitePixel
 
+specificMandelSet :: Point -> Float -> FullFigure
+specificMandelSet base zoom = convertGrid $ mapGrid (customMandelFunc base zoom) (buildGrid height width whitePixel)
+
+mandelZoom :: Point -> Float -> (Float -> Float) -> Int -> [FullFigure]
+mandelZoom _ _ _ 0                      = []
+mandelZoom base startzoom zoomFunc iter = (image):(mandelZoom base (zoomFunc startzoom) zoomFunc (iter - 1)) where
+    image = specificMandelSet base startzoom

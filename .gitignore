@@ -5,7 +5,7 @@ Core/svg/Output.svg
 *.o
 *.hi
 *.exe
-
+/Samples/zoom
 
 # trivial gitignore file
 .cabal-sandbox/
