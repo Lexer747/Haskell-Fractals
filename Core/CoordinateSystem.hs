@@ -11,7 +11,9 @@ Pixel(..)
 import DataTypes
 import Utils
 
-data Pixel = Pixel {location :: (Int,Int), colour :: Outline} deriving (Show)
+data Pixel = Pixel {location :: (Int,Int),
+    colour :: Outline} 
+    deriving (Show)
              
 basePixel :: Polygon
 basePixel = [(0,0),(1,0),(1,1),(0,1)]
@@ -67,7 +69,7 @@ convertMultiPixel p = (fill,outline,
 convertCompressRow :: Row -> FullFigure
 convertCompressRow = ((map convertMultiPixel) . compressRow)
 
-type Grid = [Row]
+type Grid = [[Pixel]]
 
 convertGrid :: Grid -> FullFigure
 convertGrid = (concat . (map convertCompressRow))

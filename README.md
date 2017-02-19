@@ -14,7 +14,13 @@ Just starting, so my first idea was see if I could find a way to produce the bou
 
 ![BoundingBox](https://cdn.rawgit.com/Lexer747/Haskell-Fractals/b86c6eff/Samples/box.svg)
 
-The blue rectangle is created using affine transformations then the grey rectangle is produce by finding the bouding box of the shape.
+The blue rectangle is created using affine transformations then the grey rectangle is produce by finding the bouding box of the shape.  
+``` Haskell
+boundingBox :: FullFigure
+boundingBox = centreFullFigure $ blueSq++greySq where
+    greySq = [(greyF,greyL,findBBFullFigure blueSq)]
+    blueSq = [(blueF,blueL,[(rot 35),(scale 2 1)] |=> square)]
+```
 
 ---
 
@@ -26,17 +32,9 @@ This fractal is created by scaling and rotating a square 1000 times. Its a simpl
 
 ``` Haskell
 --best read from bottom up
-infiniSquare = publishFullFigure colouredFractal where --this line saves the shape to svg
-    --colour the fractal
-    --(14,14,14,14,14,14) is the grey fill
-    --(0,0,255) is the blue outline
-    colouredFractal = colourizeFig (14,14,14,14,14,14) (0,0,255) recursiveSquare
-    
-    --recursiveSquare is the actual list of points for the fractal, it is achieved by making the square smaller each time and rotating it
+infiniSquare :: FullFigure
+infiniSquare = colourizeFig (14,14,14,14,14,14) (0,0,255) recursiveSquare where
     recursiveSquare = recursivePolygon newSquare [(scale 0.9 0.9),(translate 10 10),(rot 0.01)] 1000
-    
-    --newSquare is simply a larger base square to start the fractal
-    --the |=> simply applies a list of transformations to a poly
     newSquare = [(scale 4 4), (translate 10 10)] |=> square
 ```
 
@@ -52,7 +50,8 @@ This spiral is also simple to make as it is just a square which rotates as it mo
 Because its an SVG zooming in on it shows the detail of the spiral nicely. Its made using the following code below:
 
 ``` Haskell
-fibonacci = publishFigure $ centreFigure $ recursivePolygon ([(scale 0.01 0.01)] |=> square) [(rot 1),(scale 1.01 1.01), (translate 0 (-0.05))] 400
+fibonacci :: FullFigure
+fibonacci = colourizeFig greyF blueL $ centreFigure $ recursivePolygon ([(scale 0.01 0.01)] |=> square) [(rot 1),(scale 1.01 1.01), (translate 0 (-0.05))] 400
 ```
 As you can see its a one liner, but it can be broken up into steps:
 * `publishFigure` will simply convert the shape to SVG so we can see it.
@@ -88,13 +87,14 @@ This is less simple to make but haskell makes it relatively easy for us. I decid
 desire.
 
 ``` Haskell
-firstTree = publishFigure finalTree where
+firstTree :: FullFigure
+firstTree = colourizeFig greyF blueL finalTree where
     finalTree = centreFigure $ concat $ concat tree
-    tree = recursiveFigure_adv base treeFunc 11
+    tree = recursiveFigure_adv base treeFunc 12
     base = [[[(scale 0.4 1.4)] |=> square]]
     treeFunc = (\fig -> (leaf1 fig)++(leaf2 fig))
-    leaf1 fig = (map (\x -> [(translate 10 (-160)),(scale 0.75 0.75),(rot (-25))] |=> x) fig)
-    leaf2 fig = (map (\x -> [(translate 0 (-140)),(scale 0.75 0.75),(rot 25)] |=> x) fig)
+    leaf1 = map (\x -> [(translate 60 (-100)),(scale 0.75 0.75),(rot (-25))] |=> x)
+    leaf2 = map (\x -> [(translate (-47) (-87)),(scale 0.75 0.75),(rot 25)] |=> x)
 ```
 
 So its a little overwheleming at first, but once again i believe that seeing the type signature for recursiveFigure_adv helps a lot.
@@ -127,11 +127,13 @@ This is also less simple but not too much of a stretch to get your head around. 
 function as the tree just a slightly different transformation function.
 
 ``` Haskell
-publishTiling =  publishFullFigure $ fullRNG 19 $ centreFigure $ reverse $ concat $ concat tiling
+fullTiling :: FullFigure
+fullTiling = fullRNG 19 $ centreFigure $ reverse $ concat $ concat tiling
 tiling =  recursiveFigure_adv [[base]] tile_func 6 where
     base = regularPolygon 200 6
     tile_func = (\fig -> (tile 0 fig)++(tile 60 fig)++(tile 120 fig)++(tile 180 fig)++(tile 240 fig)++(tile 300 fig))
     tile r = map (\x -> [(scale 0.5 0.5),(moveEuclidean 400 r)] |=> x)
+    
 ```
 
 `moveEuclidean` is a function allows for a transformation in a direction specfied in degrees
@@ -149,7 +151,8 @@ A classic fractal. Wikipedia article [here](https://en.wikipedia.org/wiki/Sierpi
 This one is basically a tiling fractal so the code is really similar to the hexagon one above.
 
 ``` Haskell 
-sierpinski =  publishFullFigure $ colourizeFig greyF blueL $ centreFigure $ transformFigure [(rot 180)] $ concat $ concat $ recursiveFigure_adv [[base]] tile_func 11 where
+sierpinski :: FullFigure
+sierpinski = colourizeFig greyF blueL $ centreFigure $ transformFigure [(rot 180)] $ concat $ concat $ recursiveFigure_adv [[base]] tile_func 9 where
     base = regularPolygon 300 3
     tile_func = (\fig -> (tile 0 fig)++(tile 120 fig)++(tile 240 fig))
     tile r = map (\x -> [(scale 0.5 0.5),(moveEuclidean 300 r)] |=> x)
@@ -166,7 +169,111 @@ Honestly though this approach is horribly inefficient and your better off using 
 and to see if it would even work. 
 
 The picture:  
-![mandel](https://cdn.rawgit.com/Lexer747/Haskell-Fractals/12358191/Samples/mandel.svg)
+![mandel](https://cdn.rawgit.com/Lexer747/Haskell-Fractals/12358191/Samples/mandel.svg)  
+
+So as you can see it doesn't look great and when you zoom in it looks even worse. One reason it looks bad is the poor colouring code.
+The other reason is that the implementation of the coordinate grid will never lend itself to the SVG format.
+
+####Lets break down the code and have a look:
+
+First the coordinate system, which is made up two key parts:
+* The `Pixel` data type, which has a location and a colour
+
+    ```Haskell
+    data Pixel = Pixel {location :: (Int,Int),
+      colour :: Outline} 
+      deriving (Show)
+    ```  
+* A `Grid` which is a 2D list of `Pixel`
+
+    ```Haskell
+    type Grid = [[Pixel]]
+    ```
+   
+Then we have some utility functions for working with a `Grid`
+
+```Haskell
+convertGrid :: Grid -> FullFigure
+convertGrid = (concat . (map convertCompressRow))
+
+mapGrid :: (Pixel -> Pixel) -> Grid -> Grid
+mapGrid = (map . map)
+
+-- |Takes a height and width and a base pixel and returns a grid full with that pixel
+buildGrid :: Int -> Int -> Pixel -> Grid
+buildGrid 0 _ _             = []
+buildGrid height width pix  = row:(buildGrid (height - 1) width nextPix) where
+    row = buildRow width pix
+    nextPix = Pixel (x,y+1) $ colour pix
+    (x,y) = location pix
+```
+
+All of these are pretty simple if you have understood everything upto this point.
+The only odd thing is `convertCompressRow` which currently doesn't have a definition,
+i'll let you look at the source code to get the definition.
+That becuase it doesn't really affect the actual final image.
+
+The most important function is `mapGrid` which is what we will actually use to create
+the image. As all we need to do is create a function with type `Pixel -> Pixel` which
+makes a pixel the right colour according to the how fast that point diverges 
+to infinity.
+
+So now all we need is that function:
+
+```Haskell
+mandelbrotFunc :: Pixel -> Pixel
+mandelbrotFunc pixel = Pixel (location pixel) representative where
+    representative = mandelColour iter
+    iter = applyMandel iterations curPoint
+    curPoint = normalizePixel pixel
+    
+iterations :: Int
+iterations = 50
+```
+
+There are 3 functions here which are not defined and i'll let you look them up if you
+so desire. But the short version of it is that `mandelColour` will take a number of
+iterations and convert into a grey-scale colour proptional to the number of 
+steps in the function that point could do before diverging. 
+
+`applyMandel` takes a point and actually finds the number of iterations before diverging
+
+`normalizePixel` will take large int Pixel values like `x = 100, y = 100` and scale
+it down to within much smaller values so there is more detail.
+
+###Combinging it all together:
+
+```Haskell
+mandelbrotSet :: FullFigure
+mandelbrotSet = convertGrid $ mapGrid mandelbrotFunc $ buildGrid height width whitePixel
+```
+
+This code will actually build the image by first initalizing a grid:  
+
+```Haskell
+buildGrid height width whitePixel
+
+height :: Int
+height = 480
+width :: Int
+width = 640
+
+whitePixel :: Pixel
+whitePixel = Pixel (0,0) (255,255,255)
+```
+
+Then map the function over the grid:
+
+```Haskell
+mapGrid mandelbrotFunc
+```
+
+Then make it an SVG useable type:
+```Haskell
+convertGrid
+```
+
+And we are done and we get the image at the top of this section.
 
 ## Author
 
