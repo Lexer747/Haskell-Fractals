@@ -6,9 +6,9 @@ import DataTypes
 
 
 height :: Int
-height = 800
+height = 300
 width :: Int
-width = 800
+width = 300
 
 iterations :: Int
 iterations = 50
