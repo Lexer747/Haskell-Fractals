@@ -265,15 +265,38 @@ whitePixel = Pixel (0,0) (255,255,255)
 Then map the function over the grid:
 
 ```Haskell
-mapGrid mandelbrotFunc
+mapGrid mandelbrotFunc (grid)
 ```
 
 Then make it an SVG useable type:
 ```Haskell
-convertGrid
+convertGrid (mandelbrot grid)
 ```
 
-And we are done and we get the image at the top of this section.
+And when we pass this result to `publishFigure` we get the image at the top. The reason
+it looks so bad is because when a pixel is converted into SVG it is done so by this
+function:
+
+```Haskell
+convertPixel :: Pixel -> FullPolygon
+convertPixel p = (fill, outline, [(translate (fromIntegral x) (fromIntegral y))] |=> basePixel ) where
+    (x,y) = location p
+    fill = o2F $ colour p
+    outline = colour p 
+ 
+basePixel :: Polygon
+basePixel = [(0,0),(1,0),(1,1),(0,1)]
+```
+
+Hence each pixel is its own fully rendered Square! This means the SVG engine is working
+serious overtime to convert a 640 x 480 pixel grid which will require 307,200 induvidal
+squares to be drawn!. Not efficient at all. 
+
+The `convertCompressRow` helps a bit as that joins some of the pixels together into a
+large rectangle but its still not great.
+
+I need to implement some better compression techniques before going any higher 
+resolution than 480p.
 
 ## Author
 
