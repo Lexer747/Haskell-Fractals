@@ -11,15 +11,15 @@ width :: Int
 width = 640
 
 iterations :: Int
-iterations = 1000
+iterations = 50
 
-zoom :: Fractional a => a
+zoom :: Float
 zoom = 0.75
 
-gap :: Fractional a => a
+gap :: Float
 gap = 1 / (zoom)
 
-basePoint :: Fractional a => (a,a)
+basePoint :: Point
 basePoint = ((-0.5),0)
 
 mandelXmin (x,_) = (x - gap)
@@ -39,6 +39,7 @@ mandelbrotFunc pixel = Pixel (location pixel) representative where
     representative = mandelColour iter
     iter = applyMandel iterations curPoint
     curPoint = normalizePixel pixel
+
 
 --mandelColour :: (Integral a) => a -> Outline
 mandelColour iter = if (fromIntegral iter) == iterations then (0,0,0) else (r,g,b) where
@@ -62,14 +63,15 @@ applyMandel_help n (baseX,baseY) (x,y) =
             newX = baseX +((x * x) - (y * y))
             newY = baseY + (2 * x * y)
 
---normalize :: Fractional a => a -> a -> a -> a -> a -> a
+
+normalize :: Fractional a => a -> a -> a -> a -> a -> a
 normalize cur min max newMin newMax = (((newMax - newMin) * (cur - min)) / (max - min)) + newMin
 
---normalizePixel :: Fractional t => Pixel -> (t,t)
 normalizePixel pixel = (newX, newY) where
     (x,y) = location pixel
     newX = normalize (fromIntegral x) 0 (fromIntegral width) (mandelXmin basePoint) (mandelXmax basePoint)
     newY = normalize (fromIntegral y) 0 (fromIntegral height) (mandelYmin basePoint) (mandelYmax basePoint)
+
 
 --customNormalizePixel :: Fractional t => (t,t) -> t -> Pixel -> (t,t)
 customNormalizePixel (a,b) zoom pixel = (newX,newY) where
