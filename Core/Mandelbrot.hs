@@ -1,17 +1,28 @@
-module Mandelbrot where
+module Mandelbrot (
+mandelbrotSet
+,mandelZoom
+) where
 
 import CoordinateSystem
 import CoreIO
 import DataTypes
 
+numColors :: Int
+numColors = 100
 
+match :: Int -> Outline
+match x | x < (round $ (fromIntegral numColors) * 0.25) = (30,30,(floor $ normalize (fromIntegral x) 1 ((fromIntegral numColors) * 0.25) 30 255))
+        | x < (round $ (fromIntegral numColors) * 0.5)   = (30,30,(floor $ normalize (fromIntegral x) ((fromIntegral numColors) * 0.25) ((fromIntegral numColors) * 0.5) 255 30))
+        | x < (round $ (fromIntegral numColors) * 0.75)  = (30,(floor $ normalize (fromIntegral x) ((fromIntegral numColors) * 0.5) ((fromIntegral numColors) * 0.75) 30 255),30)
+        | x <= numColors = (30,(floor $ normalize (fromIntegral x) ((fromIntegral numColors) * 0.75) (fromIntegral numColors) 255 30),30)
+            
 height :: Int
 height = 480
 width :: Int
 width = 640
 
 iterations :: Int
-iterations = 50
+iterations = 1000
 
 zoom :: Float
 zoom = 0.75
@@ -40,18 +51,19 @@ mandelbrotFunc pixel = Pixel (location pixel) representative where
     iter = applyMandel iterations curPoint
     curPoint = normalizePixel pixel
 
+mandelColour :: Int -> Outline
+mandelColour iter | iter == iterations = (0,0,0)
+mandelColour iter | otherwise          = match (mod iter numColors)
 
---mandelColour :: (Integral a) => a -> Outline
-mandelColour iter = if (fromIntegral iter) == iterations then (0,0,0) else (r,g,b) where
-    r = round $ t * ( 1 + sin t) / 1
-    g = round $ t * ( 1 + cos t) / 1
-    b = round $ t * ( 1 + cos(sin t)) / 1
-    t = normalize (sqrt brightness) 0 1 15 255 --240
-    brightness = normalize (fromIntegral iter) 0 (fromIntegral iterations) 0 1
+-- mandelColour iter = if (fromIntegral iter) == iterations then (0,0,0) else (r,g,b) where
+    -- r = round $ t
+    -- g = r:
+    -- b = r
+    -- t = normalize (sqrt brightness) 0 1 0 255 --240
+    -- brightness = normalize (fromIntegral iter) 0 (fromIntegral iterations) 0 1
     
-
 --applyMandel will take a number of function iterations to do and return how many it managed to perform on a point
-applyMandel :: Int -> Point -> Int
+--applyMandel :: (Ord f, Floating f) => Int -> (f, f) -> Int
 applyMandel n (x,y) = n - applyMandel_help n (x,y) (0,0)
     
 --applyMandel_help :: (Floating t, Ord t) => Int -> (t,t) -> (t,t) -> Int
