@@ -155,7 +155,7 @@ Honestly though this approach is horribly inefficient and your better off using 
 and to see if it would even work. 
 
 The picture:  
-![mandel](https://cdn.rawgit.com/Lexer747/Haskell-Fractals/db88bbe4/Samples/mandel.svg)  
+![mandel](https://cdn.rawgit.com/Lexer747/Haskell-Fractals/7c1b3814/Samples/mandel.svg)  
 
 So as you can see it doesn't look great and when you zoom in it looks even worse. One reason it looks bad is the poor colouring code.
 The other reason is that the implementation of the coordinate grid will never lend itself to the SVG format.
