@@ -7,7 +7,6 @@ Core code for generating the svg was found [here](http://stackoverflow.com/quest
 and inspired me in its simplicty.
 
 ##Bounding Box:
-
 Just starting, so my first idea was see if I could find a way to produce the bouding box of a shape. Below is the result.
 
 ![BoundingBox](https://cdn.rawgit.com/Lexer747/Haskell-Fractals/b86c6eff/Samples/box.svg)
