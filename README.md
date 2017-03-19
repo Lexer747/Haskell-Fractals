@@ -6,7 +6,7 @@ learn Haskell.
 Core code for generating the svg was found [here](http://stackoverflow.com/questions/2711002/image-drawing-library-for-haskell)
 and inspired me in its simplicty.
 
-###Bounding Box:
+##Bounding Box:
 
 Just starting, so my first idea was see if I could find a way to produce the bouding box of a shape. Below is the result.
 
@@ -20,7 +20,7 @@ boundingBox = centreFullFigure $ blueSq++greySq where
     blueSq = [(blueF,blueL,[(rot 35),(scale 2 1)] |=> square)]
 ```
 
-###First Fractal:
+##First Fractal:
 
 ![Squares](https://cdn.rawgit.com/Lexer747/Haskell-Fractals/b86c6eff/Samples/infini.svg)
 
@@ -34,7 +34,7 @@ infiniSquare = colourizeFig (14,14,14,14,14,14) (0,0,255) recursiveSquare where
     newSquare = [(scale 4 4), (translate 10 10)] |=> square
 ```
 
-###Fibonacci Spiral:
+##Fibonacci Spiral:
 
 My favourite kind of spiral, I liked the look of it flairing out as it gets bigger.
 
@@ -69,7 +69,7 @@ hence in the code for this spiral we can analyze the parameters to be as such:
 
 This should make reading the function easier (hopefully).
 
-###Fractal Tree
+##Fractal Tree
 
 A cliche fractal but very pretty non-the-less, once again the advantage of SVG makes zooming very satisfying:
 
@@ -107,7 +107,7 @@ which can perform the transformations and rebuild the figure all in one paramete
 Hence explaining what `treeFunc` is doing. It performs a transformation on every polygon in base,
 then appends this to another set of transformations. Which is also on every polygon in base.
 
-###Tiling Fractal
+##Tiling Fractal
 
 Not sure if this is a well known fractal but i like the way it looks so i thought it deserved a place on the readme:
 
@@ -130,7 +130,7 @@ tiling =  recursiveFigure_adv [[base]] tile_func 6 where
 that moves the specfied number of pixels. This just uses simple trig to do this, its
 found in `extraTransformations.hs`.
 
-###Sierpinski Triangle
+##Sierpinski Triangle
 
 A classic fractal. Wikipedia article [here](https://en.wikipedia.org/wiki/Sierpinski_triangle)
 
@@ -146,7 +146,7 @@ sierpinski = colourizeFig greyF blueL $ centreFigure $ transformFigure [(rot 180
     tile r = map (\x -> [(scale 0.5 0.5),(moveEuclidean 300 r)] |=> x)
 ```
 
-###Mandelbrot Set
+##Mandelbrot Set
 
 The most famous fractal. This was a completely different procedure to create this since colourizing a coordinate grid
 doesn't lend itself to vector graphics. But that didn't stop me!
@@ -160,7 +160,7 @@ The picture:
 So as you can see it doesn't look great and when you zoom in it looks even worse. One reason it looks bad is the poor colouring code.
 The other reason is that the implementation of the coordinate grid will never lend itself to the SVG format.
 
-####Lets break down the code and have a look:
+##Lets break down the code and have a look:
 
 First the coordinate system, which is made up two key parts:
 * The `Pixel` data type, which has a location and a colour
@@ -227,7 +227,7 @@ steps in the function that point could do before diverging.
 `normalizePixel` will take large int Pixel values like `x = 100, y = 100` and scale
 it down to within much smaller values so there is more detail.
 
-###Combinging it all together:
+##Combinging it all together:
 
 ```Haskell
 mandelbrotSet :: FullFigure
@@ -286,4 +286,4 @@ resolution than 480p.
 
 ## Author
 
-Code edited and Maintained by Alex Lewis
+Code written by Alex Lewis
