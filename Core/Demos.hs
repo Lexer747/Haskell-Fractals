@@ -78,7 +78,7 @@ main = do
     putStrLn "Mandelbrot:       started"
     namedPublish (folder++"mandel") mandelbrotSet
     putStrLn "Mandelbrot zoom:  started"
-    multiNamePublish (folder++"zoom/mandel") $ mandelZoom ((-0.75),(-0.125)) (0.75) ((*) 2) 15
+    multiNamePublish (folder++"zoom/mandel") $ mandelZoom ((-0.75),(-0.125)) (0.75) ((*) 2) 11
     putStrLn "Finished..."
 
 -- customTree :: Fill -> Outline -> Int -> Float -> Float -> FullFigure

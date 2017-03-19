@@ -57,7 +57,7 @@ mandelbrotFunc pixel = Pixel (location pixel) representative where
 mandelColour :: Int -> Outline
 mandelColour iter | iter == iterations = (0,0,0)
 mandelColour iter | otherwise          = (c,c,c) where --match (mod iter numColors)
-    c = floor $ normalize (scale iter) 0 1 10 255  
+    c = floor $ normalize (scale iter) 0 1 50 255  
     scale n = sqrt $ normalize (fromIntegral n) 0 (fromIntegral iterations) 0 1
 
 -- mandelColour iter = if (fromIntegral iter) == iterations then (0,0,0) else (r,g,b) where

@@ -10,7 +10,6 @@ Pixel(..)
 
 import DataTypes
 import Utils
-import Data.HashMap
 
 data Pixel = Pixel {location :: (Int,Int),
     colour :: Outline} 
@@ -74,16 +73,6 @@ type Grid = [[Pixel]]
 
 convertGrid :: Grid -> FullFigure
 convertGrid = (concat . (map convertCompressRow))
-
-type CompPixel = Map Outline [MultiPixel]
-
-filterMultiPixels :: [MultiPixel] -> CompPixel -> CompPixel
-filterMultiPixels [] _ =  
-filterMultiPixels (x:xs) hash = 
-        
-updateComp :: Outline -> MultiPixel -> CompPixel
-
-
 
 mapGrid :: (Pixel -> Pixel) -> Grid -> Grid
 mapGrid = (map . map) --this is actually amazing, this syntax is crazy
