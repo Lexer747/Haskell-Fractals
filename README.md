@@ -6,8 +6,6 @@ learn Haskell.
 Core code for generating the svg was found [here](http://stackoverflow.com/questions/2711002/image-drawing-library-for-haskell)
 and inspired me in its simplicty.
 
-## Sample images:
-
 ###Bounding Box:
 
 Just starting, so my first idea was see if I could find a way to produce the bouding box of a shape. Below is the result.
@@ -22,8 +20,6 @@ boundingBox = centreFullFigure $ blueSq++greySq where
     blueSq = [(blueF,blueL,[(rot 35),(scale 2 1)] |=> square)]
 ```
 
----
-
 ###First Fractal:
 
 ![Squares](https://cdn.rawgit.com/Lexer747/Haskell-Fractals/b86c6eff/Samples/infini.svg)
@@ -37,8 +33,6 @@ infiniSquare = colourizeFig (14,14,14,14,14,14) (0,0,255) recursiveSquare where
     recursiveSquare = recursivePolygon newSquare [(scale 0.9 0.9),(translate 10 10),(rot 0.01)] 1000
     newSquare = [(scale 4 4), (translate 10 10)] |=> square
 ```
-
----
 
 ###Fibonacci Spiral:
 
@@ -74,8 +68,6 @@ hence in the code for this spiral we can analyze the parameters to be as such:
 ```
 
 This should make reading the function easier (hopefully).
-
----
 
 ###Fractal Tree
 
@@ -115,8 +107,6 @@ which can perform the transformations and rebuild the figure all in one paramete
 Hence explaining what `treeFunc` is doing. It performs a transformation on every polygon in base,
 then appends this to another set of transformations. Which is also on every polygon in base.
 
----
-
 ###Tiling Fractal
 
 Not sure if this is a well known fractal but i like the way it looks so i thought it deserved a place on the readme:
@@ -140,8 +130,6 @@ tiling =  recursiveFigure_adv [[base]] tile_func 6 where
 that moves the specfied number of pixels. This just uses simple trig to do this, its
 found in `extraTransformations.hs`.
 
----
-
 ###Sierpinski Triangle
 
 A classic fractal. Wikipedia article [here](https://en.wikipedia.org/wiki/Sierpinski_triangle)
@@ -157,8 +145,6 @@ sierpinski = colourizeFig greyF blueL $ centreFigure $ transformFigure [(rot 180
     tile_func = (\fig -> (tile 0 fig)++(tile 120 fig)++(tile 240 fig))
     tile r = map (\x -> [(scale 0.5 0.5),(moveEuclidean 300 r)] |=> x)
 ```
-
----
 
 ###Mandelbrot Set
 

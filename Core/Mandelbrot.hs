@@ -10,11 +10,14 @@ import DataTypes
 numColors :: Int
 numColors = 100
 
-match :: Int -> Outline
-match x | x < (round $ (fromIntegral numColors) * 0.25) = (30,30,(floor $ normalize (fromIntegral x) 1 ((fromIntegral numColors) * 0.25) 30 255))
-        | x < (round $ (fromIntegral numColors) * 0.5)   = (30,30,(floor $ normalize (fromIntegral x) ((fromIntegral numColors) * 0.25) ((fromIntegral numColors) * 0.5) 255 30))
-        | x < (round $ (fromIntegral numColors) * 0.75)  = (30,(floor $ normalize (fromIntegral x) ((fromIntegral numColors) * 0.5) ((fromIntegral numColors) * 0.75) 30 255),30)
-        | x <= numColors = (30,(floor $ normalize (fromIntegral x) ((fromIntegral numColors) * 0.75) (fromIntegral numColors) 255 30),30)
+--code for colouring the mandelbrot
+-- match :: Int -> Outline
+-- match x | x < (round $ (fromIntegral numColors) * 0.25) = (30,30,(floor $ normalize (fromIntegral x) 1 ((fromIntegral numColors) * 0.25) 30 255))
+        -- | x < (round $ (fromIntegral numColors) * 0.5)   = (30,30,(floor $ normalize (fromIntegral x) ((fromIntegral numColors) * 0.25) ((fromIntegral numColors) * 0.5) 255 30))
+        -- | x < (round $ (fromIntegral numColors) * 0.75)  = (30,(floor $ normalize (fromIntegral x) ((fromIntegral numColors) * 0.5) ((fromIntegral numColors) * 0.75) 30 255),30)
+        -- | x <= numColors = (30,(floor $ normalize (fromIntegral x) ((fromIntegral numColors) * 0.75) (fromIntegral numColors) 255 30),30)
+        
+
             
 height :: Int
 height = 480
@@ -53,7 +56,9 @@ mandelbrotFunc pixel = Pixel (location pixel) representative where
 
 mandelColour :: Int -> Outline
 mandelColour iter | iter == iterations = (0,0,0)
-mandelColour iter | otherwise          = match (mod iter numColors)
+mandelColour iter | otherwise          = (c,c,c) where --match (mod iter numColors)
+    c = floor $ normalize (scale iter) 0 1 10 255  
+    scale n = sqrt $ normalize (fromIntegral n) 0 (fromIntegral iterations) 0 1
 
 -- mandelColour iter = if (fromIntegral iter) == iterations then (0,0,0) else (r,g,b) where
     -- r = round $ t
