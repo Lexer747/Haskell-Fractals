@@ -23,7 +23,7 @@ boundingBox = centreFullFigure $ blueSq++greySq where
 
 ## First Fractal:
 
-![Squares](https://cdn.rawgit.com/Lexer747/Haskell-Fractals/b86c6eff/Samples/infini.SVG)
+![Squares](https://cdn.rawgit.com/Lexer747/Haskell-Fractals/94e93ad6/Samples/infini.svg)
 
 This fractal is created by scaling and rotating a square 1000 times. Its a simple but elegant pattern. To generate this image the following code was executed:
 
@@ -39,7 +39,7 @@ infiniSquare = colourizeFig (14,14,14,14,14,14) (0,0,255) recursiveSquare where
 
 My favourite kind of spiral, I liked the look of it flairing out as it gets bigger.
 
-![FibonacciSpiral](https://cdn.rawgit.com/Lexer747/Haskell-Fractals/b86c6eff/Samples/fib.SVG)
+![FibonacciSpiral](https://cdn.rawgit.com/Lexer747/Haskell-Fractals/94e93ad6/Samples/fib.svg)
 
 This spiral is also simple to make as it is just a square which rotates as it moves away from its start point.
 Because its an SVG zooming in on it shows the detail of the spiral nicely. Its made using the following code below:
@@ -74,7 +74,7 @@ This should make reading the function easier (hopefully).
 
 A cliche fractal but very pretty non-the-less, once again the advantage of SVG makes zooming very satisfying:
 
-![firstTree](https://cdn.rawgit.com/Lexer747/Haskell-Fractals/b86c6eff/Samples/tree.SVG)
+![firstTree](https://cdn.rawgit.com/Lexer747/Haskell-Fractals/94e93ad6/Samples/tree.svg)
 
 This is less simple to make but haskell makes it relatively easy for us. I decided to not do this all on one line but it is definitely possible if you so
 desire.
@@ -112,7 +112,7 @@ then appends this to another set of transformations. Which is also on every poly
 
 Not sure if this is a well known fractal but i like the way it looks so i thought it deserved a place on the readme:
 
-![tiling](https://cdn.rawgit.com/Lexer747/Haskell-Fractals/b86c6eff/Samples/hex.SVG)
+![tiling](https://cdn.rawgit.com/Lexer747/Haskell-Fractals/94e93ad6/Samples/hex.svg)
 
 This is also less simple but not too much of a stretch to get your head around. It uses the same recursive
 function as the tree just a slightly different transformation function.
@@ -135,7 +135,7 @@ found in `extraTransformations.hs`.
 
 A classic fractal. Wikipedia article [here](https://en.wikipedia.org/wiki/Sierpinski_triangle)
 
-![Triangle](https://cdn.rawgit.com/Lexer747/Haskell-Fractals/b86c6eff/Samples/sierpinski.SVG)
+![Triangle](https://github.com/Lexer747/Haskell-Fractals/blob/master/Samples/sierpinski.svg)
 
 This one is basically a tiling fractal so the code is really similar to the hexagon one above.
 
@@ -156,7 +156,7 @@ Honestly though this approach is horribly inefficient and your better off using 
 and to see if it would even work. 
 
 The picture:  
-![mandel](https://cdn.rawgit.com/Lexer747/Haskell-Fractals/7c1b3814/Samples/mandel.SVG)  
+![mandel](https://cdn.rawgit.com/Lexer747/Haskell-Fractals/94e93ad6/Samples/mandel.svg)  
 
 So as you can see it doesn't look great and when you zoom in it looks even worse. One reason it looks bad is the poor colouring code.
 The other reason is that the implementation of the coordinate grid will never lend itself to the SVG format.
