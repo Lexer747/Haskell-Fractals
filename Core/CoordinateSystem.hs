@@ -6,6 +6,7 @@ Pixel(..)
 ,convertGrid
 ,mapGrid
 ,buildGrid
+,mergeGrid
 ) where
 
 import DataTypes
@@ -84,5 +85,29 @@ buildGrid height width pix  = row:(buildGrid (height - 1) width nextPix) where
     row = buildRow width pix
     nextPix = Pixel (x,y+1) $ colour pix
     (x,y) = location pix
+    
+mergeGrid :: [Grid] -> Int -> Grid
+mergeGrid (x:[]) _ = x
+mergeGrid (x:xs) gap = combineGrid x (mergeGrid xs gap) gap
 
+
+combineGrid :: Grid -> Grid ->  Int -> Grid
+combineGrid xs ys gap = combineGrid_help xs ys width where
+    width = x + gap
+    (x,y) = largest xs 0 0
+
+largest :: Grid -> Int -> Int -> (Int, Int)
+largest [] curX curY = (curX,curY)
+largest ([]:rs) curX curY = largest rs curX curY 
+largest ((p:ps):rs) curX curY = let (x,y) = location p in
+    largest ((ps):rs) (max curX x) (max curY y)
+    
+combineGrid_help :: Grid -> Grid -> Int -> Grid
+combineGrid_help [] [] _                 = []
+combineGrid_help (row1:xs) [] x          = (row1):(combineGrid_help xs [] x)
+combineGrid_help [] (row2:ys) x          = (shifted x row2):(combineGrid_help [] ys x)
+combineGrid_help (row1:xs) (row2:ys) x   = (row1++(shifted x row2)):(combineGrid_help xs ys x)
+
+shifted :: Int -> Row -> Row
+shifted newX r = map (\ p -> let (x,y) = (location p) in Pixel ((x + newX), y) (colour p)) r
 

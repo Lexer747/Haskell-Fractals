@@ -8,6 +8,7 @@ import AdvConstants
 import Colouring
 import ExtraTransformations
 import Mandelbrot
+import CoordinateSystem
 
 --change this to decide where the output svg files go.
 folder :: String
@@ -78,7 +79,7 @@ main = do
     putStrLn "Mandelbrot:       started"
     namedPublish (folder++"mandel") mandelbrotSet
     putStrLn "Mandelbrot zoom:  started"
-    multiNamePublish (folder++"zoom/mandel") $ mandelZoom ((-0.75),(-0.125)) (0.75) ((*) 2) 11
+    namedPublish (folder++"zoom/mandelCombo") (publishMandelZoom $ mandelZoom ((-0.75),(-0.125)) (0.75) ((*) 2) 10)
     putStrLn "Finished..."
 
 -- customTree :: Fill -> Outline -> Int -> Float -> Float -> FullFigure

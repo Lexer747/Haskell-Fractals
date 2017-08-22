@@ -1,6 +1,6 @@
 # Haskell Shapes & Fractals
 Currently a simple program which creates pretty shapes in svg format which can be rendered by 
-most browsers. It is mostly a learning program, so i am using the process of writing this program to
+most browsers. It is mostly a learning program, so I am using the process of writing this program to
 learn Haskell.
 
 Core code for generating the svg was found [here](http://stackoverflow.com/questions/2711002/image-drawing-library-for-haskell)
@@ -10,7 +10,7 @@ and inspired me in its simplicty.
 
 Just starting, so my first idea was see if I could find a way to produce the bouding box of a shape. Below is the result.
 
-![BoundingBox](https://cdn.rawgit.com/Lexer747/Haskell-Fractals/b86c6eff/Samples/box.svg)
+![BoundingBox](https://cdn.rawgit.com/Lexer747/Haskell-Fractals/c8985d36/Samples/box.svg)
 
 The blue rectangle is created using affine transformations then the grey rectangle is produce by finding the bouding box of the shape.  
 ``` Haskell

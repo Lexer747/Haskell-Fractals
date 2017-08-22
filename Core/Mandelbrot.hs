@@ -1,6 +1,7 @@
 module Mandelbrot (
 mandelbrotSet
 ,mandelZoom
+,publishMandelZoom
 ) where
 
 import CoordinateSystem
@@ -99,12 +100,18 @@ customNormalizePixel (a,b) zoom pixel = (newX,newY) where
     
 -- | to create the set we map the mandelbrotFunc over every pixel in the grid
 mandelbrotSet :: FullFigure
-mandelbrotSet = convertGrid $ mapGrid mandelbrotFunc $ buildGrid height width whitePixel
+mandelbrotSet = convertGrid mandelbrotGrid
 
---specificMandelSet :: Point -> Float -> FullFigure
-specificMandelSet base zoom = convertGrid $ mapGrid (customMandelFunc base zoom) (buildGrid height width whitePixel)
+specificMandelSet :: Point -> Float -> Grid
+specificMandelSet base zoom = mapGrid (customMandelFunc base zoom) (buildGrid height width whitePixel)
 
---mandelZoom :: Point -> Float -> (Float -> Float) -> Int -> [FullFigure]
+mandelZoom :: Point -> Float -> (Float -> Float) -> Int -> [Grid]
 mandelZoom _ _ _ 0                      = []
 mandelZoom base startzoom zoomFunc iter = (image):(mandelZoom base (zoomFunc startzoom) zoomFunc (iter - 1)) where
     image = specificMandelSet base startzoom
+    
+mandelbrotGrid :: Grid
+mandelbrotGrid = mapGrid mandelbrotFunc $ buildGrid height width whitePixel
+
+publishMandelZoom :: [Grid] -> FullFigure
+publishMandelZoom g = convertGrid $ mergeGrid g 0
