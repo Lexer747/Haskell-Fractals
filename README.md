@@ -1,18 +1,19 @@
 # Haskell Shapes & Fractals
-Currently a simple program which creates pretty shapes in svg format which can be rendered by 
-most browsers. It is mostly a learning program, so I am using the process of writing this program to
+
+Currently a simple program which creates pretty shapes in SVG format which can be rendered by 
+most browsers. It is mostly a learning program, so i am using the process of writing this program to
 learn Haskell.
 
-Core code for generating the svg was found [here](http://stackoverflow.com/questions/2711002/image-drawing-library-for-haskell)
-and inspired me in its simplicty.
+Core code for generating the SVG was found [here](http://stackoverflow.com/questions/2711002/image-drawing-library-for-haskell)
+and inspired me in its simplicity.
 
-##Bounding Box:
+## Bounding Box:
 
-Just starting, so my first idea was see if I could find a way to produce the bouding box of a shape. Below is the result.
+Just starting, so my first idea was see if I could find a way to produce the bounding box of a shape. Below is the result.
 
 ![BoundingBox](https://cdn.rawgit.com/Lexer747/Haskell-Fractals/c8985d36/Samples/box.svg)
 
-The blue rectangle is created using affine transformations then the grey rectangle is produce by finding the bouding box of the shape.  
+The blue rectangle is created using affine transformations then the grey rectangle is produce by finding the bounding box of the shape.
 ``` Haskell
 boundingBox :: FullFigure
 boundingBox = centreFullFigure $ blueSq++greySq where
@@ -20,11 +21,11 @@ boundingBox = centreFullFigure $ blueSq++greySq where
     blueSq = [(blueF,blueL,[(rot 35),(scale 2 1)] |=> square)]
 ```
 
-##First Fractal:
+## First Fractal:
 
-![Squares](https://cdn.rawgit.com/Lexer747/Haskell-Fractals/b86c6eff/Samples/infini.svg)
+![Squares](https://cdn.rawgit.com/Lexer747/Haskell-Fractals/b86c6eff/Samples/infini.SVG)
 
-This fractal is created by scaling and rotating a square 1000 times. Its a simple but elegant pattern. To generate this image the following code was excuted:
+This fractal is created by scaling and rotating a square 1000 times. Its a simple but elegant pattern. To generate this image the following code was executed:
 
 ``` Haskell
 --best read from bottom up
@@ -34,11 +35,11 @@ infiniSquare = colourizeFig (14,14,14,14,14,14) (0,0,255) recursiveSquare where
     newSquare = [(scale 4 4), (translate 10 10)] |=> square
 ```
 
-##Fibonacci Spiral:
+## Fibonacci Spiral:
 
 My favourite kind of spiral, I liked the look of it flairing out as it gets bigger.
 
-![FibonacciSpiral](https://cdn.rawgit.com/Lexer747/Haskell-Fractals/b86c6eff/Samples/fib.svg)
+![FibonacciSpiral](https://cdn.rawgit.com/Lexer747/Haskell-Fractals/b86c6eff/Samples/fib.SVG)
 
 This spiral is also simple to make as it is just a square which rotates as it moves away from its start point.
 Because its an SVG zooming in on it shows the detail of the spiral nicely. Its made using the following code below:
@@ -49,7 +50,7 @@ fibonacci = colourizeFig greyF blueL $ centreFigure $ recursivePolygon ([(scale 
 ```
 As you can see its a one liner, but it can be broken up into steps:
 * `publishFigure` will simply convert the shape to SVG so we can see it.
-* `centreFigure` finds the bounding box of the shape then translates the whole shape so its bouding box is relative to origin.
+* `centreFigure` finds the Bounding box of the shape then translates the whole shape so its bounding box is relative to origin.
 * `recursivePolygon` takes the base square and recursively applies the list of transformations to it forming the spiral.
 
 Explaining the `recursivePolygon` function and why it looks so crazy. Seeing the type of `recursivePolygon` makes understanding it easier:
@@ -73,7 +74,7 @@ This should make reading the function easier (hopefully).
 
 A cliche fractal but very pretty non-the-less, once again the advantage of SVG makes zooming very satisfying:
 
-![firstTree](https://cdn.rawgit.com/Lexer747/Haskell-Fractals/b86c6eff/Samples/tree.svg)
+![firstTree](https://cdn.rawgit.com/Lexer747/Haskell-Fractals/b86c6eff/Samples/tree.SVG)
 
 This is less simple to make but haskell makes it relatively easy for us. I decided to not do this all on one line but it is definitely possible if you so
 desire.
@@ -89,7 +90,7 @@ firstTree = colourizeFig greyF blueL finalTree where
     leaf2 = map (\x -> [(translate (-47) (-87)),(scale 0.75 0.75),(rot 25)] |=> x)
 ```
 
-So its a little overwheleming at first, but once again i believe that seeing the type signature for recursiveFigure_adv helps a lot.
+So its a little overwhelming at first, but once again i believe that seeing the type signature for recursiveFigure_adv helps a lot.
 
 ``` Haskell
 recursiveFigure_adv :: [a] -> (a -> a) -> Int -> [[a]]
@@ -98,20 +99,20 @@ recursiveFigure_adv :: [a] -> (a -> a) -> Int -> [[a]]
 This function essentially has 3 parameters and returns a `[[a]]`, which is a list 
 of list of a. The first parameter is the base shape of the recursive
 shape `[a]` or as we know it as `[Figure]`. 
-The second parameter is where the complexitity is `(a -> a)`. And the 3rd
+The second parameter is where the complexity is `(a -> a)`. And the 3rd
 parameter is the number of iterations to perform `Int`.
 
-lets focus on the second parameter `(a -> a)` which seems redundant. Take any type and return any type.
+Lets focus on the second parameter `(a -> a)` which seems redundant. Take any type and return any type.
 But what this is actually doing; Is allowing me to pass a function to recursiveFigure_adv 
 which can perform the transformations and rebuild the figure all in one parameter.
 Hence explaining what `treeFunc` is doing. It performs a transformation on every polygon in base,
 then appends this to another set of transformations. Which is also on every polygon in base.
 
-##Tiling Fractal
+## Tiling Fractal
 
 Not sure if this is a well known fractal but i like the way it looks so i thought it deserved a place on the readme:
 
-![tiling](https://cdn.rawgit.com/Lexer747/Haskell-Fractals/b86c6eff/Samples/hex.svg)
+![tiling](https://cdn.rawgit.com/Lexer747/Haskell-Fractals/b86c6eff/Samples/hex.SVG)
 
 This is also less simple but not too much of a stretch to get your head around. It uses the same recursive
 function as the tree just a slightly different transformation function.
@@ -126,15 +127,15 @@ tiling =  recursiveFigure_adv [[base]] tile_func 6 where
     
 ```
 
-`moveEuclidean` is a function allows for a transformation in a direction specfied in degrees
-that moves the specfied number of pixels. This just uses simple trig to do this, its
+`moveEuclidean` is a function allows for a transformation in a direction specified in degrees
+that moves the specified number of pixels. This just uses simple trig to do this, its
 found in `extraTransformations.hs`.
 
-##Sierpinski Triangle
+## Sierpinski Triangle
 
 A classic fractal. Wikipedia article [here](https://en.wikipedia.org/wiki/Sierpinski_triangle)
 
-![Triangle](https://cdn.rawgit.com/Lexer747/Haskell-Fractals/b86c6eff/Samples/sierpinski.svg)
+![Triangle](https://cdn.rawgit.com/Lexer747/Haskell-Fractals/b86c6eff/Samples/sierpinski.SVG)
 
 This one is basically a tiling fractal so the code is really similar to the hexagon one above.
 
@@ -146,7 +147,7 @@ sierpinski = colourizeFig greyF blueL $ centreFigure $ transformFigure [(rot 180
     tile r = map (\x -> [(scale 0.5 0.5),(moveEuclidean 300 r)] |=> x)
 ```
 
-##Mandelbrot Set
+## Mandelbrot Set
 
 The most famous fractal. This was a completely different procedure to create this since colourizing a coordinate grid
 doesn't lend itself to vector graphics. But that didn't stop me!
@@ -155,12 +156,12 @@ Honestly though this approach is horribly inefficient and your better off using 
 and to see if it would even work. 
 
 The picture:  
-![mandel](https://cdn.rawgit.com/Lexer747/Haskell-Fractals/7c1b3814/Samples/mandel.svg)  
+![mandel](https://cdn.rawgit.com/Lexer747/Haskell-Fractals/7c1b3814/Samples/mandel.SVG)  
 
 So as you can see it doesn't look great and when you zoom in it looks even worse. One reason it looks bad is the poor colouring code.
 The other reason is that the implementation of the coordinate grid will never lend itself to the SVG format.
 
-##Lets break down the code and have a look:
+## Lets break down the code and have a look:
 
 First the coordinate system, which is made up two key parts:
 * The `Pixel` data type, which has a location and a colour
@@ -194,10 +195,10 @@ buildGrid height width pix  = row:(buildGrid (height - 1) width nextPix) where
     (x,y) = location pix
 ```
 
-All of these are pretty simple if you have understood everything upto this point.
+All of these are pretty simple if you have understood everything up to this point.
 The only odd thing is `convertCompressRow` which currently doesn't have a definition,
-i'll let you look at the source code to get the definition.
-That becuase it doesn't really affect the actual final image.
+I'll let you look at the source code to get the definition.
+That because it doesn't really affect the actual final image.
 
 The most important function is `mapGrid` which is what we will actually use to create
 the image. As all we need to do is create a function with type `Pixel -> Pixel` which
@@ -217,9 +218,9 @@ iterations :: Int
 iterations = 50
 ```
 
-There are 3 functions here which are not defined and i'll let you look them up if you
+There are 3 functions here which are not defined and I'll let you look them up if you
 so desire [here](Core/Mandelbrot.hs). But the short version of it is that `mandelColour` will take a number of
-iterations and convert into a grey-scale colour proptional to the number of 
+iterations and convert into a grey-scale colour proportional to the number of 
 steps in the function that point could do before diverging. 
 
 `applyMandel` takes a point and actually finds the number of iterations before diverging
@@ -227,14 +228,14 @@ steps in the function that point could do before diverging.
 `normalizePixel` will take large int Pixel values like `x = 100, y = 100` and scale
 it down to within much smaller values so there is more detail.
 
-##Combinging it all together:
+## Combining it all together:
 
 ```Haskell
 mandelbrotSet :: FullFigure
 mandelbrotSet = convertGrid $ mapGrid mandelbrotFunc $ buildGrid height width whitePixel
 ```
 
-This code will actually build the image by first initalizing a grid:  
+This code will actually build the image by first initializing a grid:
 
 ```Haskell
 buildGrid height width whitePixel
@@ -275,7 +276,7 @@ basePixel = [(0,0),(1,0),(1,1),(0,1)]
 ```
 
 Hence each pixel is its own fully rendered Square! This means the SVG engine is working
-serious overtime to convert a 640 x 480 pixel grid which will require 307,200 induvidal
+serious overtime to convert a 640 x 480 pixel grid which will require 307,200 individual
 squares to be drawn! Not efficient at all. 
 
 The `convertCompressRow` helps a bit as that joins some of the pixels together into a
