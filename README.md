@@ -70,7 +70,7 @@ hence in the code for this spiral we can analyze the parameters to be as such:
 
 This should make reading the function easier (hopefully).
 
-##Fractal Tree
+## Fractal Tree
 
 A cliche fractal but very pretty non-the-less, once again the advantage of SVG makes zooming very satisfying:
 
